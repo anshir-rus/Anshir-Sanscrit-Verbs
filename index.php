@@ -1,4 +1,8 @@
 <?
+/* 
+Based on method of Ivan Tolchelnikov
+Programming by Andrei Shirobokov 2023 
+*/
 
  require_once "db.php";
  

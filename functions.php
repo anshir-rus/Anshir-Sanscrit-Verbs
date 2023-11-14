@@ -1,4 +1,8 @@
 <?php
+/* 
+Based on method of Ivan Tolchelnikov
+Programming by Andrei Shirobokov 2023 
+*/
 
 function find_in_array($what,$array,$letter)
 {

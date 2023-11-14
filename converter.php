@@ -1,5 +1,9 @@
 <?
-	//header('Content-Type: text/html; charset=utf-8');
+/* 
+Based on method of Ivan Tolchelnikov
+Programming by Andrei Shirobokov 2023 
+*/
+
 	$nameServer="localhost";
 	$userName="root";
 	$password="root";

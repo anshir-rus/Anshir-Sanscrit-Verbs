@@ -1,3 +1,9 @@
+<?
+/* 
+Based on method of Ivan Tolchelnikov
+Programming by Andrei Shirobokov 2023 
+*/
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

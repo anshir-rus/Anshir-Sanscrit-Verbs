@@ -1,3 +1,9 @@
+<?
+/* 
+Based on method of Ivan Tolchelnikov
+Programming by Andrei Shirobokov 2023 
+*/
+?>
 <html class="h-100">
 <head>
     <title>Глагольные корни</title>
