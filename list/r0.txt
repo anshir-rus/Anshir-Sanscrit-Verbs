@@ -1,0 +1,21 @@
+(R) Корни неопределенного ряда R
+kṣar	0	kṣar	s	II	U	1	0	течь	r
+kharj	0	kharj	0	II	P	1	0	скрипеть	r
+garj	0	garj	s	II	U	1	5	рычать	r
+gard	0	gard	0	II	P	1	0	ликовать	r
+garh	0	garh	s	II	U	1	5	упрекать	r
+carc	0	carc	0	II	P	0	0	повторять	r
+jvar	0	jvar	v2	II	P	1	3,5	быть горячим	r
+jhar	0	jhar	0	II	P	1	0	падать	r
+tark	0	tark	0	II	U	0	0	думать	r
+tarj	0	tarj	s	II	P	1	5	угрожать	r
+tvar	0	tvar	s	II	U	1	3,5	спешить	r
+tsar	0	tsar	v2	II	P	1	4,5	красться	r
+nard	0	nard	s	II	U	1	5	вопить	r
+pard	0	pard	0	II	Ā	1	0	испражняться	r
+phar	0	phar	0	II	P	0	0	разбрасывать	r
+bharts	0	bharts	s	II	U	1	0	оскорблять	r
+bharv	0	bharv	s	II	P	1	0	пожирать	r
+mārg	0	mārg	s	IV	U	1	5	преследовать	r
+sarj	0	sarj	0	II	P	1	0	скрипеть	r
+svar	0	svar	v	II	P	1	3,4,5	звучать	r

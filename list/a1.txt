@@ -1,0 +1,151 @@
+(A1) Корни ряда А1
+Øs	0	1 as	0	I	P	2	0	быть	Ø
+akṣ	0	1 akṣ	v1	II	Ā	1	3,5	достигать	a
+aj	0	aj	s	II	U	1	5	ездить	a
+aṭ	0	aṭ	s	II	U	1	0	блуждать	a
+at	0	at	s	II	P	1	0	блуждать	a
+ad	0	ad	a	II	U	1,2	3	есть	a
+aś	1	1 aś, aṃś	v3	II	U	5,9	3,4,5	достигать	a
+aś	2	2 aś	s	II	U	1,9	1,3,5	есть	a
+as	0	2 as	v2	II	P	1,4	1,2,3,5	бросать	a
+ah	0	ah	0	II	P	0	0	говорить	a
+iØj	0	yaj	a	I	U	1,2	3,4	совершать жертвоприношение	Ø
+uØkṣ	0	vakṣ, ukṣ	s	I	P	1,6	3,5	увеличиваться	Ø
+uØc	0	vac	a	I	U	2,3	2,3	говорить	Ø
+uØj	0	vaj	0	I	P	1	0	быть сильным	Ø
+uØd	0	vad	s	I	U	1	3,5	говорить	Ø
+uØp	1	1 vap	v	I	U	1	1,3,4	посыпать	Ø
+uØp	2	2 vap	a	I	U	1	0	стричь	Ø
+uØś	0	vaś 	s	I	P	1,2,3,6	3,5	жаждать	Ø
+uØs	1	1 vas, uṣ, uch	v	I	P	2,6	1,4	светить	Ø
+uØs	2	2 vas	v	I	U	1	1,3,4	жить	Ø
+uØh	0	vah	v1	I	U	1,2	1,4	нести	Ø
+ṛØj	0	ṛj, ṛñj, arj	0	I	Ā	4	0	натягивать	Ø
+kath	0	kath	s	II	U	10	3	рассказывать	a
+katth	0	katth	s	II	U	1	5	нахваливать	a
+kaṣ	0	kaṣ	s	II	U	1	5	царапать	a
+kas	0	kas	v2	II	U	1	3	открывать	a
+krakṣ	0	krakṣ	0	II	Ā	1	0	рушить	a
+krath	0	krath	s	II	P	1	0	ликовать	a
+kvath	0	kvath	s	II	U	1	5	кипеть	a
+kṣad	0	kṣad	0	II	Ā	1	0	разделять	a
+kṣap	0	kṣap	s	II	U	1	0	воздерживаться	a
+khac	0	khac	s	II	P	1	0	проблескивать	a
+khad	0	khad	0	II	P	6	0	твердеть	a
+khall	0	khall	s	II	P	1	0	расслабляться	a
+gad	0	gad	s	II	P	1	1,5	произносить	a
+gadh	0	gadh	s	II	0	0	0	прикреплять	a
+gṛØh	0	grabh, grah	s	I	U	1,9	1,2,3,4,5	хватать	Ø	gṛØbh
+gras	0	gras	v2	II	U	1	5	пожирать	a
+glah	0	glah	v	II	Ā	1	5	играть в азартные игры	a
+ghaṭ	0	ghaṭ	s	II	U	1	1,3,5	стремиться	a
+ghaṭṭ	0	ghaṭṭ	s	II	Ā	1	0	тереть	a
+ghas	0	ghas	a	II	P	1	1,2,3	есть	a
+cak	0	cak	v	II	P	1	0	трясти	a
+cakṣ	0	cakṣ	v2	II	Ā	1,2	0	смотреть	a
+caṭ	0	caṭ	s	II	P	1	0	происходить	a
+cat	0	cat	v3	II	P	1	3,5	прятать	a
+chad	0	chad	0	II	U	1	0	скрывать	a
+jakṣ	0	1 jakṣ	v3	II	P	1,2	3,5	есть	a
+jap	0	jap	v2	II	U	1	3,5	шептать	a
+jas	0	jas	0	II	Ā	1,4	3	истощаться	a
+tak	0	tak	v3	II	P	1,2	5	прорываться	a
+takṣ	0	takṣ	v1	II	U	1,2,5	3,5	выделывать	a
+taḍ	0	taḍ	s	II	P	2 	3	бить	a
+tap	0	tap	v	II	U	1,4	1,3,4	нагревать	a
+tyaj	0	tyaj	v4	II	U	1	1,3,4	покидать	a
+trap	0	trap	v	II	U	1	1,5	смущаться	a
+tras	0	tras	v3	II	U	1,4	3,5	ужасаться	a
+tvakṣ	0	tvakṣ	v3	II	P	1,2	4	выделывать	a
+dakṣ	0	dakṣ	v2	II	Ā	1	3,5	мочь	a
+dagh	0	dagh	s	II	Ā	5	1,2	добираться	a
+day	0	day	s	II	Ā	1	5	разделять	a
+das	0	das	v3	II	P	4	2	выбрасывать	a
+dah	0	dah	v4	II	U	1,2,4	1,3,5	жечь	a
+dhraj	0	dhraj	0	II	U	1	0	мести	a
+nakṣ	0	nakṣ	v2	II	U	1	5	достигать	a
+naṭ	0	naṭ	s	II	P	1	0	играть (театр)	a
+nad	0	nad	s	II	U	1	2,5	звучать	a
+nabh	0	nabh	0	II	U	1,4,9	0	взрываться	a
+naś	0	1 naś	v1	II	U	1,4	2,3	теряться	a
+nas	0	nas	0	II	Ā	1	1	объединять	a
+nah	0	nah	a	II	U	1,4	3,5	завязывать	a
+pac	0	pac	a	II	U	1,4	1,3,4	печь	a
+paj	0	paj	0	II	Ā	1	0	начинать	a
+paṭ	0	paṭ	s	II	P	1	0	рвать	a
+paṭh	0	paṭh	s	II	U	1	3,5	читать	a
+pat	0	1 pat	s	II	U	1	1,3	падать, лететь	a
+path	0	path	s	II	P	1	5	идти	a
+pad	0	pad	a	II	U	2,4	1,3,4	идти	a
+paś	0	1 paś, spaś	v2	II	U	4	1	видеть	a	spaś
+pṛØch	0	prach	0	I	U	6	3,4	спрашивать	Ø
+prath	0	prath	s	II	U	1	1,3,5	распространять	a
+phakk	0	phakk	s	II	P	1	3,5	разбухать	a
+bhakṣ	0	bhakṣ	s	II	U	1	1,3	принимать участие	a
+bhaj	0	bhaj	v1	II	U	1,2	2,4	раздавать	a
+bhal	0	bhal	s	II	U	1	0	воспринимать	a
+bhaṣ	0	bhaṣ	s	II	P	1	5	лаять	a
+bhas	0	bhas	s	II	P	1,3	0	поедать	a
+bhṛØjj	0	bhṛjj	0	I	U	4,6	3,5	жарить
+bhyas	0	bhyas	v2	II	Ā	1	3,5	бояться	a
+majj	0	majj	v	II	U	1	1,3,5	тонуть	a
+mad	0	mad, mand	v3	I	U	1,2,3	3,4,5	веселить(ся)	a
+miØkṣ	0	myakṣ	0	I	P	1	1	располагаться	Ø
+mṛØkṣ	0	mṛkṣ	0	I	P	1,6	0	гладить	Ø
+mṛØd	0	mṛd	s	I	U	1,9	1,3,5	тереть	Ø
+yakṣ	0	yakṣ	0	II	U	1	0	нажимать	a
+yat	0	yat	v2	II	U	1	1,3,5	растягивать	a
+yabh	0	yabh	v	II	P	1	6	совершать половой акт	a
+yas	0	yas	v2	II	P	1,3,4	2,3,5	подогреваться	a
+rakṣ	0	rakṣ	s	II	U	1	1,3,4	защищать	a
+rac	0	rac	0	II	P	0	1,3	болтаться	a
+raṭ	0	raṭ	s	II	P	1	3,5	выть	a
+rad	0	rad	s	II	P	1,2	5	копать	a
+rap	0	rap	0	II	P	1	0	перешептываться	a
+rapś	0	rapś	0	II	Ā	1	0	полниться	a
+ras	0	ras	s	II	U	1	3,5	рычать	a
+rah	0	rah	s	II	P	1	3,5	оставлять	a
+lakṣ	0	lakṣ	0	II	U	1	0	характеризовать	a
+lag	0	lag	s	II	P	1	5	прикреплять	a
+lajj	0	lajj	s	II	U	6	5	стыдиться	a
+laḍ	0	laḍ	s	II	P	1	0	передвигаться	a
+lap	0	lap	v2	II	P	1,4	3,5	пустословить	a
+labh	0	labh	v4	II	Ā	1	4	брать	a
+laṣ	0	laṣ	s	II	U	1,4	3,5	желать	a
+las	0	las	s	II	U	1	3,5	оживлять	a
+vat	0	vat	0	II	P	1	3	опасаться	a
+vadh	0	vadh, badh	s	II	U	1	5	убить	a	badh
+vas	0	2 vas	s	II	U	2,6	3,5	одевать	a
+viØc	0	vyac, 2 vic	s	I	P	3,6	3,5	продлевать	Ø
+viØdh	0	vyadh, 2 vidh	a	I	P	4	3,4	расщеплять	Ø
+vṛØśc	0	vraśc	v	I	P	1,6	3,4,5	разрезать	Ø
+vyaj	0	vīj, vyaj	0	II	U	1	0	дуть	a
+vyath	0	vyath	s	II	U	1	3,5	колебаться	a
+vyay	0	vyay	s	II	U	1	0	расходовать	a
+vraj	0	vraj	s	II	U	1	5	продолжать	a
+śak	0	śak	v	II	U	5	1,2,3	мочь	a
+śat	0	śat	0	II	U	0	0	разрезать	a
+śad	1	1 śad	0	II	U	0	0	преобладать	a
+śad	2	2 śad	a	II	P	0	2	падать	a
+śap	0	śap	v	II	U	1,4	3,4	проклинать	a
+śaś	0	śaś	s	II	P	1	5	прыгать	a
+śas	0	śas, śās	v3	II	P	1,2	0	резать	a	śās
+śuØs	0	śvas, 2 śuṣ	v2	II	U	1,2	3,5	дуть	Ø
+śṛØth	0	śrath, ślath	s	I	U	1,6,9	3,5	ослаблять	Ø
+śṛØ	0	śrā, 2 śrī, 2 śṛ	a	I	U	0	0	кипеть	Ø
+śnath	0	śnath	s	II	P	1,2	3,5	расщеплять	a
+ślath	0	śrath, ślath	s	II	U	1	0	ослаблять	a
+sagh	0	sagh	s	II	P	5	1,3,5	быть равным	a
+sac	0	sac	v2	II	Ā	1,3	1,4,5	сопутствовать	a
+sad	0	sad	a	II	P	2	1,2,3,4,5 сидеть	a
+sap	0	sap	v2	II	P	1	3	служить	a
+sas	0	sas	v2	II	P	2,3	3,5	спать	a
+sah	0	sah	s	II	U	1,2,4	1,3,4,5	пересиливать	a
+suØp	0	svap	v4	I	U	1,2	1,3,4	спать	Ø
+spṛØś	0	spṛś	0	I	U	6	3,4,7	касаться	Ø
+sthag	0	sthag	s	II	P	1	5	скрывать	a
+svad	0	svad	v2	II	Ā	1	3	сладить	a
+had	0	had	a	II	U	1	5	испражняться	a
+hari	0	hary	s	II	P	4	3,5	удовлетворяться	a
+has	0	has	s	II	U	1	3,5	смеяться	a
+hras	0	hras	v2	II	U	1	3,5	укорачивать	a

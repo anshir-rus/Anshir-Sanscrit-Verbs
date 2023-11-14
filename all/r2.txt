@@ -1,0 +1,23 @@
+(R2) Корни ряда R2
+kṝ	1	2 kṛ, kir	а	I	U	6	1,4,5	разбрасывать
+kṝ	2	3 kṛ	0	I	P	0	4,5 упоминать
+gṝ	1	1 gṛ	v3	I	U	6	5	петь
+gṝ	2	2 gṛ, gir, gil	s	I	U	6,9	1,3,4,5	глотать
+gil	0	2 gṛ, gir, gil	s	I	U	6,9	1,3,4,5	глотать
+cṝ	0	car	v	I	U	1	3,4,5	двигаться
+car	0	car	v	I	U	1	3,4,5	двигаться
+cṝv	0	carv	s	I	P	1	0	жевать
+jṝ	0	1 jṛ, jur	v1	I	P	1,4,6	1,2,3,5	выбрасывать
+tṝ	0	tṛ, tir, tur	v1	I	U	1,3,4,6,8	1,3,4,5	переходить
+dṝ	0	1 dṛ	v1	I	P	2,9	1,2,3,4,5,6	разделять
+pṝ	0	1 pṛ, pṛṇ, pūr	v	I	P	3,4,5,6,9	1,3,5	наполнять
+mṝ	1	2 mṛ, mṛṇ	v1	I	P	6,9	1,3,5	разрушать
+mṝ	2	mūrch, mūr	v3	III	P	1	5	жиреть
+mṝch	0	mūrch, mūr	v3	III	P	1	5	жиреть
+śṝ	1	1 śṛ	v1	I	U	4,6,9	3,5	рушить
+śṝ	2	śrā, 2 śrī, 2 śṛ	0	I	P	9	0	кипятить
+śṝ	3	1 śrī, śṛ	v1	I	0	0	0	отдыхать
+stṝ	0	stṛ	v1	I	U	1	1,3,4,5	обсыпать
+spṝdh	0	spṛdh, spūrdh	s	I	P	1,6	5	спорить
+sphṝ	0	sphṛ, sphar, sphur, sphul	s	I	U	6	3,5	тереть
+sphul	0	sphṛ, sphar, sphur, sphul	s	I	U	6	3,5	тереть

@@ -1,0 +1,101 @@
+i	0	i, ī, ay	v1	I	U	1,2,4	1,4,5	идти
+iṅg	0	iṅg	s	III	U	1	0	размешивать
+idh	0	idh, indh	v3	III	U	1	1,5	возжигать
+indh	0	idh, indh	v3	III	U	1	1,5	возжигать
+il	0	il	s	I	P	6	5	быть тихим
+iṣ	1	1 iṣ, ich	v3	I	U	1,4,6	3,5	желать
+ich	0	1 iṣ, ich	v3	I	U	1,4,6	3,5	желать
+iṣ	2	2 iṣ	s	I	U	4,6,9	5	посылать
+klid	0	klid	v	I	U	1,4	2,3	намокать
+kliś	0	kliś	v	I	U	4,9	1,5,7	горевать
+kṣi	1	1 kṣi	a	I	P	1,2,6	2	владеть
+kṣi	2	2 kṣi, kṣī	v4	I	U	1,2,4,5,9	1,4	рушить
+kṣip	0	kṣip	v	I	U	6	1,3,4	бросать
+kṣviḍ	0	kṣviḍ	s	I	P	1	0	гудеть
+kṣvid	0	kṣvid	I	P	1	0	гудеть
+khid	0	khid	v	I	P	6,7	1,6	рвать
+ci	1	1 ci	a	I	U	1,4,5	1,4,5	собирать
+ci	2	2 ci	a	I	Ā	1,4	1,4	замечать
+cit	0	cit	v3	I	P	1	1,3,4,5	воспринимать, знать
+cint	0	cint	s	III	P	10	0	думать
+chid	0	chid	a	I	U	7	1,2,3,4	отрезать
+ji	1	1 ji	v4	I	U	1,2	1,3,4,5	побеждать
+ji	2	2 ji, jinv	I	U	5	0	ускорять
+jinv	0	2 ji, jinv	s	III	U	1,5	5	ускорять
+jri	0	jri	a	I	P	1	3,4	идти
+tij	0	tij	a	I	Ā	1	0	заострять
+tim	0	tim	s	I	P	4	0	утихать
+tviṣ	0	tviṣ	v	I	U	1,2,4,6	3,4	всколыхнуть
+diś	0	diś	a	I	U	3,4,6	3,4,7	указывать
+dih	0	dih	a	I	U	2	1,3,4,7	размазывать
+dviṣ	0	dviṣ	a	I	U	2,6	1,3,7	ненавидеть
+dhinv	0	dhi, dhinv	s	III	P	5	5	напитывать
+dhi	0	dhi, dhinv	s	III	P	5	5	напитывать
+niṃs	0	niṃs	s	III	Ā	2	5	целовать
+nikṣ	0	nikṣ	s	III	P	1	5	расщеплять
+nij	0	nij	a	I	U	2,3	2,3,4	мыть
+nind	0	nind, nid	s	III	U	1	1,5	оскорблять
+nid	0	nind, nid	s	III	U	1	1,5	оскорблять
+pinv	0	pinv	s	I	U	1	5	жиреть
+pibd	0	pibd	0	III	P	1	0	устоять
+piś	0	piś	v2	I	U	6	1,3,5	украшать
+piṣ	0	piṣ	a	I	P	6,7	1,3,7	разрушать
+pis	0	pis	0	I	P	4	0	растягивать
+bhikṣ	0	bhikṣ	s	III	U	1	5	умолять
+bhid	0	bhid	a	I	U	7	1,2,3,4	делить
+mØ̄	4	1 mi	a	I	U	5	0	установить
+mØ̄	5	mī, mi	a	I	U	3,4,5,9	4	уменьшать
+mikṣ	0	mikṣ (miś)	s	III	U	1,3	0	смешивать
+mith	0	mith	s	I	U	1,6	0	препираться
+mid, med	0	mid med (mid)	s	I	P	4,6	2,5	быть жирным
+mil	0	mil	s	I	P	6	5	комбинировать
+miṣ	0	miṣ	s	I	U	6	3,5	подмигивать
+mih	0	mih	a	I	U	1	3,7	мочиться
+mrit	0	mrit, mlit	0	I	P	4	0	растворять
+mlit	0	mrit, mlit	0	I	P	4	0	растворять
+mlich	0	mlich	v2	I	P	1	5	говорить по-варварски
+rikh	0	rikh	s	I	P	6	0	царапать
+riṅkh	0	riṅkh, riṅg	s	III	P	1	0	пугать
+riṅg	0	riṅkh, riṅg	s	III	P	1	0	пугать
+ric	0	ric	a	I	U	4,7	1,2,3,4	покидать
+rip	0	rip	v2	I	P	0	0	размазывать
+riph	0	riph	s	I	P	1,6	0	ворчать
+ribh	0	ribh	s	I	P	1	5	петь
+riś	0	riś	v2	I	Ā	6	0	рвать
+
+riṣ	0	riṣ	v1	I	U	1,4	1,2,3,5	пораниться
+rih	0	rih	v1	I	P	2	0	лизать
+likh	0	likh	s	I	P	6	1,3,5	царапать
+lip	0	lip, limp	a	I	U	0	1,2,3,4	размазывать
+liś	0	liś	a	I	Ā	4,6	3,5,7	рвать
+lih	0	lih	a	I	U	2,6	3,4,7	лизать
+vic	0	1 vic	a	I	P	3,7	3,5	просеивать
+vij	0	vij	s I U 1, 6 1, 3, 5 дрожать
+vid	1	1 vid	v	I	U	1,2,6	3,4,5	знать
+vid	2	2 vid	v4	I	U	2,6	2,3,4	найти
+vidh	1	1 vidh	0	I	U	6	0	почитать
+vidh	2	2 vidh	a	I	P	4	3	расщеплять
+vidh	3	vindh	0	I	Ā	6	недоставать
+vip	0	vip	v2	I	U	1	1,3,5	дрожать
+viś	0	viś	a	I	U	6	1,3,4,5,7	входить
+viṣ	0	viṣ	a	I	P	1,3	1,2,5,7	быть активным
+śiñj	0	śiñj	s	III	Ā	2	5	гнусавить
+śim	0	śim	s	III	P	4	0	работать
+śiṣ	0	śiṣ	a	I	U	1,7	1,2,3	покидать
+śri	0	śri	s	I	U	1	1,2,3,4,5	останавливаться
+śliṣ	0	śliṣ, śriṣ	a	I	Ā	1	2,3,7	застегивать
+śriṣ	0	śliṣ, śriṣ	a	I	Ā	1	2,3,7	застегивать
+śvit	0	śvit	s	I	U	1,4	1,2,3,4,5	светить
+sic	0	sic	a	I	U	1,6	2,3,4	выливать
+sidh	1	1 sidh	v1	I	U	1	3,4,5	отгонять
+sidh	2	2 sidh	a	I	U	4	2,3,4	достигать
+stigh	0	stigh	s	I	Ā	5	3,5	взбираться
+stim	0	stim, stīm	s	I	P	4	застыть
+snih	0	snih	v1	I	U	4	2,3	липнуть
+smi	0	smi	a	I	U	1	3,4,5	улыбаться
+sridh	0	sridh	0	I	P	1	2	ошибаться
+svid	0	svid	a	I	U	1,4	1,2,3	потеть
+hiṃs	0	hiṃs	s	III	U	1,7	3,5	ранить
+hi	0	hi	a	I	P	1,5	1,2,3,4	побуждать
+hikk	0	hikk	s	III	U	1	3,5	всхлипывать
+hiṇḍ	0	hiṇḍ	s	III	Ā	1	5	скитаться

@@ -1,0 +1,47 @@
+(N1) Корни ряда N1
+n̥g	0	aṅg	0	I	P	1	0	двигаться	n̥
+n̥c	0	ac, añc	v2	I	U	1	5	сгибать	n̥
+n̥j	0	añj	v1	I	U	1,7	1,3,5	помазать	n̥
+n̥ś	0	1 aś, aṃś	0	I	U	5,9	0	достигать	n̥
+n̥h	0	aṃh	0	I	0	0	0	быть стесненным	n̥
+kṣn̥	0	kṣan	v3	I	U	8	1,5	ранить	n̥
+grn̥th	0	grath, granth	s	I	P	1,7,9	3,5	завязывать	n̥
+chn̥d	0	chand	0	I	P	1,2	3,4	казаться	n̥
+jn̥bh	0	jambh, jabh	v3	I	Ā	1	3,5	раскусывать	n̥
+tn̥	0	tan, tā	v1	I	U	8	1,2,3,4,5	тянуть	n̥
+tn̥c	0	tañc, tac	v1	I	P	7	4,5	сгущать	n̥
+tn̥s	0	taṃs, tas	0	I	U	1	2,3	трясти	n̥
+dn̥bh	0	daṃś, daś	v3	I	P	1,5	1,3,5	вредить	n̥
+dn̥ś	0	daṃś, daś	v4	I	P	1	3,4	кусать	n̥
+dn̥s	0	daṃs	0	?	P	0	0	удивлять	n̥
+dhvn̥s	0	dhvaṃs, dhvas	v3	I	U	1	2,3,5	разбрасывать	n̥
+nn̥ś	0	2 naś, naṃś	0	II	U	6	1	достигать	n̥
+pn̥	0	pan	s	I	Ā	1	5	восхищаться	n̥
+bn̥dh	0	bandh	v1	I	U	1,9	3,4	связывать	n̥
+bhn̥j	0	bhañj	a	I	P	7	1,3,4	ломать	n̥
+bhn̥d	0	bhand	0	I	Ā	1	0	светиться	n̥
+bhrn̥ś	0	bhand	v3	I	U	1,4	1,3,5	падать	n̥
+mn̥	0	man	v	I	U	3,4,8	1,3,4,5	думать	n̥
+mn̥jj	0	majj	v	I	U	0	1,3,4	тонуть	n̥
+mn̥th	0	math, manth	s	I	U	1,9	3,5	трясти	n̥
+mn̥h	0	maṃh, mah	s	I	U	1	5	радовать	n̥
+rn̥j	0	2 raj, rañj	a	I	U	1,4	3,5	красить	n̥
+rn̥dh	0	radh, randh	v1	I	P	2,4	2,3,5	заставлять	n̥
+rn̥bh	0	rabh, rambh	a	I	U	1	1,3,4	захватывать	n̥
+ln̥bh	0	labh	v4	II	U	1	1,3	брать	n̥
+vn̥c	0	vañc	v2	I	U	1	3,5	хромать	n̥
+vrn̥d	0	vrad, vrand	0	I	Ā	6	0	ослаблять	n̥
+vln̥g	0	vlag, vlaṅg	0	I	0	0	0	преследовать	n̥
+śn̥s	0	śaṃs	v2	I	U	1	1,3,5	восхвалять	n̥
+ścn̥d	0	śaṃs	0	I	P	1	0	светить	n̥	cn̥d
+śrn̥bh	0	śrambh	v3	I	Ā	1	2,5	доверять	n̥
+śvn̥c	0	śvañc	0	I	Ā	1	3	распространять	n̥
+sn̥j	0	saj, sañj	a	I	P	1	1,4	вешать	n̥
+skn̥d	0	skand	a	I	U	1	1,2,3,4	скакать	n̥
+skn̥bh	0	skambh, skabh	s	I	P	1,5,9	3,5	поддерживать	n̥
+stn̥bh	0	stambh, stabh	v2	I	U	1,5,9	2,3,4,5	подпирать	n̥
+spn̥d	0	spand	s	I	U	1	5	колыхаться	n̥
+syn̥d	0	syand, syad	v1	I	U	1	1,2,3,4,5	продвигаться	n̥
+srn̥s	0	sraṃs, sras	v3	I	U	1	1,2,3,5	падать	n̥
+svn̥j	0	svaj, svañj	v1	I	U	1	3,4	объять	n̥
+hn̥	0	han	v1	I	U	1,2,6,8	3,4,5	убить	n̥

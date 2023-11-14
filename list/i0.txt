@@ -1,0 +1,18 @@
+(I) Корни неопределенного ряда I
+edh	0	edh	s	II	U	1	3	процветать	e
+kṣvel	0	kṣvel	s	II	P	1	0	играть	e
+khel	0	khel	s	II	P	1	0	шататься	e
+ceṣṭ	0	ceṣṭ	s	II	U	1	3,5	размешивать	e
+cai	0	cāy	s	IV	P	1	5	наблюдать	ai
+jeh	0	jeh	v2	II	U	1	3,5	бездельничать	e
+ned	0	ned	v2	II	U	1	5	течь	e
+pai	0	pāy	0	IV	Ā	1	0	совершать дефекацию	ai
+bhreṣ	0	bhreṣ	0	II	U	1	0	ковылять	e
+mreḍ	0	mreḍ	s	II	P	1	0	удовлетворять	e
+rej	0	rej	0	II	U	1	0	трепетать	e
+ven	0	ven	s	II	U	1	3,5	вожделеть	e
+vell	0	vell	s	II	P	1	0	шататься	e
+veṣṭ	0	veṣṭ	s	II	Ā	1	3,5	завернуть	e
+sev	0	sev	s	II	U	1	3,5	присутствовать	e
+heṣ	0	heṣ	s	II	U	1	5	ржать	e
+hreṣ	0	hreṣ	s	II	U	1	5	ржать	e
