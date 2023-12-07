@@ -179,7 +179,7 @@ $end=$_REQUEST["end"];
 
       //  echo check_yoga(9,4,$suffix)."<BR>";
 
-      //  echo "STOP: ".$stop;
+        echo "STOP: ".$stop;
 
        if($start&&$end)
        {
@@ -187,7 +187,22 @@ $end=$_REQUEST["end"];
 
         if($end==999)
         {
-            echo "Количество вариантов: ".counter($start,$final,$suffix,$stop);
+            $brahman=brahman($start,$final,$suffix,$stop);
+            
+            echo "Количество вариантов: ".$brahman[0]."<BR>";
+            echo "Список вариантов: <BR>"; 
+
+            for($i=0;$i<count($brahman[1]);$i++)
+            {
+                $string="";
+                for($j=0;$j<count($brahman[1][$i]);$j++)
+                {
+                    $string.=find($brahman[1][$i][$j],$suffix)."-";
+                }
+                echo "$string";
+                echo "<BR><BR>";
+            }
+
         }
         else
         {
@@ -198,7 +213,6 @@ $end=$_REQUEST["end"];
 
             for($i=0;$i<count($paths);$i++)
             {
-            // print_r($paths[$i]);
                 $string="";
                 for($j=0;$j<count($paths[$i]);$j++)
                 {
@@ -403,21 +417,37 @@ function check_yoga($id1,$id2,$array)
     return $result;
 }
 
-function counter($start,$final,$suffix)
+function brahman($start,$final,$suffix)
 {
    // echo "Final Forms:";
    // print_r($final);
    // echo "<BR><BR>";
+   $massive=array();
 
     for($i=0;$i<count($final);$i++)
     {
 
-        $paths=paths($start,$final[$i],$suffix);
-        $count=$count+count($paths);
+        for($j=0;$j<count($suffix);$j++)
+        {
+            if($suffix[$j][0]==$final[$i])
+            {
+                $stop=$suffix[$j][5];
+                
+            }
+        }
+        
+        $paths=paths($start,$final[$i],$suffix,$stop);
+        $massive=array_merge($massive,$paths);
 
     }
 
-    return $count;
+    
+    $count=count($massive);
+
+    
+    $result[0]=$count;
+    $result[1]=$massive;
+    return $result;
 
 
 }
