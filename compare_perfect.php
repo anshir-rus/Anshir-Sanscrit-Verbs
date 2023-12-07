@@ -102,6 +102,8 @@ $refresh=$_REQUEST["refresh"];
             $one_line_array[$j][13]=$res['algo'];
             $one_line_array[$j][14]=$res['comments'];
             $one_line_array[$j][15]=$res['id'];
+            $one_line_array[$j][16]=$res['algo_perfect'];
+            $one_line_array[$j][17]=$res['comments_perfect'];
            	$j++;
 
       }
@@ -110,30 +112,6 @@ $refresh=$_REQUEST["refresh"];
 	  
     }
 
-//print_r($array_alg);
-/*
-$filename = 'compare/kochergina.txt';
-
-if (($fp = fopen($filename, "r")) !== FALSE) {
-    while (($data = fgetcsv($fp, 0, ";")) !== FALSE) {
-        $array[] = $data;
-    }
-    }
-    
-fclose($fp);
-
-$k=0;
-for($i=0;$i<count($array);$i++)
-{
-    if($array[$i][0])
-    {
-    $one_line_array[$k]=explode("	",$array[$i][0]);
-    $k++;
-    
-   
-    }
-}
-*/
 // 0 - омоним
 // 1 - корень в слабой ступени
 // 2 - корень у Кочергиной
@@ -152,7 +130,7 @@ echo "<h6><a href='/compare.php' class='link-secondary link-offset-2 link-underl
 <a href='/compare_perfect.php' class='link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover'>Перфект</a></h6>";
 
 ?>
-<a href="/compare.php?refresh=1">Обновить данные</a>
+<a href="/compare_perfect.php?refresh=1">Обновить данные</a>
 <?
 
 echo '<table class="table table-bordered"><thead><tr><th scope="col">Корень</th><th scope="col">Корень у Кочергиной</th><th scope="col">Класс</th><th scope="col">U/A (К)</th><th scope="col">U/A (Т)</th><th scope="col">Ряд</th><th scope="col">Тип</th><th scope="col">Кочергина</th><th scope="col">Алгоритм</th>
@@ -273,11 +251,15 @@ for($i=0;$i<count($one_line_array);$i++)
         if($one_line_array[$i][0]==$array_alg[$j][0]&&$one_line_array[$i][1]==$array_alg[$j][1])
         {
             
-            $kochergina=$one_line_array[$i][6];
+            $kochergina=$one_line_array[$i][7];
             if($kochergina=="0")
             {
                 $kochergina="Нет формы";
             }
+
+            $kochergina=str_replace("/",",",$kochergina);
+            $kochergina2=str_replace("au","āu",$kochergina);
+            $kochergina2=str_replace("ai","āi",$kochergina2);
 
             $postfix_name[0]="sya";
             $postfix_name_u[0]="sya";
@@ -289,6 +271,8 @@ for($i=0;$i<count($one_line_array);$i++)
             $postfix_u_query[0]=2;
             $postfix_u_query[1]=2;
             $postfix_transform="";
+            $verb_omonim=$array_alg[$j][0];
+            $verb_name=$array_alg[$j][1];
             $verb_type=$array_alg[$j][2];
             $verb_change=$array_alg[$j][3];
             $verb_ryad=$array_alg[$j][4];
@@ -305,27 +289,26 @@ for($i=0;$i<count($one_line_array);$i++)
 
             if($verb_pada=="P")
             {
-                $postfix_name[1]="ti";
-                $url="?verbs=$verb_id&suffixies=3&endings=3";
+
+                $url="?verbs=$verb_id";
                 $flag_u=0;
                 
             }
             elseif($verb_pada=="Ā"||$verb_pada=="A")
             {
-                $postfix_name[1]="te";
-                $url="?verbs=$verb_id&suffixies=3&endings=11";
+   
+                $url="?verbs=$verb_id";
                 $flag_u=0;
             }
             elseif($verb_pada=="U")
             {
-                $postfix_name[1]="ti";
-                $postfix_name_u[1]="te";
+
                 $flag_u=1;
-                $url="?verbs=$verb_id&suffixies=3&endings=3";
+                $url="?verbs=$verb_id";
             }
             else
             {
-                $url="?verbs=$verb_id&suffixies=3&endings=3";
+                $url="?verbs=$verb_id";
             }
 
             if($refresh==1)
@@ -343,23 +326,13 @@ for($i=0;$i<count($one_line_array);$i++)
                 //get_word($duplication_p2_prefix,$mool_after_duplication,$verb_omonim,$verb_type,$verb_change,$verb_ryad,$postfix_name,$postfix_query,$postfix_transform,"1",$verb_setnost,$stop,$debug)[0]
                     
 
-                $algorithm=get_word("",$array_alg[$j][1],"",$array_alg[$j][0],$verb_type,$verb_change,$verb_ryad,$postfix_name,$postfix_query,$postfix_transform,"1",$verb_setnost,0,0,"",0);
+                $perfect=get_perfect($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_ryad,$verb_pada,0)[0];
+                $algorithm=explode(",",$perfect);
 
-                if($flag_u)
-                {
-                    $algorithm_u=get_word("",$array_alg[$j][1],"",$array_alg[$j][0],$verb_type,$verb_change,$verb_ryad,$postfix_name_u,$postfix_u_query,$postfix_transform,"1",$verb_setnost,0,0,"",0);
-                }
-
-                if(!$flag_u)
-                {
+                
                     $compare_string=trim($algorithm[0]);
                     $compare_string2=trim($algorithm[1]);
-                }
-                else
-                {
-                    $compare_string=$algorithm[0]."/".$algorithm_u[0];
-                    $compare_string2=$algorithm[1]."/".$algorithm_u[1];
-                }
+               
 
          
                 $kochergina_array=array();
@@ -379,7 +352,7 @@ for($i=0;$i<count($one_line_array);$i++)
                     }
                 }
 
-                if($kochergina==$compare_string)
+                if($kochergina==$compare_string||$kochergina2==$compare_string)
                 {
                     
                     if($algorithm[1])
@@ -393,7 +366,7 @@ for($i=0;$i<count($one_line_array);$i++)
                         $class='';
                     }
                 }
-                elseif($kochergina==$compare_string2)
+                elseif($kochergina==$compare_string2||$kochergina2==$compare_string2)
                 {
                     $compare="Совпало со второй формой";
                     $class='class="table-secondary"';
@@ -427,37 +400,22 @@ for($i=0;$i<count($one_line_array);$i++)
 
                 }
 
-                if($algorithm[1])
-                {
-                    $string=$compare_string.','.$compare_string2; 
-
-                    
-
-                    echo '<tr '.$class.'><td>'.$one_line_array[$i][1]." ".$omonim.'</td><td>'.$one_line_array[$i][2].'</td><td>'.$one_line_array[$i][4].'</td><td>'.$one_line_array[$i][3].'</td><td>'.$verb_pada.'</td><td>'.$verb_ryad.'</td><td>'.$verb_type.'</td><td>'.$kochergina.'</td><td><a href="/generator.php'.$url.'" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">'.$string.'</a></td>
+                    echo '<tr '.$class.'><td>'.$one_line_array[$i][1]." ".$omonim.'</td><td>'.$one_line_array[$i][2].'</td><td>'.$one_line_array[$i][4].'</td><td>'.$one_line_array[$i][3].'</td><td>'.$verb_pada.'</td><td>'.$verb_ryad.'</td>           <td>'.$verb_type.'</td><td>'.$kochergina.'</td><td><a href="/generator.php'.$url.'" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">'.$perfect.'</a></td>
                     <td>'.$compare.'</td></tr>';
-                    
-                }
-                else
-                {
-                    $string=$compare_string;
+                
 
-
-                    echo '<tr '.$class.'><td>'.$one_line_array[$i][1]." ".$omonim.'</td><td>'.$one_line_array[$i][2].'</td><td>'.$one_line_array[$i][4].'</td><td>'.$one_line_array[$i][3].'</td><td>'.$verb_pada.'</td><td>'.$verb_ryad.'</td>           <td>'.$verb_type.'</td><td>'.$kochergina.'</td><td><a href="/generator.php'.$url.'" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">'.$string.'</a></td>
-                    <td>'.$compare.'</td></tr>';
-                }
-
-                $query = "UPDATE kochergina SET algo=?,comments=? WHERE id=?";
-                $statement = $connection->prepare($query);
-                $statement->bind_param('ssi',$string,$compare,$one_line_array[$i][15]);
-                $statement->execute();
-                $statement->close();
+                    $query = "UPDATE kochergina SET algo_perfect=?,comments_perfect=? WHERE id=?";
+                    $statement = $connection->prepare($query);
+                    $statement->bind_param('ssi',$perfect,$compare,$one_line_array[$i][15]);
+                    $statement->execute();
+                    $statement->close();
                 
                 
             }
             else
             {
                 echo '<tr><td>'.$one_line_array[$i][1]." ".$omonim.'</td><td>'.$one_line_array[$i][2].'</td><td>'.$one_line_array[$i][4].'</td><td>'.$one_line_array[$i][3].'</td><td>'.$verb_pada.'</td><td>'.$verb_ryad.'</td>           
-                        <td>'.$verb_type.'</td><td>'.$kochergina.'</td><td><a href="/generator.php'.$url.'">'.$one_line_array[$i][13].'</a></td><td>'.$one_line_array[$i][14].'</td></tr>';
+                        <td>'.$verb_type.'</td><td>'.$kochergina.'</td><td><a href="/generator.php'.$url.'">'.$one_line_array[$i][16].'</a></td><td>'.$one_line_array[$i][17].'</td></tr>';
             }
         
         } 
@@ -477,11 +435,11 @@ for($i=0;$i<count($one_line_array);$i++)
                 echo '<tr '.$class.'><td>-</td><td>'.$one_line_array[$i][2].'</td><td>'.$one_line_array[$i][4].'</td><td>'.$one_line_array[$i][3].'</td><td>'.$verb_pada.'</td><td>-</td><td>-</td><td>'.$one_line_array[$i][6].'</td><td>'.$string.'</td>
                     <td>'.$string.'</td></tr>';
 
-                $query = "UPDATE kochergina SET algo=?,comments=? WHERE id=?";
-                $statement = $connection->prepare($query);
-                $statement->bind_param('ssi',$string,$compare,$one_line_array[$i][15]);
-                $statement->execute();
-                $statement->close();
+                    $query = "UPDATE kochergina SET algo_perfect=?,comments_perfect=? WHERE id=?";
+                    $statement = $connection->prepare($query);
+                    $statement->bind_param('ssi',$string,$compare,$one_line_array[$i][15]);
+                    $statement->execute();
+                    $statement->close();
             }
             else
             {

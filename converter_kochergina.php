@@ -8,8 +8,7 @@ Programming by Andrei Shirobokov 2023
 	$userName="root";
 	$password="";
 	$DBname="sanskrit";
-	
-	$ryad="A1";
+
 
 	$mysqli = new mysqli($nameServer, $userName, $password, $DBname);
 	if ($mysqli -> connect_error) {
@@ -23,7 +22,7 @@ Programming by Andrei Shirobokov 2023
 		$dir = $home . '/';
 		
 		
-		if (($fp = fopen("$ryad.txt", "r")) !== FALSE) {
+		if (($fp = fopen("compare/kochergina.txt", "r")) !== FALSE) {
 		while (($data = fgetcsv($fp, 0, ";")) !== FALSE) {
 			$list[] = $data;
 		}
@@ -35,20 +34,20 @@ Programming by Andrei Shirobokov 2023
 	
 	//echo $list[0];
 	
-	for($i=1;$i<count($list);$i++)
+	for($i=0;$i<count($list);$i++)
 	{
 		$array=explode("	",$list[$i][0]);
 		print_r($array);
 		echo "<BR>";
 		
-		$query = "INSERT INTO verbs (ryad,name,omonim,whitney,setnost,type,pada,prs,aos,translate,element,adhoc,comments,padezh,para) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		$query = "INSERT INTO kochergina (omonim,name_ivan,name_koch,pada,class,present,future,perfect,passive,causative,desiderative,prich,infinitive) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		$statement = $mysqli->prepare($query);
 
 		$padezh="";
 		$para=0;
 
 		//bind parameters for markers, where (s = string, i = integer, d = double,  b = blob)
-		$statement->bind_param('ssisssssssssssi', $ryad,$array[0],$array[1], $array[2],$array[3],$array[4], $array[5],$array[6],$array[7],$array[8], $array[9],$array[10],$array[11],$padezh,$para);
+		$statement->bind_param('issssssssssss', $array[0],$array[1], $array[2],$array[3],$array[4], $array[5],$array[6],$array[7],$array[8], $array[9],$array[10],$array[11],$array[12]);
 	
 	
 
