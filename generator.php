@@ -40,8 +40,6 @@ Programming by Andrei Shirobokov 2023
 		require_once "db.php";
 		include "functions.php";
 
-
-
 		$verb_id=$_REQUEST["verbs"];
 		$suff_id=$_REQUEST["suffixies"];
 		$end_id=$_REQUEST["endings"];
@@ -232,18 +230,6 @@ Programming by Andrei Shirobokov 2023
 	
 		$generator=get_word("",$verb_name,"",$verb_omonim,$verb_type,$verb_change,$verb_ryad,$postfix_name,$postfix_query,$postfix_transform,"1",$verb_setnost,0,1,"",0);
 
-		echo "<BR><b>Итог с сандхи: " . $generator[0]."</b>";
-		echo "<br>";
-		echo "Применили правило Эмено: ".$generator[5];
-
-		if($generator[1]!="|"&&$generator[1]!="")
-		{
-			echo "<BR><BR><b>Вторая форма с сандхи: " . $generator[0]."</b>";
-			echo "<br>";
-			echo "Применили правило Эмено: ".$generator[5];
-		}
-	
-		//echo $generator[5];
 		//print_r($generator);
 		
 		echo "<BR>";echo "<BR>";

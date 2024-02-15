@@ -1,7 +1,0 @@
-(U) Корни неопределенного ряда U
-ḍhauk	0	ḍhauk	s	IV	Ā	1	3,5	приближаться	au
-dho	0	dhav	0	II	Ā	1	0	течь	o
-dhau	1	1 dhāv	s	IV	U	1	1,3,5	бежать	au
-dhau	2	2 dhāv	v3	IV	U	1	5	течь	au
-lok	0	lok	s	II	Ā	1	3,5	смотреть	o
-loc	0	loc	s	II	Ā	1	3,5	видеть	o

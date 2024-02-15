@@ -32,15 +32,19 @@ $end=$_REQUEST["end"];
         $selected2="selected";$selected1="";$selected3="";
     }
 
-    if($start==29)
-    {
-        $selected3="selected";$selected1="";$selected2="";
-    }
+  // if($start==29)
+  //  {
+  //      $selected3="selected";$selected1="";$selected2="";
+  //  }
    
     ?>
+     <!--
     <option value="999" <? echo $selected1; ?> >Brahman</option>
+  -->
     <option value="1" <? echo $selected2; ?>>VR</option>
+    <!--
     <option value="29" <? echo $selected3; ?>>NON VS</option>
+  -->
     </select>
 
 
@@ -92,16 +96,7 @@ $end=$_REQUEST["end"];
 
             }
         }
-
-       
-
-        for($i=0;$i<count($suffix);$i++)
-        {
-            
-        }
-
         
-        echo "End: $end Stop: $stop<BR>";
 
         ?>
     </select>
@@ -138,7 +133,7 @@ $end=$_REQUEST["end"];
     }
 
 ?>
-    <option value="999" <? echo $selected1; ?> >Brahman</option>
+    <option value="1" <? echo $selected1; ?> >Brahman</option>
     </select>
 
     <select name="end" id="end-select">
@@ -179,7 +174,7 @@ $end=$_REQUEST["end"];
 
       //  echo check_yoga(9,4,$suffix)."<BR>";
 
-        echo "STOP: ".$stop;
+      //  echo "STOP: ".$stop;
 
        if($start&&$end)
        {
@@ -218,6 +213,7 @@ $end=$_REQUEST["end"];
                 {
                     $string.=find($paths[$i][$j],$suffix)."-";
                 }
+                $string=str_replace("-S-","-",$string);
                 echo "$string";
                 echo "<BR><BR>";
             }
@@ -229,11 +225,11 @@ $end=$_REQUEST["end"];
 function paths($start,$end,$suffix,$stop)
 {
 
-
     $i=0;
     $cycle=[$end];
 
-    while($root!=999&&$root2!=999)
+    while(($root!=999&&$root2!=999)||($root!=999&&$root2!=0))
+   // while($i<2)
     {
         for($k=0;$k<count($cycle);$k++)  
         {
@@ -246,7 +242,8 @@ function paths($start,$end,$suffix,$stop)
                         $upper[]=$root;
 
                         $root2=explode(",",$suffix[$j][3]);
-                        
+
+                       
                         if($root2[1])
                         {
 
@@ -261,12 +258,19 @@ function paths($start,$end,$suffix,$stop)
                         {
                             $root2=$suffix[$j][3];
                         }
+
                     }
+
+                    
                 }
 
             }
+
+            
+
             $upper=array_values(array_unique($upper));
             $cycle=$upper;
+
 
             $i++;
     }

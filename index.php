@@ -28,10 +28,10 @@ if($adhoc)
 $adhoc_text="<BR>несам.: $adhoc ";
 }
 
-$answer.="<tr><td><a href='/generator.php?verbs=$id' class='link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover'>".$res['name']. "$omonim_text $adhoc_text</a></td><td>".$res['ryad']. "</td><td>".$res['whitney']. "</td><td>".$res['setnost']. "</td><td>".$res['type']. "</td><td>".$res['pada']. "</td><td>".$res['prs']. "</td><td>".$res['aos']. "</td><td>".$res['translate']. " ".$res['comments']. "</td></tr>";
+$answer.="<tr><td><a href='/verb.php?id=$id' class='link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover'>".$res['name']. "$omonim_text $adhoc_text</a></td><td>".$res['ryad']. "</td><td>".$res['whitney']. "</td><td>".$res['setnost']. "</td><td>".$res['type']. "</td><td>".$res['pada']. "</td><td>".$res['prs']. "</td><td>".$res['aos']. "</td><td>".$res['translate']. " ".$res['comments']. "</td></tr>";
 }
 
-$itog='<table class="table table-bordered"><thead><tr><th scope="col">Корень</th><th scope="col">Ряд</th><th scope="col">Корень по Whitney</th><th scope="col">seṭ-aniṭ</th><th scope="col">Тип</th>
+$itog='<table class="table table-bordered table-striped"><thead><tr><th scope="col">Корень</th><th scope="col">Ряд</th><th scope="col">Корень по Whitney</th><th scope="col">seṭ-aniṭ</th><th scope="col">Тип</th>
 <th scope="col">P/Ā</th><th scope="col">PrS</th><th scope="col">AoS</th><th scope="col">Перевод / Комментарии</th></tr></thead><tbody>'.$answer.'</tbody></table>';
 //echo $itog;
 
@@ -59,17 +59,11 @@ Not found
     <body class="d-flex flex-column min-vh-100">
 
  
-
+<? include "header.php"; ?>
 
         <div class="container mt-5" style="max-width: 1255px">
             <div class="alert alert-danger" role="alert">
                 Тестовая версия! Возможны опечатки, влияющие на конечный результат. 
-                <BR>
-                <a class="link-danger  link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href='compare.php'>Сравнение с таблицей В.А.Кочергиной</a>
-                <BR>
-                <a class="link-danger  link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href='test_sandhi.php'>Верификация сандхи по Эмено</a>
-                <BR>
-                <a class="link-danger  link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href='test_method.php'>Сравнение с примерами И.Толчельникова (v.1.2.1)</a>
             </div>
             <div class="card-header alert alert-warning text-center mb-3">
                 <h2>Глагольные корни санскрита</h2>

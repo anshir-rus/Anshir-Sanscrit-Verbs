@@ -1,38 +1,38 @@
-0	ad	ad	P	II	atti	atsyati	āda	adyate	ādayati	jighatsati	anna	attum
+0	ad	ad	P	II	atti	atsyati	āda	adyate	ādayati	jighatsati	anna	attum	attum
 0	ṛc	arc	P	I	arcati	arciṣyati	ānarca	arcyate	arcayati	arciciṣati	arcita	arcitum
 0	-arth	arth	Ā	X	arthayate	arthayiṣyate	arthayāñ	arthyate	arthita	arthayitum
 0	ṛh	arh	P	I	arhati	arhiṣyati	ānarha	arhyate	arhayati	arjihisati	arhita	arhitum
 0	Øs	as	P	II	asti	bhaviṣyati	babhūva	bhūyate	bhāvayati	bubhūṣati	bhūta	bhavitum
-0	ah	ah	0	0	0	0	āha	0	0	0	0	0
+0	ah	ah	P	0	0	0	āha	0	0	0	0	0
 0	āp	āp	P	V	āpnoti	āpsyati	āpa	āpyate	āpayati	īpsati	āpta	āptum
 0	ās	ās	Ā	II	āste	āsiṣyate	āsāñcakre	āsyate	āsayati	āsisiṣate	āsita, āsīna	āsitum							
-0	i	i	P	II	eti	eṣyati	iyāya	īyate	āyayati	jigamiṣati	ita	
-1	iṣ	iṣ	P	VI	icchati	eṣiṣyati	iyeṣa	iṣyate	eṣayati	eṣiṣiṣati	iṣṭa	
-0	īkṣ	īkṣ	Ā	I	īkṣate	īkṣiṣyate	īkṣāṃ	cakre	īkṣyate	īkṣayati	īcikṣiṣate	īkṣita	
-1	ūh	ūh	A	I	ūhate	ūhiṣyate	ūhāñcakre	ūhyate	ūhayati		ūhita	
-0	kath	kath	P	X	kathayati	kathayiṣyati	kathayāmāsa	kathyate		cikathayiṣati	kathita	
-0	km̥̄	kam	Ā	I	0	kāmayiṣyate	cakame,kāmayāñcakre	0	kāmayate	0	kānta
-0	kamp	kamp	Ā	I	kampate	kampiṣyate	cakampe	kampyate	kampayati	cikampiṣate	kampita
-0	kṛ	kar	U	VIII	karoti/kurute	kariṣyati/kariṣyate	cakāra/cakre	kriyate	kārayati	cikīrṣati/ cikīrṣate	kṛta
-1	kṛt	kart	P	VI	kṛntati	kartiṣyati	cakarta	kṛtyate	kartayati	cikartiṣati/cikṛtsati	kṛtta	
-0	kṛṣ	karṣ	U	VI	kṛṣati/kṛṣate	karkṣyati/karkṣyate,krakṣyati/krakṣyate	cakarṣa/cakṛṣe	kṛṣyate	karṣayati	cikṛkṣati/cikṛkṣate	kṛṣṭa
-0	kal	kal	Ā	I	kalate	kaliṣyate	cakale	0	kalayati	0	kalita
-0	kāś	kāś	0	I	kāṣate	kāśiṣyate	cakāśe	kāśyate	kāśayati	cikāśiṣate	kāśita
-0	kup	kup	P	IV	kupyati	kopiṣyati	cukopa	kupyate	kopayati	cukopiṣati	kupita
-0	krm̥̄	kram	U	I	kramati/kramate	kramiṣyati	cakrāma/cakrame	kramyate	kramayati	cikramiṣati	krānta	
-0	krīḍ	krīḍ	P	I	krīḍati	krīḍiṣyati	cikrīḍa	krīḍyate	krīḍayati	cikrīḍiṣati	krīḍita
-0	kruś	kruś	P	V	krośati	krokṣyati	cukrośa	kruśyate	krośayati	cukrukṣati	kruṣṭa
-0	kṣm̥̄	kṣam	Ā	I	kṣamate	kṣamiṣyate	cakṣame	kṣamyate	kṣamayati	cikṣamiṣate	kṣanta
-1	kṣi	kṣi	P	I	kṣayati	kṣeṣyati	cikṣāya	kṣīyate	kṣayayati	cikṣīṣati	kṣita,kṣīṇa
-0	khn̥̄	khan	U	I	khanati/khanate	khaniṣyati/khaniṣyate	cakhāna	khāyate,khānayati	cikhaṇiṣati/cikhaṇiṣate	khāta	khanyate
-0	khād	khād	P	I	khādati	khādiṣyati	cakhāda	khādyate	khādayati	cikhādiṣati	khādita
-0	khyā	khyā	P	II	khyāti	khyāsyati	cakhyau	khyāyate	khyāpayati	cikhyāsati	khyāta
-0	gaṇ	gaṇ	0	X	gaṇayati	gaṇayiṣyati	gaṇayāmāsa	gaṇyate	jigaṇayiṣati	gaṇita
-0	gm̥	gam	P	I	gacchati	gamiṣyati	jagāma	gamyate	gamayati	jigamiṣati	gata
-0	garj	garj	P	I	garjati	garjiṣyati	jagarja	garjyate	garjayati	jigarjiṣati	garjita
-0	gāh	gāh	U	X	gahayati/gahayate	0	gahayañcakāra/gahayañcakre	0	0	0	0					
-1	gØ̄	gā	Ā	II	gāte	gāsyate	jage	gāyate	gāpayati	jigīṣati,jigāsati	0	
-2	gØ̄	gā	P	IV	gāyati	gāsyati	jagau	gīyate	gāpayati	jigāsati	gīta
+0	i	i	P	II	eti	eṣyati	iyāya	īyate	āyayati	jigamiṣati	ita	etum
+1	iṣ	iṣ	P	VI	icchati	eṣiṣyati	iyeṣa	iṣyate	eṣayati	eṣiṣiṣati	iṣṭa	eṣitum
+0	īkṣ	īkṣ	Ā	I	īkṣate	īkṣiṣyate	īkṣāṃ	cakre	īkṣyate	īkṣayati	īcikṣiṣate	īkṣita	īkṣitum
+1	ūh	ūh	A	I	ūhate	ūhiṣyate	ūhāñcakre	ūhyate	ūhayati		ūhita	ūhitum
+0	kath	kath	P	X	kathayati	kathayiṣyati	kathayāmāsa	kathyate		cikathayiṣati	kathita	kathayitum
+0	km̥̄	kam	Ā	I	0	kāmayiṣyate	cakame,kāmayāñcakre	0	kāmayate	0	kānta	kāmayitum
+0	kamp	kamp	Ā	I	kampate	kampiṣyate	cakampe	kampyate	kampayati	cikampiṣate	kampita	kampitum
+0	kṛ	kar	U	VIII	karoti/kurute	kariṣyati/kariṣyate	cakāra/cakre	kriyate	kārayati	cikīrṣati/ cikīrṣate	kṛta	kartum
+1	kṛt	kart	P	VI	kṛntati	kartiṣyati	cakarta	kṛtyate	kartayati	cikartiṣati/cikṛtsati	kṛtta	kartitum	
+0	kṛṣ	karṣ	U	VI	kṛṣati/kṛṣate	karkṣyati/karkṣyate,krakṣyati/krakṣyate	cakarṣa/cakṛṣe	kṛṣyate	karṣayati	cikṛkṣati/cikṛkṣate	kṛṣṭa	kraṣṭum,karṣṭum
+0	kal	kal	Ā	I	kalate	kaliṣyate	cakale	0	kalayati	0	kalita	0
+0	kāś	kāś	0	I	kāṣate	kāśiṣyate	cakāśe	kāśyate	kāśayati	cikāśiṣate	kāśita	kāśitum
+0	kup	kup	P	IV	kupyati	kopiṣyati	cukopa	kupyate	kopayati	cukopiṣati	kupita	kopitum
+0	krm̥̄	kram	U	I	kramati/kramate	kramiṣyati	cakrāma/cakrame	kramyate	kramayati	cikramiṣati	krānta	kramitum	
+0	krīḍ	krīḍ	P	I	krīḍati	krīḍiṣyati	cikrīḍa	krīḍyate	krīḍayati	cikrīḍiṣati	krīḍita	krīḍitum
+0	kruś	kruś	P	V	krośati	krokṣyati	cukrośa	kruśyate	krośayati	cukrukṣati	kruṣṭa	kroṣṭum
+0	kṣm̥̄	kṣam	Ā	I	kṣamate	kṣamiṣyate	cakṣame	kṣamyate	kṣamayati	cikṣamiṣate	kṣanta	kṣamitum,kṣantum
+1	kṣi	kṣi	P	I	kṣayati	kṣeṣyati	cikṣāya	kṣīyate	kṣayayati	cikṣīṣati	kṣita,kṣīṇa	kṣetum
+0	khn̥̄	khan	U	I	khanati/khanate	khaniṣyati/khaniṣyate	cakhāna	khāyate,khānayati	cikhaṇiṣati/cikhaṇiṣate	khāta	khanyate	khanitum
+0	khād	khād	P	I	khādati	khādiṣyati	cakhāda	khādyate	khādayati	cikhādiṣati	khādita	khāditum
+0	khyā	khyā	P	II	khyāti	khyāsyati	cakhyau	khyāyate	khyāpayati	cikhyāsati	khyāta	khyātum
+0	gaṇ	gaṇ	P	X	gaṇayati	gaṇayiṣyati	gaṇayāmāsa	gaṇyate	jigaṇayiṣati	gaṇita	gaṇayitum
+0	gm̥	gam	P	I	gacchati	gamiṣyati	jagāma	gamyate	gamayati	jigamiṣati	gata	gantum
+0	garj	garj	P	I	garjati	garjiṣyati	jagarja	garjyate	garjayati	jigarjiṣati	garjita	garjitum
+0	-gah	gah	U	X	gahayati/gahayate	0	gahayañcakāra/gahayañcakre	0	0	0	0	0			
+1	gØ̄	gā	Ā	II	gāte	gāsyate	jage	gāyate	gāpayati	jigīṣati,jigāsati	0	0	
+2	gØ̄	gā	P	IV	gāyati	gāsyati	jagau	gīyate	gāpayati	jigāsati	gīta	gātum	gāhitum,gāḍhum
 0	gāh	gāh	U	I	gāhati/gāhate	gāhiṣyate	jagāha/jagāhe	gāhyate	gāhayati	jigāhiṣati,jighākṣati	gāḍha,gāhita
 0	gup	gup	P	I	0	gopiṣyati,gopsyati	jugopa	gupyate	gopayati	jugupiṣati,gupta	jugopiṣati
 0	gṛØh	grah	U	IX	gṛhṇāti/gṛhṇīte	grahiṣyati/grahiṣyate	jagrāha/jagṛhe	gṛhyate	grāhayati/grāhayate	jighṛkṣati/jighṛkṣate	gṛhīta
@@ -53,8 +53,116 @@
 0	tṝ	tar	P	I,VI	tarati,tirati	tariṣyati,tarīṣyati	tatāra	tīryate	tārayati	titīrṣati,titariṣati	tīrṇa	taritum,tarītum
 0	tark	tark	U	X	tarkayati/tarkayate	tarkayiṣyati/tarkayiṣyate	tarkayāñ-cakāra/cakre	tarkyate	0	0	tarkita	tarkayitum
 0	tarj	tarj	P	I	tarjati	tarjiṣyati	tatarja	tarjyate	tarjayati	titarjiṣati	tarjita	
-0	tud	tud	U	VI	tudati/tudate	totsyati/totsyate	tutoda/tutude	tudyate	todayati	tututsati/tututsate	tunna	
+0	tud	tud	U	VI	tudati/tudate	totsyati/totsyate	tutoda/tutude	tudyate	todayati	tututsati/tututsate	tunna
 0	tuṣ	tuṣ	P	IV	tuṣyati	tokṣyati	tutoṣa	tuṣyate	toṣayati	tutukṣati	tuṣṭa	toṣṭum
-
-
-
+0	tyaj	tyaj	P	I	tyajati	tyakṣyati	tatyāja	tyajyate	tyājayati	tityakṣati	tyakta	tyaktum
+0	tvar	tvar	Ā	I	tvarate	tvariṣyate	tatvare	tvaryate	tvarayati	titvariṣate	tvarita,tūrṇa	tvaritum
+0	dṛś	darś	P	IV	paśyati	drakṣyati	dadarśa	dṛśyate	darśayati	didṛkṣate	dṛṣṭa	draṣṭum
+0	dah	dah	P	I	dahati	dhakṣyati	dadāha	dahyate	dāhayati	didhakṣati	dagdha	dagdhum
+0	dā	dā	U	III	dadāti/datte	dāsyati/dāsyate	dadau/dade	dīyate	dāpayati	ditsati/ditsate	datta	dātum
+2	div	div	U	IV	dīvyati/dīvyate	deviṣyati	dideva	dīvyate	devayati	dideviṣati	dyūta,dyūna	devitum
+0	diś	diś	U	VI	diśati/diśate	dekṣyati/dekṣyate	dideśa/didiśe	diśyate	deśayati/deśayate	didikṣati/didikṣate	diṣṭa	deṣṭum
+0	dhṛ	dhar	U	I	dharati/dharate	dhariṣyati/dhariṣyate	dadhāra/dadhre	dhriyate	dhārayati	didhariṣati/didhariṣate	dhṛta	dhartum
+1	dhØ̄	dhā	U	III	dadhāti/dhatte	dhāsyati/dhāsyate	dadhau/dadhe	dhīyate	dhāpayati/dhāpayate	dhitsati/dhitsate	hita	dhātum
+1	dhau	dhāv	U	I	dhāvati/dhāvate	dhāviṣyati/dhāviṣyate	dadhāva/dadhāve	dhāvyate	dhāvayati	didhāviṣati/didhāviṣate	dhāvita,dhauta	dhāvitum
+0	-palāy	palāy	Ā	I	palāyate	palāyiṣyate	palāyāṃ cakre	palāyita	palāyitum
+0	pā	pā	P	I	pibati	pāsyati	papau	pīyate	pāyayati	pipāsati	pīta	pātum
+0	-pāl	pāl	P	X	pālayati	pālayiṣyati	pālayāmāsa	pālyate	0	0	pālita	pālayitum
+0	pūj	pūj	P	X	pūjayati	pūjayiṣyati	pūjayāmāsa	pūjyate	0	pupūjayiṣati	pūjita	pūjayitum
+0	pṛch	prac(c)h	P	VI	pṛcchati	prakṣyati	papraccha	pṛchyate	pracchayati	pipṛcchiṣati	pṛṣṭa	praṣṭum
+0	plu	plu	Ā	I	plavate	ploṣyate	pupluve	plūyate	plāvayati	puplūṣate	pluta	plotum
+0	bn̥dh	bandh	P	IX	bandhāti	bhantsyati	babandha	badhyate	bandhayati	bibhantsati	baddha	banddhum
+0	budh	budh	U	I	bodhati/bodhate	bodhiṣyati/bodhiṣyate,bhotsyati/bhotsyate	bubodha/bubudhe	budhyate	bodhayati/bodhayate	bubodhiṣati/bubodhiṣate	bodhita,buddha	bodhitum,boddhum
+0	brū	brū	U	II	bravīti/brūte	vakṣyati/vakṣyate	uvāca/ūce	ucyate	vācayati/vācayate	vivakṣati/vivakṣate	ukta	vaktum
+0	bhakṣ	bhakṣ	U	X	bhakṣayati/bhakṣayate	bhakṣiṣyati/bhakṣiṣyate	bhakṣayāmāsa	bhakṣyate	0	bibhakṣayiṣati	bhakṣita	bhakṣitum
+0	bhaj	bhaj	U	I	bhajati/bhajate	bhakṣyati/bhakṣyate	babhāja/bheje	bhajyate	bhājayati/bhājayate	bibhakṣati/bibhakṣate	bhakta	bhaktum
+0	bhn̥j	bhañj	P	VII	bhanakti	bhañkṣyati	babhañja	bhajyate	bhañjayati	bibhan̄kṣati	bhagna	bhan̄ktum
+0	bhṛ	bhar	U	III	bibharti/bibhṛte	bhariṣyati/bhariṣyate	babhāra/babhre	bhriyate	bhārayati/bhārayate	bibhariṣati/bibhariṣate	bhṛta	bhartum
+0	bhāṣ	bhāṣ	Ā	I	bhāṣate	bhāṣiṣyate	babhāṣe	bhāṣyate	bhāṣayati	bibhāṣiṣate	bhāṣita	bhāṣitum
+1	bhuj	bhuj	U	VII	bhunakti/bhun̄kte	bhokṣyati/bhokṣyate	bubhoja/bubhuje	bhujyate	bhojayati/bhojayate	bubhukṣati	bhukta	bhoktum
+0	bhū	bhū	P	I	bhavati	bhaviṣyati	babhūva	bhūyate	bhāvayati	bubhūṣati	bhūta	bhavitum
+0	bhrm̥̄	bhram	P	IV	bhrāmyati	bhramiṣyati	babhrāma	bhramyate	bhramayati	bibhramiṣati	bhrānta	bhramitum
+0	mad	mad	P	IV	mādyati	madiṣyati	mamāda	madyate	madayati	mimadiṣati	matta	maditum
+0	mn̥	man	Ā	IV	manyate	maṃsyate	mene	manyate	mānayati	mimāṃsati	mata	mantum
+0	mṛ	mar	Ā	VI	marate,mriyate	mariṣyati/mariṣyate	mamre	mriyate	mārayati	mumūrṣati	mṛta	martum
+1	mØ̄	mā	Ā	III	mimīte	māsyate	mame	mīyate	māpayati	mitsati/mitsate	mita	mātum
+0	mil	mil	U	VI	milati/milate	meliṣyati/meliṣyate	mimela/mimile	milyate	melayati/melayate	mimiliṣati/mimiliṣate,mimeliṣati/mimeliṣate	milita	melitum
+0	muc	muc	U	VI	muñcati/muñcate	mokṣyati/mokṣyate	mumoca/mumuce	mucyate	mocayati	mumukṣati/mumukṣate	mukta	moktum
+0	muh	muh	P	IV	muhyati	mohiṣyati,mokṣyati	mumoha	muhyate	mohayati	mumuhiṣati,mumukṣati	mugdha,mūḍha	mohitum,moḍhum,mogdhum
+0	mnā	mnā	P	I	manati	mnāsyati	mamnau	mnāyate	mnāpayati	mimnāsati	mnāta	mnātum
+0	iØj	yaj	U	I	yajati/yajate	yakṣyati/yakṣyate	iyāja/iyāje	ijyate	yājayati	yiyakṣati/yiyakṣate	iṣṭa	yaṣṭum
+0	ym̥	yam	P	I	yacchati	yaṃsyati	yayāma	yamyate	yāmayati	yiyaṃsati	yata	yantum
+0	yā	yā	P	II	yāti	yāsyati	yayau	yāyate	yāpayati	yiyāsati	yāta	yatum
+0	yuj	yuj	U	VII	yunakti/yuñkte	yokṣyati/yokṣyate	yuyoja/yuyuje	yūjyate	yojayati/yojayate	yuyukṣati/yuyukṣate	yukta	yoktum
+0	rakṣ	rakṣ	P	I	rakṣati	rakṣiṣyati	rarakṣa	rakṣyate	rakṣayati	rirakṣiṣati	rakṣita	rakṣitum
+0	rac	rac	P	X	racayati	racayiṣyati	racayāmāsa	racyate	riracayiṣati	racita	racayitum
+0	rn̥bh	rabh	Ā	I	rabhate	rapsyate	rebhe	rabhyate	rambhayati/rambhayate	ripsate	rabdha	rabdhum
+0	rm̥	ram	Ā	I	ramate	raṃsyate	reme	ramyate	ramayati/ramayate	riraṃsate	rata	rantum
+0	rādh	rādh	P	IV	rādhyati	rātsyate	rarādha	rādhyate	rādhayati	rirātsati	rāddha	rāddhum
+0	ruc	ruc	Ā	I	rocate	rociṣyate	ruruce	rucyate	rocayati/rocayate	ruruciṣate,	rucita	rocitum
+0	rud	rud	P	II	roditi	rodiṣyati	ruroda	rudyate	rodayati	rurociṣate	rudita	roditum
+1	rudh	rudh	U	VII	runaddhi/runddhe	rotsyati/rotsyate	rurodha/rurudhe	rudhyate	rodhayati/rodhayate	rurudiṣati,rurutsati/rurutsate	rudita,ruddha	roddhum
+0	rup	rup	P	IV	rupyati	ropiṣyati	ruropa	0	ropayati	rurupiṣati	rupita	0
+0	ruh	ruh	P	I	rohati	rokṣyati	ruroha	ruhyate	rohayati,ropayati	ruropiṣati,rurukṣati	rūḍha	roḍhum,rohitum
+0	lakṣ	lakṣ	Ā	I	lakṣate	lakṣiṣyate	lalakṣe	lakṣyate	lakṣayati	lilakṣayiṣate	lakṣita	lakṣitum,lakṣayitum
+0	labh	labh	Ā	I	labhate	lapsyate	lebhe	labhyate	lambhayati	lipsate	labdha	labdhum
+0	lamb	lamb	Ā	I	lambate	lambiṣyate	lalambe	lambyate	lambayati	0	lambita	lambitum
+0	lal	lal	P	I	lalati	laliṣyati	lalāla	0	lālayati	lilaliṣati	lalita	lalitum
+0	las	las	P	I	lasati	lasiṣyati	lalāsa	lasyate	lāsayati	lilasiṣati	lasita	lasitum
+0	likh	likh	P	VI	likhati	lekhiṣyati	lilekha	likhyate	lekhayati	lilikhiṣati,lilekhiṣati	likhita	lekhitum
+0	lip	lip	U	VI	limpati/limpate	lepsyati/lepsyate	lilepa/lilipe	lipyate	lepayati	lilipsati/lilipsate	lipta	leptum
+0	uØc	vac	P	II	vakti	vakṣyati	uvāca	ucyate	vācayati	vivakṣati	ukta	vaktum
+0	uØd	vad	P	I	vadati	vadiṣyati	uvāda	udyate	vādayati	vivadiṣati	udita	vaditum
+0	vand	vand	Ā	I	vandate	vandiṣyate	vavande	vandyate	vandayati	vivandiṣate	vandita	vanditum
+1	uØp	vap	U	I	vapati/vapate	vapsyati/vapsyate	uvāpa/ūpe	upyate	vāpayati	vivapsati/vivapsate	upta	vaptum
+1	vṛ	var	U	V,IX,X	vṛṇoti/vṛṇute,vṛṇāti/vṛṇīte,varayati/varayate	variṣyati/variṣyate,varīṣyati/varīṣyate	vavāra/vavre	vriyate	vārayati	vivariṣati/vivariṣate,vuvūrṣati/vuvūrṣate	vṛta	varitum,varītum
+2	vṛ	var	U	IX	I	vṛṇāti/vṛṇīte,varati/varate	variṣyati/variṣyate,varīṣyati/varīṣyate	vavāra/vavre	vriyate	vārayati	vivariṣati/vivariṣate,vuvūrṣati/vuvūrṣate	vṛta	varitum,vartum
+0	vṛj	varj	P	I,VII	varjati,vṛṇakti	varkṣyati,varjiṣyati	vavarja	vṛjyate	varjayati	vivṛkṣati	vṛkta	varjitum
+0	vṛt	vart	Ā	I	vartate	vartiṣyati/vartiṣyate,vartsyati/vartsyate	vavṛte	vṛtyate	vartayati	vivartiṣate,vivṛtsati,vivrtsati	vṛtta	vartitum
+0	vṛdh	vardh	U	I	vardhati/vardhate	vartsyati/vardhiṣyate	vavardha/vavṛdhe	vṛdhyate	vardhayati	vivṛtsati/vivardhiṣate	vṛddha	vardhitum
+0	vṛṣ	varṣ	U	I	varṣati/varṣate	varṣiṣyati /varṣiṣyate	vavarṣa/vavṛṣe	vṛṣyate	varṣayati	vivarṣiṣati /vivarṣiṣate	vṛṣṭa	varṣitum
+1	uØs	vas	U	I	vasati/vasate	vatsyati/vatsyate	uvāsa/ūṣur	uṣyate	vāsayati	vivatsati/vivatsate	uṣita	vastum,vasitum
+0	uØh	vah	U	I	vahati/vahate	vakṣyati/vakṣyate	uvāha/ūhe	uhyate	vāhayati/vāhayate	vivakṣati/vivakṣate	ūḍha	voḍhum
+0	vā	vā	P	II	vāti	vāsyati	vavau	vāyate	vāpayati	vivāsati	vāta	vātum
+1	vid	vid	P	II	vetti,veda	vediṣyati	vedañcakāra	vidyate	vedayati/vedayate	vividiṣati	vidita	veditum
+2	vid	vid	U	VI	vindati/vindate	vediṣyati/vediṣyate,vetsyati/vetsyate	viveda,vivide	vidyate	vedayati	vivitsati/vivitsate	vinna,vitta	veditum,vettum
+0	viś	viś	U	VI	viśati/viśate	vekṣyati/vekṣyate	viveśa/viviśe	viśyate	veśayati/veśayate	vivikṣati/vivikṣate	viṣṭa	veṣṭum
+0	śn̥s	śaṃs	P	I	śaṃsati	śaṃsiṣyati	śaśaṃsa	śasyate	śaṃsayati	śiśaṃsiṣati	śasta	śaṃsitum
+0	śak	śak	P	V	śaknoti	śakṣyati	śaśāka	śakyate	śākayati	śikṣati	śakta	śaktum
+0	śas	śas	P	II	śaāsti	śāsiṣyati	śaśāsa	śiṣyate	śāsayati	śiśāśiṣati	śiṣṭa	śāsitum
+0	-śikṣ	śikṣ	Ā	I	śikṣate	śikṣiṣyate	śiśikṣe	śikṣyate	śikṣayati	śiśikṣiṣate	śikṣita	śikṣitum
+0	śØ̄	śi	Ā	II	śete	śayiṣyate	śiśye	śayyate	śayayati	śiśayiṣate	śayita	śayitum
+0	śudh	śudh	U	IV	śudhyati/śudhyate,śundhati/śundhate	śotsyati/śotsyate	śuśodha,śuśudhe	śudhyate	śodhayati,śundhayati	śuśutsati/śuśutsate	śuddha	
+0	śudh	śudh	U	I	śudhyati/śudhyate,śundhati/śundhate	śotsyati/śotsyate	śuśodha,śuśudhe	śudhyate	śodhayati,śundhayati	śuśutsati/śuśutsate	śuddha	
+0	śubh	śubh	Ā	I	śobhate	śobhiṣyate	śuśubhe		śobhayati	śuśobhiṣate	śobhita	śobhitum
+0	śrm̥̄	śram	P	IV	śramyati	śramiṣyati	śaśrāma	śramyate	śramayati,śrāmayati	śiśramiṣati	śrānta	śramitum
+0	śri	śri	U	I	śrayati/śrayate	śrayiṣyati/śrayiṣyate	śiśrāya/śiśriye	śrīyate	śrāyayati	śiśrayiṣati/śiśrayiṣate,śiśrīṣati	śrita	śrayitum
+0	śru	śru	U	V	śṛṇoti/śṛṇute	śroṣyati/śroṣyate	śuśrāva/śuśruve	śrūyate	śrāvayati	śuśrūṣati/śuśrūṣate	śruta	śrotum
+0	śuØs	śvas	P	II	śvasiti	śvasiṣyati	śaśvāsa	śvasyate	śvāsayati	śiśvasiṣati	śvasita,śvasta	śvasitum
+0	sīd	sad	P	I	sīdati	satsyati	sasāda	sadyate	sādayati	siṣatsati	sanna	sattum
+0	sṛ	sar	P	I,III	sarati,sisarti	sariṣyati	sasāra	sriyate	sārayati	sisīrṣati	sṛta	sartum
+0	sarj	sarj	U	VI	sṛjati/sṛjate	srakṣyati/srakṣyate	sasarja/sasṛje	sṛjyate	sarjayati	sisṛkṣati/sisṛkṣate	sṛṣṭa	sraṣṭum
+0	suh	sah	Ā	I	sahate	sahiṣyate	sehe	sahyate	sāhayati	sisahiṣate	soḍha	sahitum,soḍhum
+0	sādh	sādh	U	I	sādhati/sādhate,sādhnoti	sātsyati	sasādha	sādhyate	sādhayati	siṣātsati	sāddha	sāddhum
+0	sādh	sādh	P	V	sādhati/sādhate,sādhnoti	sātsyati	sasādha	sādhyate	sādhayati	siṣātsati	sāddha	sāddhum
+0	sic	sic	U	VI	siñcati/siñcate	sekṣyati/sekṣyate	siṣeca/siṣice	sicyate	secayati/secayate	sisikṣati/sisikṣate	sikta	sektum
+2	sidh	sidh	U	IV	sidhyati/sidhyate	setsyati/setsyate	siṣedha/siṣidhe	sidhyate	sedhayati,sādhayati	siṣitsati/siṣitsate	siddha	seddhum
+1	su	su	U	V	sunoti/sunute	soṣyati/soṣyate	suṣāva/suṣuve	sūyate	sāvayati	susūṣati/susūṣate	suta	sotum
+0	sev	sev	Ā	I	sevate	seviṣyate	siṣeve	sevyate	sevayati/sevayate	siseviṣate	sevita	sevitum
+0	stn̥bh	stambh	P	V	stabhnoti	stambhiṣyati	tastambha	stabhyate	stambhayati	tistambhiṣati	stabdha	stambhitum
+0	stu	stu	U	II	stauti,stvavīti/stute,stuvite	stoṣyati/stoṣyate	tuṣṭāva,tuṣṭuve	stūyate	stāvayati	tuṣṭuṣati/tuṣṭuṣate	stuta	stotum
+0	sthØ̄	sthā	U	I	tiṣṭhati/tiṣṭhate	sthāsyati/sthāsyate	tasthau/tasthe	sthīyate	sthāpayati	tiṣṭhāsati/tiṣṭhāsate	sthita	sthātum
+0	snā	snā	P	II	snāti	snāsyati	sasnau	snāyate	snāpayati	sisnāsati	snāta	snātum
+0	spṛh	sparh	U	X	spṛhayati/spṛhayate	spṛhayiṣyati	spṛhayāmāsa	spṛhyate	0	pispṛhayiṣati	spṛhita	spṛhayitum
+0	sphṝ	sphur	P	VI	sphurati	sphuriṣyati	susphora	0	sphorayati,sphurayati	pusphuriṣati	sphurita	sphuritum
+0	smṛ	smar	P	I	smarati	smariṣyati	sasmāra	smaryate	smārayati	susmurṣate	smṛta	smartum
+0	smi	smi	Ā	I	smayate	smeṣyate	siṣmiye	smīyate	smāyayati,smāpayati	sismayiṣate	smita	smetum
+0	sru	sru	U	I	sravati/sravate	sroṣyati/sroṣyate	susrāva/susruve	0	srāvayati	susrūṣati	sruta	srotum
+0	svap	svap	P	II	svapiti	svapsyati	suṣvāpa	supyate	svāpayati	suṣupsati	supta	svaptum
+0	svād	svād	или	0	svādate	svādiṣyate	sasvāde	svādyate	svadayati	siṣvadiṣate	svadita	svāditum
+0	svad	svad	Ā	I	svadate	svadiṣyate	sasvade	0	svādayati	siṣvādiṣate	0	0
+0	hn̥	han	P	II	hanti	haniṣyati	jaghāna	hanyate	ghātayati	jighāṃsati	hata	hantum
+1	hṛ	har	U	I	harati/harate	hariṣyati/hariṣyate	jahāra/jahre	hriyate	hārayati	jihīrṣati/jihīrṣate	hṛta	hartum
+0	hu	hu	U	III	juhoti/juhute	hoṣyati/hoṣyate	juhāva/juhuve	hūyate	hāvayati	juhūṣati/juhūṣate	huta	hotum
+0	heṣ	heṣ	Ā	I	heṣate	0	jiheṣe	0	0	0	heṣita	0
+0	hū	hvā	U	I	hvayati/hvayate	hvāsyati/hvāsyate	juhāva/juhuve	hūyate	hvāyayati	juhūṣati/juhūṣate	hūta	hvātum

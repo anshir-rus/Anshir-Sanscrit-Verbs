@@ -4,10 +4,7 @@ Based on method of Ivan Tolchelnikov
 Programming by Andrei Shirobokov 2023 
 */
 
-	$nameServer="localhost";
-	$userName="root";
-	$password="";
-	$DBname="sanskrit";
+	require_once "db.php";
 
 
 	$mysqli = new mysqli($nameServer, $userName, $password, $DBname);
