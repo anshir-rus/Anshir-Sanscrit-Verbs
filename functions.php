@@ -1,7 +1,10 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 set_time_limit(0);
-include "lemmas.php";
+
+include "functions/setnost.php"; //Функции для работы с сетностью
+include "functions/sandhi.php"; //Функции для работы с сандхи
+include "functions/lemmas.php"; //Функции для работы с Формами
 include "functions_nouns.php";
 include "simplehtmldom/simple_html_dom.php";
 
@@ -475,6 +478,8 @@ function duplication_p2($array, $mool, $mool_type, $mool_type_change, $omonim, $
     $mool_change = $array[4];
     $f_mool = $array[5];
 
+    $p_before_mool='';
+
     $debug_text.="<BR><b>Подготовка корня для создания простого перфекта </b><BR>";
   
 
@@ -575,11 +580,14 @@ function duplication_p2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             elseif((mb_strpos($p_mool, "i")!== false||mb_strpos($p_mool, "u")!== false) && ($mool != "uØkṣ" && $mool != "śuØṣ"))
             {
                 $model = $p_mool."|".$p_mool."|".$mool_change."|".$f_mool;
+                $p_before_mool=$p_mool."|";
+
                 $comment = " Сандхизируемые корни ряда A1 (кроме √uøkṣ, √śuøṣ), имеющие i или u в P, удваиваются по схеме PPA1F ";
             }
             else
             {
                 $model = $p_new ."|a|". $p_mool ."|". $mool_change ."|". $f_mool;
+                $p_before_mool = $p_new ."|a|";
 
                 $dimensions_p2=dimensions($p_new ."|a|". $p_mool ."|". $mool_change,"","",0,0,0,"");
                 $dimensions_p2[1]=str_replace("-","",$dimensions_p2[1]);
@@ -621,7 +629,9 @@ function duplication_p2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             } else {
                 //P’aPA2F
 
-                $model = $p_new . "a" . $p_mool . $mool_change . $f_mool;
+                $model = $p_new . "|a|" . $p_mool . $mool_change . $f_mool;
+                $p_before_mool = $p_new . "|a|";
+
                 //$prefix = $p_new . "|a|";
                 $comment = " ветвь 2 непустого Р, А2, схема удвоения P’aPA2F ";
             }
@@ -631,6 +641,7 @@ function duplication_p2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             
 
             $model =  $p_new . "|i|".$p_mool ."|". $mool_change ."|". $f_mool;
+            $p_before_mool = $p_new . "|i|";
 
             $dimensions_p2=dimensions($p_new . "|i|" . $p_mool . "|". $mool_change,"","",0,0,0,"");
             $dimensions_p2[1]=str_replace("-","",$dimensions_p2[1]);
@@ -653,6 +664,7 @@ function duplication_p2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 //P’uPUF
 
                 $model = $p_new . "|u|" . $p_mool ."|". $mool_change ."|". $f_mool;
+                $p_before_mool = $p_new . "|u|";
 
                 $change_later=manual_e($p_new."|u|".$p_mool."|".$mool_change,$mool_change);
          
@@ -662,6 +674,8 @@ function duplication_p2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             //P’aPRF P’aPLF  P’aPNF P’aPMF
 
             $model = $p_new . "|a|" . $p_mool . "|". $mool_change . "|". $f_mool;
+            $p_before_mool = $p_new . "|a|";
+            
             $dimensions_p2=dimensions($p_new . "|a|" . $p_mool . "|". $mool_change,"","",0,0,0,"");
             $dimensions_p2[1]=str_replace("-","",$dimensions_p2[1]);
   
@@ -682,6 +696,7 @@ function duplication_p2($array, $mool, $mool_type, $mool_type_change, $omonim, $
     $result[3]=$model_sandhi;
     $result[4]=$change_later;
     $result['debug']=$debug_text;
+    $result['p_before_mool']=$p_before_mool;
 
 
     //echo "DEBUG TEXT:".$debug_text;
@@ -699,6 +714,7 @@ function duplication_pr2($array, $mool, $mool_type, $mool_type_change, $omonim, 
     $mool_change = $array[4];
     $f_mool = $array[5];
 
+    
 
     if ($debug) {
         echo "<BR><b>Подготовка корня для создания о.н.в. 3 класса </b><BR>";
@@ -709,12 +725,15 @@ function duplication_pr2($array, $mool, $mool_type, $mool_type_change, $omonim, 
         if($mool=="ṛ")
         {
             $model[]="iyṛ";
+            $p_before_mool[]='';
+
             $prefix[]="iy";
             $comment[]=" корень-исключеие $mool ";
         }
         else
         {
             $model[]="-";
+            $p_before_mool[]='';
             $prefix[]="";
             $comment[]=" похоже это не корень 3 класса ";
         }
@@ -728,6 +747,7 @@ function duplication_pr2($array, $mool, $mool_type, $mool_type_change, $omonim, 
             if($mool=="sac")
             {
                 $model[]="siṣac";
+                $p_before_mool[]='si';
                 $prefix[]="si";
                 $comment[]=" 1 вариант о.н.в. 3 класса для корня-исключения $mool";
             }
@@ -867,30 +887,392 @@ function duplication_pr2($array, $mool, $mool_type, $mool_type_change, $omonim, 
     $result[1]=$prefix;
     $result[2]=$model_var;
     $result[3]=$prefix_var;
+    $result['p_before_mool']=$prefix;
 
     return $result;
 
 }
 
-function simple_sandhi($word,$mool_change,$osnova,$debug)  // Глагольные и формы и не-падежные окончания
-{
-    $dimensions=dimensions($word,"som","smth",0,0,0,"");
-    $dimensions_array=dimensions_array($dimensions);
 
-    $sandhi=sandhi($dimensions,$dimensions_array,$word,$mool_change,1,0,$osnova,$debug);
+/*
+function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $verb_setnost, $stop, $debug) {   // Здесь пока МП определяется БЕЗ таблицы 4!
 
-    return $sandhi;
+        
+    // Инициализация переменных из массива
+    $p_new = $array[1];
+    $p_mool = $array[3];
+    $mool_change = $array[4];
+    $f_mool = $array[5];
+    $f_mool_array = $array[6];
+    $p_mool_array = $array[7];
+
+    // Комбинирование корня и изменений
+    $pef = $p_mool . $mool_change . $f_mool;
+
+    // Определение сетности глагола
+    switch ($verb_setnost) {
+        case "s":
+            $verb_setnost_des = "s";
+            break;
+        case "a":
+            $verb_setnost_des = "a";
+            break;
+        case "v":
+        case "v1":
+            $verb_setnost_des = "v";
+            break;
+        case "v2":
+        case "v3":
+            $verb_setnost_des = "s";
+            break;
+        case "v4":
+            $verb_setnost_des = "a";
+            break;
+        default:
+            $verb_setnost_des = "0";
+            break;
+    }
+
+    // Получение последней буквы корня, если он существует
+    if ($p_mool) {
+        $last_p_letter = $p_mool_array[count($p_mool_array) - 1];
+    }
+
+    // Определение открытого корня
+    $is_open_mool = ($f_mool !== "" && $f_mool !== "Ø" && $f_mool !== "Ø̄") ? 0 : 1;
+
+    // Определение значения переменной $setn в зависимости от сетности глагола
+    if ($verb_setnost_des === "s") {
+        $setn = "is";
+    } elseif ($verb_setnost_des === "a") {
+        $setn = "s";
+    } elseif ($verb_setnost_des === "v") {
+        $setn = "is";
+        $e1[0] = get_e_mp_table4("", $mool, "is", $omonim, $mool_type, $mool_change, $mool_type_change, 1, "");
+        $e1[1] = get_e_mp_table4("", $mool, "s", $omonim, $mool_type, $mool_change, $mool_type_change, 1, "");
+    }
+
+    // Если стоп не установлен, получение значений e1, e2, e3
+    if ($stop != 1) {
+        $e1 = get_e_mp_table4("", $mool, $setn, $omonim, $mool_type, $mool_change, $mool_type_change, 1, "");
+        $e2 = get_e_mp_table4("", $mool, $setn, $omonim, $mool_type, $mool_change, $mool_type_change, 2, "");
+        $e3 = get_e_mp_table4("", $mool, $setn, $omonim, $mool_type, $mool_change, $mool_type_change, 3, "");
+    } else {
+        $e1 = $mool_change;
+        $e2 = $mool_change;
+        $e3 = $mool_change;
+    }
+
+    // Вывод отладочной информации, если включен режим отладки
+    if ($debug) {
+        $debug_text .= "<br><b>Подготовка корня для создания дезидератива </b><br>";
+        $debug_text .= "<br>Сетность корня для образования формы основы дезидератива DS: " . $verb_setnost_des . "<br>";
+    }
+
+    // Чередование корня, если array[1] не установлен
+    $c = 0;
+    if (!$array[1]) {
+        if ($f_mool == "h") {
+            $model[] = $e2 . "|" . "ji" . $f_mool;
+            $comment[$c] = "F = h, E2jiF";
+            $c++;
+        } elseif ($mool == "i") {
+            $model[] = "iyi";
+            $model[] = "ayiyi";
+            $comment[$c] = "Корень-исключение $mool 1 форма";
+            $c++;
+            $comment[$c] = "Корень-исключение $mool 2 форма";
+            $c++;
+            $stop = 1;
+        } elseif ($mool == "akṣ") {
+            $model[] = "ācikṣ";
+            $comment[$c] = "Корень-исключение $mool";
+            $c++;
+        } elseif ($mool == "ṛ") {
+            $model[] = "arir";
+            $comment[$c] = "Корень-исключение $mool";
+            $c++;
+        } else {
+            // Обработка корней, начинающихся на чередующийся элемент
+            if (count($f_mool_array) == 2) {
+                $model[] = $e2 . "|" . $f_mool . "|i|" . $f_mool_array[1];
+                $comment[$c] = "Если в F два согласных (F = C1C2), то корень удваивается по схеме E2FiC2";
+                $c++;
+            } else {
+                $model[] = $e2 . "|" . $f_mool . "|i|" . $f_mool;
+                $comment[$c] = "Остальные корни, начинающиеся на чередующийся элемент, удваиваются по схеме E2FiF";
+                $c++;
+            }
+
+            // Обработка корней с придыхательными согласными
+            if (seeking_1_bukva($f_mool_array[0], 0)[3] == "H" || seeking_1_bukva($f_mool_array[1], 0)[3] == "H") {
+                $comment_string = "";
+                foreach ($f_mool_array as &$f_mool_elem) {
+                    switch ($f_mool_elem) {
+                        case "kh":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "k";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "ch":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "c";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "ṭh":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "ṭ";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "th":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "t";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "ph":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "p";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "gh":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "g";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "jh":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "j";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "ḍh":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "ḍ";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "dh":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "d";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                        case "bh":
+                            $comment_string .= " ( $f_mool_elem меняется на";
+                            $f_mool_elem = "b";
+                            $comment_string .= " $f_mool_elem )";
+                            break;
+                    }
+                }
+                unset($f_mool_elem);
+                $comment[$c] = $comment_string;
+                $c++;
+
+                $f_new = implode("", $f_mool_array);
+                $model[] = $e2 . "|" . $f_new . "|i|" . $f_mool;
+                $comment[$c] = "Если F – содержит придыхательный согласный (F = (X)H), то он преобразуется в свою непридыхательную пару E2(X)С-iF";
+                $c++;
+            }
+        }
+    }
+    else
+    {
+                
+        // Обработка типа изменений A1
+        if ($mool_type_change == "A1") {
+            if ($mool == "suØp") {
+                $model[] = "suṣu" . $e1 . "p";
+                $comment[$c++] = " корень-исключение $mool ряда $mool_type_change";
+            } else {
+                switch ($mool) {
+                    case "śak":
+                        $model[] = "śiśik";
+                        break;
+                    case "pad":
+                        $model[] = "pipād";
+                        break;
+                    case "pat":
+                        $model[] = "pīpat";
+                        break;
+                    default:
+                        $p_before_mool = $p_new . "|i|";
+                        $model[] = $p_before_mool . $p_mool . "|" . $e2 . "|" . $f_mool;
+                        $comment[$c++] = " Корни ряда A1 удваиваются по схеме P’iPE2F";
+                        break;
+                }
+                $comment[$c++] = " корень-исключение $mool ряда $mool_type_change";
+            }
+        }
+        // Обработка типа изменений A2
+        elseif ($mool_type_change == "A2") {
+            if ($mool == "dhØ̄" && $omonim == 1) {
+                $model[] = "dadh" . $e1;
+                $comment[$c++] = " корень-исключение $mool $omonim ряда $mool_type_change";
+            } elseif ($mool == "pØ̄") {
+                $model[] = "pip" . $e1;
+                $comment[$c++] = " корень-исключение $mool ряда $mool_type_change";
+            }
+            $p_before_mool = $p_new . "|i|";
+            $model[] = $p_before_mool . $p_mool . "|" . $e2 . "|" . $f_mool;
+            $comment[$c++] = " Корни ряда A2, удваиваются по схеме P’iPE2(F)";
+        }
+        // Обработка типов изменений I0, I1, I2
+        elseif (in_array($mool_type_change, ["I0", "I1", "I2"])) {
+            if ($is_open_mool) {
+                $p_before_mool = $p_new . "|i|";
+                $model[] = $p_before_mool . $p_mool . "|ī";
+                $comment[$c++] = " Открытые корни рядов I удваивается по схеме P’iPī";
+            } else {
+                if (in_array($verb_setnost_des, ["s", "v"])) {
+                    $p_before_mool = $p_new . "|i|";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e1 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов I при образовании дезидератива со вставным -i- удваиваются по схемам P’iPE1F и P’iPE2F";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e2 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов I при образовании дезидератива со вставным -i- удваиваются по схемам P’iPE1F и P’iPE2F";
+                } elseif ($verb_setnost_des == "a") {
+                    $p_before_mool = $p_new . "|i|";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e1 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов I при образовании дезидератива без вставного -i- удваиваются по схеме P’iPE1F";
+                } else {
+                    $model[] = "-";
+                    $comment[$c++] = " Нет сетности - видимо такой формы в языке не встречается";
+                }
+            }
+        }
+        // Обработка типов изменений U0, U1, U2
+        elseif (in_array($mool_type_change, ["U0", "U1", "U2"])) {
+            if ($is_open_mool) {
+                $p_before_mool = $p_new . "|u|";
+                $model[] = $p_before_mool . $p_mool . "|ū|";
+                $comment[$c++] = " Открытые корни рядов U удваивается по схеме P’uPū";
+            } else {
+                if (in_array($verb_setnost_des, ["s", "v"])) {
+                    $p_before_mool = $p_new . "|u|";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e1 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов U удваиваются по схемам P’uPE1F и P’uPE2F";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e2 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов U удваиваются по схемам P’uPE1F и P’uPE2F";
+                } elseif ($verb_setnost_des == "a") {
+                    $p_before_mool = $p_new . "|u|";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e1 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов U удваиваются по схеме P’uPE1F";
+                } else {
+                    $model[] = "-";
+                    $comment[$c++] = " Нет сетности - видимо такой формы в языке не встречается";
+                }
+            }
+        }
+        // Обработка типов изменений R0, R1, R2
+        elseif (in_array($mool_type_change, ["R0", "R1", "R2"])) {
+            if ($is_open_mool) {
+                if ($mool == "tṝ") {
+                    $p_before_mool = $p_new . "|u|";
+                    $model[] = $p_before_mool . $p_mool . "|ūr";
+                    $comment[$c++] = " корень-исключение √tṝ удваивается по схеме P’uPūr";
+                } elseif (seeking_1_bukva($last_p_letter, 0)[4] == "L") {
+                    $p_before_mool = $p_new . "|u|";
+                    $model[] = $p_before_mool . $p_mool . "|ūr";
+                    $comment[$c++] = " Открытые корни рядов R, оканчивающиеся на звук губного ряда, удваиваются по схеме P’uPūr";
+                } else {
+                    $p_before_mool = $p_new . "|i|";
+                    $model[] = $p_before_mool . $p_mool . "|īr";
+                    $comment[$c++] = " Остальные открытые корни рядов R удваиваются по схеме P’iPīr";
+                }
+                if (in_array($verb_setnost_des, ["s", "v"])) {
+                    $p_before_mool = $p_new . "|i|";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e2;
+                    $comment[$c++] = " Открытые корни рядов R при образовании дезидератива со вставным -i- удваиваются по схеме P’iPE2";
+                }
+            } else {
+                if (in_array($verb_setnost_des, ["s", "v"])) {
+                    $p_before_mool = $p_new . "|i|";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e1 . "|" . $f_mool;
+                    $model[] = $p_before_mool . $p_mool . "|" . $e2 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов R удваиваются по схемам P’iPE1F и P’iPE2F";
+                } elseif ($verb_setnost_des == "a") {
+                    $p_before_mool = $p_new . "|i|";
+                    $model[] = $p_before_mool . $p_mool . "|" . $e1 . "|" . $f_mool;
+                    $comment[$c++] = " Закрытые корни рядов R удваиваются по схеме P’iPE1F";
+                } else {
+                    $model[] = "-";
+                    $comment[$c++] = " Нет сетности - видимо такой формы в языке не встречается";
+                }
+            }
+        }
+        // Обработка типа изменений L
+        elseif ($mool_type_change == "L") {
+            $p_before_mool = $p_new . "|i|";
+            $model[] = $p_before_mool . $p_mool . "|" . $e2 . "|" . $f_mool;
+            $comment[$c++] = " Корни ряда L удваиваются по схеме P’iPE2(F)";
+        }
+        // Обработка типов изменений M0, M1, M2
+        elseif (in_array($mool_type_change, ["M0", "M1", "M2"])) {
+            $p_before_mool = $p_new . "|i|";
+            $model[] = $p_before_mool . $p_mool . "|" . $e2;
+            $comment[$c++] = " Корни рядов M удваиваются по схеме P’iPE2";
+        }
+        // Обработка типов изменений N0, N1, N2
+        elseif (in_array($mool_type_change, ["N0", "N1", "N2"])) {
+            if (in_array($mool, ["hn̥", "mn̥"])) {
+                $p_before_mool = $p_new . "|i|";
+                $model[] = $p_before_mool . $p_mool . "|" . $e3;
+                $comment[$c++] = " √hn̥, √mn̥ удваиваются по схеме P’iPE3";
+            } elseif (in_array($mool, ["vn̥̄", "rn̥dh", "mn̥d"])) {
+                $p_before_mool = $p_new . "|i|";
+                $model[] = $p_before_mool . $p_mool . "|" . $e4;
+                $comment[$c++] = " √vn̥̄, √rn̥dh, √mn̥d удваиваются по схеме P’iPE4";
+            } else {
+                $p_before_mool = $p_new . "|i|";
+                $model[] = $p_before_mool . $p_mool . "|" . $e2;
+                $comment[$c++] = " корни рядов N удваиваются по схеме P’iPE2";
+            }
+        }
+
+
+
+    }
+
+    
+    // Исключения от каузатива для корня √dhū
+    if ($stop == 1 && $mool == "dhū") {
+        $model[] = "dudhūn";
+        $comment[] = "Из таблицы CaS: √dhū (вар.) → dhūn (III тип)";
+    }
+    
+    // Подсчет количества вариантов модели
+    $count = count($model);
+    
+    if ($debug) {
+        // Если вариантов больше одного, добавляем информацию о количестве вариантов
+        if ($count > 1) {
+            $debug_text .= "<br><br>Удвоенный корень для чередования без сандхи.<br><u>У этого корня есть " . $count . " варианта</u>";
+        }
+    }
+    
+    if ($debug) {
+        // Вывод удвоенных корней и комментариев в debug
+        $debug_text .= "<br><br><b>После удвоения: </b><br>";
+        foreach ($model as $value) {
+            $debug_text .= $value . " ";
+        }
+    
+        $debug_text .= "<br><br><b>Комментарий:</b> ";
+        foreach ($comment as $value) {
+            $debug_text .= $value . " ";
+        }
+    
+        $debug_text .= "<br><br>";
+    }
+    
+    // Инициализация результата
+    $result = [
+        0 => $model,
+        'debug' => $debug_text
+    ];
+    
+    return $result;
+    
+    
+
 }
-
-function simple_sandhi_mool($word,$mool,$mool_change,$osnova,$debug)  // Глагольные и формы и не-падежные окончания
-{
-    $dimensions=dimensions($word,"som","smth",0,0,0,"");
-    $dimensions_array=dimensions_array($dimensions);
-
-    $sandhi=sandhi($dimensions,$dimensions_array,$mool,$mool_change,1,0,$osnova,$debug);
-
-    return $sandhi;
-}
+*/
 
 function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $verb_setnost, $stop, $debug) {   // Здесь пока МП определяется БЕЗ таблицы 4!
 
@@ -994,6 +1376,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
         {
       
             $model[]=$e2."|"."ji".$f_mool;
+            $p_before_mool[]="";
             $comment[$c]="F = h, E2jiF";
             $c++;
 
@@ -1001,7 +1384,11 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
         elseif($mool=="i")
         {
             $model[]="iyi";
+            $p_before_mool[]="";
+
             $model[]="ayiyi";
+            $p_before_mool[]="";
+
             $comment[$c]=" корень-исключение $mool 1 форма";
             $c++;
             $comment[$c]=" корень-исключение $mool 2 форма";
@@ -1011,12 +1398,16 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
         elseif($mool=="akṣ")
         {
             $model[]="ācikṣ";
+            $p_before_mool[]="";
+
             $comment[$c]=" корень-исключение $mool";
             $c++;
         }
         elseif($mool=="ṛ")
         {
             $model[]="arir";
+            $p_before_mool[]="";
+
             $comment[$c]=" корень-исключение $mool";
             $c++;
         }
@@ -1031,6 +1422,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
 
                // $e2=get_e_mp_simple($mool_type_change, $mool_type, 2);
                 $model[]=$e2."|".$f_mool."|i|".$f_mool_array[1];
+                $p_before_mool[]="";
+
                 $comment[$c]=" Если в F два согласных (F = C1C2), то корень удваивается по схеме E2FiC2";
                 $c++;
             }
@@ -1039,6 +1432,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 //Остальные корни, начинающиеся на чередующийся элемент, удваиваются по схеме E2FiF:
                // $e2=get_e_mp_simple($mool_type_change, $mool_type, 2);
                 $model[]=$e2."|".$f_mool."|i|".$f_mool;
+                $p_before_mool[]="";
+
                 $comment[$c]=" Остальные корни, начинающиеся на чередующийся элемент, удваиваются по схеме E2FiF";
                 $c++;
                //echo $comment;
@@ -1107,6 +1502,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             
                        // $e2=get_e_mp_simple($mool_type_change, $mool_type, 2);
                         $model[]=$e2."|".$f_new."|i|".$f_mool;
+                        $p_before_mool[]="";
                         $comment[$c]=" Если F – содержит придыхательный согласный (F = (X)H), то он преобразуется в свою непридыхательную пару E2(X)С-iF";
                         $c++;
 
@@ -1124,6 +1520,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                // echo "here";
                 $model[]="suṣu".$e1."p";
               //  echo "suṣu".$e1."p";
+                $p_before_mool[]="";
                 $comment[$c]=" корень-исключение $mool ряда $mool_type_change";
                 $c++;
             }
@@ -1133,18 +1530,21 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 if($mool=="śak")
                 {
                     $model[]="śiśik";
+                    $p_before_mool[]="";
                     $comment[$c]=" корень-исключение $mool ряда $mool_type_change";
                     $c++;
                 }
                 elseif($mool=="pad")  //pipād [pipādiṣ-]  (вар.)   Во всех остальных случаях √pad ведет себя как aniṭ.
                 {
                     $model[]="pipād";
+                    $p_before_mool[]="";
                     $comment[$c]=" корень-исключение $mool ряда $mool_type_change";
                     $c++;
                 }
                 elseif($mool=="pat")
                 {
                     $model[]="pīpat";
+                    $p_before_mool[]="";
                     $comment[$c]=" корень-исключение $mool ряда $mool_type_change";
                     $c++;
                 }
@@ -1153,6 +1553,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
 
                // $e2=get_e_mp_simple($mool_type_change, $mool_type, 2);
                 $model[]=$p_new."|i|".$p_mool."|".$e2."|".$f_mool;
+                $p_before_mool[]=$p_new."|i|";
+
                 $comment[$c]=" Корни ряда A1 удваиваются по схеме P’iPE2F";
                 $c++;
 
@@ -1166,13 +1568,15 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             if($mool=="dhØ̄"&&$omonim==1)
             {
                 $model[]="dadh".$e1;
+                $p_before_mool[]="";
                 $comment[$c]=" корень-исключение $mool $omonim ряда $mool_type_change";
                 $c++;
             }
 
             if($mool=="pØ̄")
             {
-                $model[]="pip".$e1;;
+                $model[]="pip".$e1;
+                $p_before_mool[]="";
                 $comment[$c]=" корень-исключение $mool ряда $mool_type_change";
                 $c++;
             }
@@ -1180,6 +1584,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
 
                // $e2=get_e_mp_simple($mool_type_change, $mool_type, 2);
                 $model[]=$p_new."|i|".$p_mool."|".$e2."|".$f_mool;
+                $p_before_mool[]=$p_new."|i|";
                 $comment[$c]=" Корни ряда A2, удваиваются по схеме P’iPE2(F)";
                 $c++;
    
@@ -1190,6 +1595,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             {
                 //Открытые корни рядов I удваивается по схеме P’iPī:
                 $model[]=$p_new."|i|".$p_mool."|ī";
+                $p_before_mool[]=$p_new."|i|";
                 $comment[$c]=" Открытые корни рядов I удваивается по схеме P’iPī";
                 $c++;
             }
@@ -1202,9 +1608,11 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     // Закрытые корни рядов I при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваиваются по схемам P’iPE1F и P’iPE2F:
                     
                     $model[]=$p_new."|i|".$p_mool."|".$e1."|".$f_mool;
+                    $p_before_mool[]=$p_new."|i|";
                     $comment[$c]=" Закрытые корни рядов I при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваиваются по схемам P’iPE1F и P’iPE2F";
                     $c++;
                     $model[]=$p_new."|i|".$p_mool."|".$e2."|".$f_mool;
+                    $p_before_mool[]=$p_new."|i|";
                     $comment[$c]=" Закрытые корни рядов I при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваиваются по схемам P’iPE1F и P’iPE2F";
                     $c++;
                 }
@@ -1213,12 +1621,14 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     //Закрытые корни рядов I при образовании дезидератива без вставного -i- между d2√ и суффиксом (d2√)-s- (aniṭ-форма) удваиваются по схеме P’iPE1F:
 
                     $model[]=$p_new."|i|".$p_mool."|".$e1."|".$f_mool;
+                    $p_before_mool[]=$p_new."|i|";
                     $comment[$c]=" Закрытые корни рядов I при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваиваются по схемам P’iPE1F и P’iPE2F";
                     $c++;
                 }
                 else
                 {
                     $model[]="-";
+                    $p_before_mool[]="";
                     $comment[$c]=" Нет сетности - видимо такой формы в языке не встречается";
                     $c++;
                 }
@@ -1234,6 +1644,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 
                 //Открытые корни рядов U удваивается по схеме P’uPū:
                 $model[]=$p_new."|u|".$p_mool."|ū|";
+                $p_before_mool[]=$p_new."|u|";
                 $comment[$c]=" Открытые корни рядов U удваивается по схеме P’uPū";
                 $c++;
 
@@ -1248,9 +1659,12 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     // Закрытые корни рядов I при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваиваются по схемам P’iPE1F и P’iPE2F:
                     
                     $model[]=$p_new."|u|".$p_mool."|".$e1."|".$f_mool;
+                    $p_before_mool[]=$p_new."|u|";
                     $comment[$c]=" Закрытые корни рядов U при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваиваются по схемам P’uPE1F и P’uPE2F";
                     $c++;
+                    
                     $model[]=$p_new."|u|".$p_mool."|".$e2."|".$f_mool;
+                    $p_before_mool[]=$p_new."|u|";
                     $comment[$c]=" P’uPE2F";
                     $c++;
                 }
@@ -1259,12 +1673,14 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     //Закрытые корни рядов I при образовании дезидератива без вставного -i- между d2√ и суффиксом (d2√)-s- (aniṭ-форма) удваиваются по схеме P’uPE1F:
 
                     $model[]=$p_new."|u|".$p_mool."|".$e1."|".$f_mool;
+                    $p_before_mool[]=$p_new."|u|";
                     $comment[$c]=" Закрытые корни рядов U при образовании дезидератива без вставного -i- между d2√ и суффиксом (d2√)-s- (aniṭ-форма)  удваиваиваются по схеме P’uPE1F";
                     $c++;
                 }
                 else
                 {
                     $model[]="-";
+                    $p_before_mool[]="";
                     $comment[$c]=" Нет сетности - видимо такой формы в языке не встречается";
                     $c++;
                 }
@@ -1281,18 +1697,21 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 if($mool=="tṝ")
                 {
                     $model[]=$p_new."|u|".$p_mool."|ūr";
+                    $p_before_mool[]=$p_new."|u|";
                     $comment[$c]=" корень-исключение √tṝ (вар.) удваивается по схеме P’uPūr";
                     $c++;
                 }
                 elseif(seeking_1_bukva($last_p_letter,0)[4]=="L")
                 {
                     $model[]=$p_new."|u|".$p_mool."|ūr";
+                    $p_before_mool[]=$p_new."|u|";
                     $comment[$c]=" Открытые корни рядов R, чье P оканчивается на звук губного ряда удваиваются по схеме P’uPūr";
                     $c++;
                 }
                 else
                 {
                     $model[]=$p_new."|i|".$p_mool."|īr";
+                    $p_before_mool[]=$p_new."|i|";
                     $comment[$c]=" Остальные открытые корни рядов R удваиваются по схеме: P’iPīr";
                     $c++;
                 }
@@ -1303,6 +1722,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     //d2√jṝ = ji + jar = jijar [jijariṣ-]
 
                     $model[]=$p_new."|i|".$p_mool."|".$e2;
+                    $p_before_mool[]=$p_new."|i|";
                     $comment[$c]=" Открытые корни рядов R при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваются по схеме P’iPE2";
                     $c++;
                 }
@@ -1314,7 +1734,11 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                if($verb_setnost_des=="s"||$verb_setnost_des=="v")
                {
                    $model[]=$p_new."|i|".$p_mool."|".$e1."|".$f_mool;
+                   $p_before_mool[]=$p_new."|i|";
+
                    $model[]=$p_new."|i|".$p_mool."|".$e2."|".$f_mool;
+                   $p_before_mool[]=$p_new."|i|";
+
                    $comment[$c]=" P’iPE1F Закрытые корни рядов R при образовании дезидератива со вставным -i- между d2√ и суффиксом (d2√)-s- (seṭ-форма) удваиваются по схемам P’iPE1F и P’iPE2F";
                    $c++;
                    $comment[$c]=" P’iPE2F";
@@ -1325,6 +1749,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 //Закрытые корни рядов R при образовании дезидератива без вставного -i- между d2√ и суффиксом (d2√)-s- (aniṭ-форма) удваиваются по схеме P’iPE1F:
                 //d2√dṛś = di + dṛś = didṛś [didṛkṣ-]
                 $model[]=$p_new."|i|".$p_mool."|".$e1."|".$f_mool;
+                $p_before_mool[]=$p_new."|i|";
+
                 $comment[$c]=" Закрытые корни рядов R при образовании дезидератива без вставного -i- между d2√ и суффиксом (d2√)-s- (aniṭ-форма) удваиваются по схеме P’iPE1F";
                 $c++;
 
@@ -1345,6 +1771,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             //d2√cal = ci + cal = cical [cicaliṣ-]
 
             $model[]=$p_new."|i|".$p_mool."|".$e2."|".$f_mool;
+            $p_before_mool[]=$p_new."|i|";
+
             $comment[$c]=" Корни ряда L удваиваются по схеме P’iPE2(F)";
             $c++;
 
@@ -1358,6 +1786,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             //echo "e1: $e1 e2: $e2  e3: $e3<BR><BR>";
 
             $model[]=$p_new."|i|".$p_mool."|".$e2;
+            $p_before_mool[]=$p_new."|i|";
+
             $comment[$c]=" Корни рядов M удваиваются по схеме P’iPE2";
             $c++;
 
@@ -1371,6 +1801,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             //d2√hn̥ = ji + ghān = jighān [jighāṃs-]
 
             $model[]=$p_new."|i|".$p_mool."|".$e3;
+            $p_before_mool[]=$p_new."|i|";
+
             $comment[$c]=" √hn̥, √mn̥ удваиваются по схеме P’iPE3";
             $c++;
 
@@ -1384,6 +1816,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 {
                     //В рядах N некоторые корни, а именно: √sn̥̄ (вар.), √mn̥th (вар.), √vn̥̄, √rn̥dh, √mn̥d – удваиваются по схеме P’iPE1(F):
                     $model[]=$p_new."|i|".$p_mool."|".$e1."|".$f_mool;
+                    $p_before_mool[]=$p_new."|i|";
+
                     $comment[$c]=" В рядах N некоторые корни, а именно: √sn̥̄ (вар.), √mn̥th (вар.), √vn̥̄, √rn̥dh, √mn̥d – удваиваются по схеме P’iPE1(F)";
                     $c++;
                 }
@@ -1394,6 +1828,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     {
                         //В рядах N некоторые корни, а именно: √sn̥̄ (вар.), √mn̥th (вар.), √vn̥̄, √rn̥dh, √mn̥d – удваиваются по схеме P’iPE1(F):
                         $model[]=$p_new."|i|".$p_mool."|".$e1."|".$f_mool;
+                        $p_before_mool[]=$p_new."|i|";
+
                         $comment[$c]=" В рядах N некоторые корни, а именно: √sn̥̄ (вар.), √mn̥th (вар.), √vn̥̄, √rn̥dh, √mn̥d – удваиваются по схеме P’iPE1(F)";
                         $c++;
                     }
@@ -1402,6 +1838,8 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     //d2√jn̥̄ = ji + jan = jijan [jijaniṣ-]
 
                     $model[]=$p_new."|i|".$p_mool."|".$e2."|".$f_mool;
+                    $p_before_mool[]=$p_new."|i|";
+
                     $comment[$c]=" Остальные корни рядов N удваиваются по схеме P’iPE2(F)";
                     $c++;
 
@@ -1420,6 +1858,7 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
       if($stop==1&&$mool=="dhū")
       {
           $model[]="dudhūn";
+          $p_before_mool[]="";
           $comment[$c]=" Из таблицы CaS: √dhū (вар.) → dhūn (III тип) ";
           $c++;
       }
@@ -1456,13 +1895,17 @@ function duplication_d2($array, $mool, $mool_type, $mool_type_change, $omonim, $
 
     $result[0]=$model;
     $result['debug']=$debug_text;
+    $result['p_before_mool']=$p_before_mool;
+    
 
-
+    //print_r($result);
   
 
     return $result;
 
 }
+
+
 
 function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $debug){
     $p_new = $array[1];
@@ -1472,6 +1915,8 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
     $f_mool = $array[5];
     $f_mool_array = $array[6];
     $p_mool_array = $array[7];
+
+    $p_before_mool='';
 
     if($p_mool)
     {    
@@ -1631,6 +2076,7 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 else
                 {
                     $model = $p_new."|ā|".$p_mool."|".$mool_change."|".$f_mool;
+                    $p_before_mool=$p_new."|ā|";
                     $comment = " Корни ряда А1 удваиваются по схеме P’āPEF";
                 }
                 
@@ -1639,6 +2085,7 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             elseif ($mool_type_change == "A2")
             {
                     $model = $p_new."|"."ā"."|".$p_mool."|".$mool_change."|".$f_mool;
+                    $p_before_mool=$p_new."|"."ā"."|";
                     $comment = " Корни ряда А2 удваиваются по схеме P’āPE(F)";
             }
             elseif ($mool_type_change == "I0" || $mool_type_change == "I1" || $mool_type_change == "I2")
@@ -1657,6 +2104,7 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 {
                 
                     $model = $p_new."|"."e"."|".$p_mool."|".$mool_change."|".$f_mool;
+                    $p_before_mool=$p_new."|"."e"."|";
                     $comment = " Корни рядов I удваиваются по схеме P’ePE(F)";
                 }
             }
@@ -1672,6 +2120,8 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 {
                 
                     $model = $p_new."|"."o"."|".$p_mool."|".$mool_change."|".$f_mool;
+
+                    $p_before_mool=$p_new."|"."o"."|";
                     $comment = " Корни рядов U удваиваются по схеме P’oPE(F):";
                 }
             }
@@ -1679,6 +2129,7 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             {
                 
                     $model = $p_new."|"."am"."|".$p_mool."|".$mool_change;
+                    $p_before_mool=$p_new."|"."am"."|";
                     $comment = " Корни рядов М удваиваются по схеме P’amPE ";
 
                     if($mool=="gm̥")
@@ -1691,6 +2142,7 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             {
                 
                     $model = $p_new."|"."al"."|".$p_mool."|".$mool_change."|".$f_mool;
+                    $p_before_mool=$p_new."|"."al"."|";
                     $comment = " Корни ряда L удваиваются по схеме P’alPE(F): ";
 
                     if($mool=="cal")
@@ -1708,20 +2160,23 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     }
                     else
                     {
-                        $model = $p_new."arī".$p_mool."|".$mool_change."|".$f_mool;
+                        $model = $p_new."|arī|".$p_mool."|".$mool_change."|".$f_mool;
+                        $p_before_mool=$p_new."|"."arī"."|";
                         $comment = " Все корни рядов R могут удваиваться по схеме P’arīPE(F) (со вставной -ī-)";
 
                         //Некоторые корни R, а именно: √kṛṣ, √dṛ 2, √dṛś, √dṛh, √bṛh, √dhṛ, √vṛ 1,  √vṛ 2, √vṛj, √vṛt, √sṛ, √hṛ 1, √hṛ 2, √kṝ 2, √gṝ 1, √dṝ, √tṝ – также способны удваиваться по схеме P’arPE(F) (без вставной -ī-):
                         if($mool=="kṛṣ"||($mool=="dṛ"&&$omonim==2)||$mool=="dṛś"||$mool=="dṛh"||$mool=="bṛh"||$mool=="dhṛ"||($mool=="vṛ"&&$omonim==1)||($mool=="vṛ"&&$omonim==2)||$mool=="vṛj"||$mool=="vṛt"||$mool=="sṛ"||($mool=="hṛ"&&$omonim==1)||($mool=="hṛ"&&$omonim==2)||($mool=="kṝ"&&$omonim==2)||($mool=="gṝ"&&$omonim==1)||$mool=="dṝ"||$mool=="tṝ")
                         {
-                            $model2 = $p_new."ar".$p_mool."|".$mool_change."|".$f_mool;
+                            $model2 = $p_new."|ar|".$p_mool."|".$mool_change."|".$f_mool;
+                            $p_before_mool2=$p_new."|"."ar"."|";
                             $comment.= " Некоторые корни R, а именно: $mool также способны удваиваться по схеме P’arPE(F) (без вставной -ī-)";
                         }
 
                         //Некоторые корни R, а именно: √garh, √dhṛ, √mṛṣ, √śṛ, √spṛdh, √smṛ, √hvṛ, √kṝ 1, √jṝ, √jvar √tṝ, √pṝ, √śṝ, √stṝ, √svar, √tvar, √hvṛ– также могут удваиваться по схеме P’āPE(F):
                         if($mool=="garh"||$mool=="dhṛ"||$mool=="mṛṣ"||$mool=="śṛ"||$mool=="spṛdh"||$mool=="smṛ"||$mool=="hvṛ"||($mool=="kṝ"&&$omonim==1)||$mool=="jṝ"||$mool=="jvar"||$mool=="tṝ"||$mool=="pṝ"||$mool=="śṝ"||$mool=="stṝ"||$mool=="svar"||$mool=="tvar"||$mool=="hvṛ")
                         {
-                            $model2 = $p_new."ā".$p_mool."|".$mool_change."|".$f_mool;
+                            $model2 = $p_new."|ā|".$p_mool."|".$mool_change."|".$f_mool;
+                            $p_before_mool2=$p_new."|ā|";
                             $comment.= " Некоторые корни R, а именно: $mool также могут удваиваться по схеме P’āPE(F)";
                         }
 
@@ -1730,17 +2185,20 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             elseif ($mool_type_change == "N0" || $mool_type_change == "N1" || $mool_type_change == "N2")
             {
                 $model = $p_new."|an|".$p_mool."|".$mool_change."|".$f_mool;
+                $p_before_mool=$p_new."|an|";
                 $comment = " Все корни рядов N могут удваиваться по схеме P’anPE(F) (без вставной -ī-)";
 
                 if($is_open_mool==0||$mool=="phan"||$mool=="pn̥"||$mool=="vn̥̄"||$mool=="svan")
                 {
                     $model2 = $p_new."|anī|".$p_mool."|".$mool_change."|".$f_mool;
+                    $p_before_mool2=$p_new."|anī|";
                     $comment.= " Закрытые корни рядов N, а также некоторые корни, а именно: √phan, √pn̥, √vn̥̄, √svan – также могут удваиваться по схеме P’anīPE(F)";
                 }
 
                 if($is_open_mool==0||$mool=="khn̥̄"||$mool=="jn̥̄"||$mool=="sn̥̄")
                 {
                     $model3 = $p_new."|ā|".$p_mool."|".$mool_change."|".$f_mool;
+                    $p_before_mool3=$p_new."|ā|";
                     $comment.= " Закрытые корни рядов N и некоторые другие корни, а именно: √khn̥̄, √jn̥̄, √sn̥̄ – также могут удваиваться по схеме P’āPE(F)";
                 }
 
@@ -1756,17 +2214,21 @@ function duplication_i2($array, $mool, $mool_type, $mool_type_change, $omonim, $
     }
 
     $result[0]=$model;
+    $p_before_mool_array[]=$p_before_mool;
     
     if($model2)
     {
         $result[0]= $result[0].",".$model2;
+        $p_before_mool_array[]=$p_before_mool2;
     }
     if($model3)
     {
         $result[0]=$result[0].",".$model3;
+        $p_before_mool_array[]=$p_before_mool3;
     }
 
     $result[1]=$comment;
+    $result['p_before_mool']=$p_before_mool_array;
 
     return $result;
 }
@@ -1945,9 +2407,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 $e_new="|i|";
                 $e_new2="|ī|";
                 $model=$p_new.$e_new.$p_mool.$e.$f_mool;
+                $p_before_mool=$p_new.$e_new;
                 $change_later[]=manual_e($p_new.$e_new.$p_mool.$e,$mool_change);
 
                 $model2=$p_new.$e_new2.$p_mool.$e.$f_mool;
+                $p_before_mool2=$p_new.$e_new2;
                 $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
                 $comment.=" Все корни ряда А1 могут удваиваться по схемам P’iPA1F и P’īPA1F ";
             }
@@ -1956,6 +2420,7 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             {
                 $e_new3="|a|";
                 $model3=$p_new.$e_new3.$p_mool.$e.$f_mool;
+                $p_before_mool3=$p_new.$e_new3;
                 $change_later[]=manual_e($p_new.$e_new3.$p_mool.$e,$mool_change);
                 $comment.=" Закрытые корни ряда А1 II типа также могут удваиваться по схеме P’aPA1F ";
             }
@@ -2007,12 +2472,15 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 $e_new3="|ī|";
                 
                 $model=$p_new.$e_new.$p_mool.$e.$f_mool;
+                $p_before_mool=$p_new.$e_new;
                 $change_later[]=manual_e($p_new.$e_new.$p_mool.$e,$mool_change);
 
                 $model2=$p_new.$e_new2.$p_mool."|a|".$f_mool;
+                $p_before_mool2=$p_new.$e_new2;
                 $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
 
                 $model3=$p_new.$e_new3.$p_mool."|a|".$f_mool;
+                $p_before_mool3=$p_new.$e_new3;
                 $change_later[]=manual_e($p_new.$e_new3.$p_mool.$e,$mool_change);
 
                 $comment.=" Закрытые корни А2 удваиваются по схеме P’aPA2F, а также по схемам (c межрядовой трансформацией [A2↦A1]) P’iPA1F и P’īPA1F: ";
@@ -2046,9 +2514,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 $e_new3="|ī|";
                 
                 $model2=$p_new.$e_new2.$p_mool.$e.$f_mool;
+                $p_before_mool2=$p_new.$e_new2;
                 $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
 
                 $model3=$p_new.$e_new3.$p_mool.$e.$f_mool;
+                $p_before_mool3=$p_new.$e_new3;
                 $change_later[]=manual_e($p_new.$e_new3.$p_mool.$e,$mool_change);
 
                 $comment.=" Остальные корни рядов I удваиваются по схемам P’iPI(F) и P’īPI(F): ";
@@ -2109,9 +2579,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             $e_new4="|ī|";
 
             $model=$p_new.$e_new.$p_mool.$e.$f_mool;
+            $p_before_mool=$p_new.$e_new;
             $change_later[]=manual_e($p_new.$e_new.$p_mool.$e,$mool_change);
 
             $model2=$p_new.$e_new2.$p_mool.$e.$f_mool;
+            $p_before_mool2=$p_new.$e_new2;
             $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
 
             $comment.=" Все корни U могут удваиваться по схемам P’uPU(F) и P’ūPU(F): ";
@@ -2119,9 +2591,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             if($is_open_mool==1)
             {
                 $model3=$p_new.$e_new3.$p_mool.$e.$f_mool;
+                $p_before_mool3=$p_new.$e_new3;
                 $change_later[]=manual_e($p_new.$e_new3.$p_mool.$e,$mool_change);
 
                 $model4=$p_new.$e_new4.$p_mool.$e.$f_mool;
+                $p_before_mool4=$p_new.$e_new4;
                 $change_later[]=manual_e($p_new.$e_new4.$p_mool.$e,$mool_change);
 
                 $comment.=" Открытые корни U могут удваиваться по схемам P’iPU(F) и P’īPU(F): ";
@@ -2191,9 +2665,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     $e_new2="|ī|";
 
                     $model=$p_new.$e_new.$p_mool.$e.$f_mool;
+                    $p_before_mool=$p_new.$e_new;
                     $change_later[]=manual_e($p_new.$e_new.$p_mool.$e,$mool_change);
 
                     $model2=$p_new.$e_new2.$p_mool.$e.$f_mool;
+                    $p_before_mool2=$p_new.$e_new2;
                     $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
                     $comment.=" Закрытые корни рядов R также могут удваиваться по схемам P’aPR(F) и P’īPR(F): ";
                     
@@ -2202,6 +2678,7 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 {
                     $e_new="|ī|";
                     $model=$p_new.$e_new.$p_mool.$e;
+                    $p_before_mool=$p_new.$e_new;
                     $change_later[]=manual_e($p_new.$e_new.$p_mool.$e,$mool_change);
 
                     //print_r($change_later);
@@ -2213,6 +2690,7 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 {
                     $e_new3="|i|";
                     $model3=$p_new.$e_new3.$p_mool.$e.$f_mool;
+                    $p_before_mool3=$p_new.$e_new3;
                     $change_later[]=manual_e($p_new.$e_new3.$p_mool.$e,$mool_change);
 
                     $comment.=" Все корни рядов R II типа также могут удваиваться по схеме P’iPR1(F) ";
@@ -2228,9 +2706,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
             $e_new2="|ī|";
             
             $model=$p_new.$e_new.$p_mool.$e.$f_mool;
+            $p_before_mool=$p_new.$e_new;
             $change_later[]=manual_e($p_new.$e_new.$p_mool.$e,$mool_change);
 
             $model2=$p_new.$e_new2.$p_mool.$e.$f_mool;
+            $p_before_mool2=$p_new.$e_new2;
             $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
 
             $comment.=" Корни ряда L удваиваются по схемам P’iPL(F) и P’īPL(F)";
@@ -2247,9 +2727,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 $e_new3="|ī|";
                 
                 $model2=$p_new.$e_new2.$p_mool.$e.$f_mool;
+                $p_before_mool2=$p_new.$e_new2;
                 $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
 
                 $model3=$p_new.$e_new3.$p_mool.$e.$f_mool;
+                $p_before_mool3=$p_new.$e_new3;
                 $change_later[]=manual_e($p_new.$e_new3.$p_mool.$e,$mool_change);
 
                 $comment.=" Корни рядов М удваиваются по схемам P’iPM и P’īPM";
@@ -2308,12 +2790,15 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     $e_new3="|ī|";
                     
                     $model=$p_new.$e_new.$p_mool.$e.$f_mool;
+                    $p_before_mool=$p_new.$e_new;
                     $change_later[]=manual_e($p_new.$e_new.$p_mool.$e,$mool_change);
 
                     $model2=$p_new.$e_new2.$p_mool.$e.$f_mool;
+                    $p_before_mool2=$p_new.$e_new2;
                     $change_later[]=manual_e($p_new.$e_new2.$p_mool.$e,$mool_change);
 
                     $model3=$p_new.$e_new3.$p_mool.$e.$f_mool;
+                    $p_before_mool3=$p_new.$e_new3;
                     $change_later[]=manual_e($p_new.$e_new3.$p_mool.$e,$mool_change);
 
                     $comment.=" Корни √mn̥th (вар.), √rn̥j (вар.), √rn̥dh (вар.) удваиваются по схемам P’aPN1(F), P’iPN1(F) и P’īPN1(F) ";
@@ -2324,6 +2809,7 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                     //с. Открыте корни N I типа удваиваются по схеме P’īPN2F: a2√hn̥ = jī + ghan = jīghan [ajīghanat]
                     $e_new4="|ī|";
                     $model4=$p_new.$e_new4.$p_mool.$e.$f_mool;
+                    $p_before_mool4=$p_new.$e_new4;
                     $change_later[]=manual_e($p_new.$e_new4.$p_mool.$e,$mool_change);
 
                     $comment.=" Открыте корни N I типа удваиваются по схеме P’īPNF ";
@@ -2332,6 +2818,7 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
                 {
                     $e_new4="|a|";
                     $model4=$p_new.$e_new4.$p_mool.$e.$f_mool;
+                    $p_before_mool4=$p_new.$e_new4;
                     $change_later[]=manual_e($p_new.$e_new4.$p_mool.$e,$mool_change);
 
                     $comment.=" Остальные корни N удваиваются по схеме P’aPN2(F) ";
@@ -2353,6 +2840,11 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
     $result['model'][]=$model3;
     $result['model'][]=$model4;
 
+    $result['p_before_mool'][]=$p_before_mool;
+    $result['p_before_mool'][]=$p_before_mool2;
+    $result['p_before_mool'][]=$p_before_mool3;
+    $result['p_before_mool'][]=$p_before_mool4;
+
     $result['enew'][]=$e_new;
     $result['enew'][]=$e_new2;
     $result['enew'][]=$e_new3;
@@ -2360,6 +2852,8 @@ function duplication_a2($array, $mool, $mool_type, $mool_type_change, $omonim, $
 
     $result['change_later']=$change_later;
     $result['comment']=$comment;
+
+    //print_r($result);
 
     //echo "INFUNCTIONS<BR>";
     //print_r($change_later);
@@ -2382,6 +2876,7 @@ function get_perfect($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_ryad,
     $stop=$duplication_p2[2];
     $duplication_p2_model_sandhi=$duplication_p2[3];
     $change_later=$duplication_p2[4];
+    $p_before_mool=$duplication_p2['p_before_mool'];
 
    ////////STOP OR NOT/////////////////////
     if(!$stop)
@@ -2435,6 +2930,7 @@ function get_perfect($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_ryad,
     
     $result_string['source']=$verb_name;
     $result_string['change_later']=$change_later;
+    $result_string['p_before_mool']=$p_before_mool;
 
     //echo "Result string:";
     //print_r($result_string);
@@ -2462,13 +2958,20 @@ function get_onv3($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_ryad,$ve
 {
         $duplication_first=duplication_first($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_ryad,$debug);
 
-		$duplication_pr2_model=duplication_pr2($duplication_first,$verb_name,$verb_type,$verb_ryad,$verb_omonim,$debug)[0];
-		$duplication_pr2_prefix=duplication_pr2($duplication_first,$verb_name,$verb_type,$verb_ryad,$verb_omonim,0)[1];
+        $duplication_pr2=duplication_pr2($duplication_first,$verb_name,$verb_type,$verb_ryad,$verb_omonim,$debug);
+
+
+
+		$duplication_pr2_model=$duplication_pr2[0];
+		$duplication_pr2_prefix=$duplication_pr2[1];
+
+
 
 
         $model_string=implode(",",$duplication_pr2_model);
 
-        $result=$model_string;
+        $result[0]=$model_string;
+        $result['p_before_mool']=$duplication_pr2['p_before_mool'];
 
         return $result;
 }
@@ -2489,6 +2992,7 @@ function get_desiderative($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_
         }
 
         $result[0]=$model_string;
+        $result['p_before_mool']=$d2['p_before_mool'];
 
 
         if ($debug) {
@@ -2503,6 +3007,8 @@ function get_desiderative($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_
             echo '</div></div>';
         }
 
+        //print_r($result);
+
         return $result;
 
 
@@ -2514,6 +3020,8 @@ function get_intensive($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_rya
     $duplication_first=duplication_first($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_ryad,$debug);
 
     $duplication_i2=duplication_i2($duplication_first,$verb_name,$verb_type,$verb_ryad,$verb_omonim,$debug);
+
+    //print_r($duplication_i2);
 
     return $duplication_i2;
 
@@ -2556,9 +3064,11 @@ function get_aos3($verb_name,$verb_omonim,$verb_type,$verb_change,$verb_ryad,$pa
 
     $result_string['model']=$duplication_a2_model;
     $result_string['enew']=$duplication_a2['enew'];
+    $result_string['p_before_mool']=$duplication_a2['p_before_mool'];
     $result_string['change_later']=$change_later;
     $result_string['flag_e']=$flag_e;
 
+    //print_r($result_string);
 
     return $result_string;
 }
@@ -5372,2900 +5882,255 @@ function dimensions_array($dimensions) {
 
 
 
-function rule34($mool)
-{
-    $plus = 0;
-
-    if (in_array($mool, ["dah", "dih", "duh", "druh", "dṛṃh"])) {
-        $plus = "dh";
-    } elseif ($mool === "guh") {
-        $plus = "gh";
-    } elseif (in_array($mool, ["bn̥dh", "bādh", "bandh", "budh"])) {
-        $plus = "bh";
-    }
-
-    return $plus;
-}
-
-
-/*
-// PHP 8 Style
-function rule34($mool)
-{
-    $plus = match ($mool) {
-        "dah", "dih", "duh", "druh", "dṛṃh" => "dh",
-        "guh" => "gh",
-        "bn̥dh", "bādh", "bandh", "budh" => "bh",
-        default => 0,
-    };
-
-    return $plus;
-}
-
-*/
-
-function emeno_rules($number, $array, $big_array, $word_length, $zero_number, $first_number, $second_number, $big_array_1, $mool, $glagol_or_imennoy,$last_perenos,$active_word,$right_word, $padezh, $third_number) {
-    
-   // echo "MOOL:".$mool;
-
-    $zero_letter = $array[$zero_number][0];
-    $zero_cons = $array[$zero_number][1];
-    $zero_vzryv = $array[$zero_number][2];
-    $zero_where = $array[$zero_number][3];
-    $zero_zvonkiy = $array[$zero_number][4];
-    
-    $first_letter = $array[$first_number][0];
-    $first_cons = $array[$first_number][1];
-    $first_vzryv = $array[$first_number][2];
-    $first_where = $array[$first_number][3];
-    $first_zvonkiy = $array[$first_number][4];
-
-    $second_letter = $array[$second_number][0];
-    $second_cons = $array[$second_number][1];
-    $second_vzryv = $array[$second_number][2];
-    $second_where = $array[$second_number][3];
-    $second_zvonkiy = $array[$second_number][4];
-
-    $third_letter = $array[$third_number][0];
-    $third_cons = $array[$third_number][1];
-    $third_vzryv = $array[$third_number][2];
-    $third_where = $array[$third_number][3];
-    $third_zvonkiy = $array[$third_number][4];
-
-   // echo "$word_length SEC NUMBER  $second_number SEC:$second_letter "."THIRD:".$third_letter." THR NUMBER $third_number $big_array_1<BR>";
-
-    $what_change=0;
-
-    $consonants = ["k", "kh", "g", "gh", "ṅ", "c", "ch", "j", "jh", "ñ", "ṭ", "ṭh", "ḍ", "ḍh", "ṇ", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h"];
-    $vowels = ["a", "ā", "i", "ī", "u", "ū", "ṛ", "ṝ", "ḷ", "ḹ", "e", "ai", "o", "au"];
-   
-    
-    switch ($number) {
-
-        case "1":
-            //1 Эмено
-            //print_r($big_array[6]);
-  
-            if ($first_letter == "a" || $first_letter == "ā") {
-                switch ($second_letter) {
-                    case "e":$itog[0] = "āi";
-                        $count_change = 2;
-                        $pravilo = 1;
-                        break;
-                    case "o":$itog[0] = "āu";
-                        $count_change = 2;
-                        $pravilo = 1;
-                        break;
-                    case "āi":$itog[0] = "āi";
-                        $count_change = 2;
-                        $pravilo = 1;
-                        break;
-                    case "āu":$itog[0] = "āu";
-                        $count_change = 2;
-                        $pravilo = 1;
-                        break;
-                }
-                $what_change=$first_letter;
-            }
-            break;
-
-        case "2":
-            //2 Эмено
-
-            if ($first_letter == "a" || $first_letter == "ā") {
-                switch ($second_letter) {
-                    case "i":$itog[0] = "e";
-                        $count_change = 2;
-                        $pravilo = 2;
-                        break;
-                    case "ī":$itog[0] = "e";
-                        $count_change = 2;
-                        $pravilo = 2;
-                        break;
-                    case "u":$itog[0] = "o";
-                        $count_change = 2;
-                        $pravilo = 2;
-                        break;
-                    case "ū":$itog[0] = "o";
-                        $count_change = 2;
-                        $pravilo = 2;
-                        break;
-                    case "ṛ":$itog[0] = "ar";
-                        $count_change = 2;
-                        $pravilo = 2;
-                       
-                        break;
-                    case "ṝ":$itog[0] = "ar";
-                        $count_change = 2;
-                        $pravilo = 2;
-                        break;
-                    case "ḷ":$itog[0] = "al";
-                        $count_change = 2;
-                        $pravilo = 2;
-                        break;
-                    case "ḹ":$itog[0] = "al";
-                        $count_change = 2;
-                        $pravilo = 2;
-                        break;
-                }
-            }
-            break;
-
-        case "3":
-            //3 Эмено
-            // Тут "дифтонги перед гласной", но ai и au я здесь не учитываю. Если нужно - придется логику их парсинга менять
-
-            if ($first_letter == "āi") {
-                switch ($second_letter) {
-                    case "a":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        //$result[3]=$first_number+2;
-                        break;
-                    case "ā":$itog[0] = "āy";
-
-                        $count_change = 1;
-                        $pravilo = 3;
-                        
-                        break;
-                    case "e":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        //$result[3]=$first_number+2;
-                        break;
-                    case "o":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        
-                        break;
-
-                    case "i":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ī":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "u":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ū":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṛ":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṝ":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḷ":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḹ":$itog[0] = "āy";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                }
-                $what_change=$first_letter;
-            }
-
-
-            if ($first_letter == "āu") {
-                switch ($second_letter) {
-                    case "a":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        //$result[3]=$first_number+2;
-                        break;
-                    case "ā":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        
-                        break;
-                    case "e":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        //$result[3]=$first_number+2;
-                        break;
-                    case "o":$itog[0] = "āv";
-                    case "i":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ī":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "u":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ū":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṛ":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṝ":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḷ":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḹ":$itog[0] = "āv";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                }
-                $what_change=$first_letter;
-            }
-
-            if ($first_letter == "e") {
-                switch ($second_letter) {
-                    case "a":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        //$result[3]=$first_number+2;
-                        break;
-                    case "ā":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        
-                        break;
-                    case "i":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ī":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "u":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ū":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṛ":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṝ":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḷ":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḹ":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "e":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "o":$itog[0] = "ay";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                }
-                $what_change=$first_letter;
-            }
-
-            if ($first_letter == "o") {
-                switch ($second_letter) {
-                    case "a":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ā":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "i":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ī":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "u":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ū":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṛ":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ṝ":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḷ":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "ḹ":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "e":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                    case "o":$itog[0] = "av";
-                        $count_change = 1;
-                        $pravilo = 3;
-                        break;
-                }
-            
-                $what_change=$first_letter;
-            }
-
-            break;
-        case "4":  //есть ли не односложные корни?
-           
-            if($second_cons=="V")
-            {
-            
-                if($active_word==$mool)
-                {
-                
-                    if(mb_substr($mool,-1,1)=="i"||mb_substr($mool,-1,1)=="ī")
-                    {
-                        $itog[0] = "iy";
-                        $count_change = 1;
-                        $pravilo = 4;
-                    }
-
-                    if(mb_substr($mool,-1,1)=="u"||mb_substr($mool,-1,1)=="ū")
-                    {
-                        $itog[0] = "uv";
-                        $count_change = 1;
-                        $pravilo = 4;
-                    }
-
-                }
-
-            }
-            break;
-        
-        case "5":
-            if($first_letter=="ṝ")
-            {
-                if($zero_cons=="C")
-                {
-                   
-                    if($zero_where=="L")
-                    {
-                        if($second_cons=="V")
-                        {
-                            $itog[0]="ur";
-                            $count_change=1;
-                            $pravilo=5;
-                        }
-                        else
-                        {
-                            $itog[0]="ūr";
-                            $count_change=1;
-                            $pravilo=5;
-                        }
-                    }
-                    else
-                    {
-                        if($second_cons=="V")
-                        {
-                            $itog[0]="ir";
-                            $count_change=1;
-                            $pravilo=5;
-                        }
-                        else
-                        {
-                            $itog[0]="īr";
-                            $count_change=1;
-                            $pravilo=5;
-                        }
-                    }
-
-                    $what_change=$first_letter;
-                }
-            }
-            break;
-        case "6":
-            //6 Эмено
-
-            if ($first_letter != $second_letter && $second_cons == "V") {
-                
-                //echo "ZERO $zero_letter ZN: $zero_number FIRST LETTER: $first_letter SECOND LETTER: $second_letter<BR>";
-
-                switch ($first_letter) {
-                    case "ṛ":
-                        if($second_letter!="ṛ"&&$second_letter!="ṝ")
-                        {
-                            $itog[0] = "r";
-                            $count_change = 1;
-                            $pravilo = 6;
-                        }
-                        break;
-                    case "i":
-                        if($second_letter!="i"&&$second_letter!="ī")
-                        {
-                        $itog[0] = "y";
-                        $count_change = 1;
-                        $pravilo = 6;
-                        }
-                        break;
-                    case "ī":
-                        if($second_letter!="i"&&$second_letter!="ī")
-                        {
-                        $itog[0] = "y";
-                        $count_change = 1;
-                        $pravilo = 6;
-                        }
-                        break;
-                    case "u":
-                        if($second_letter!="u"&&$second_letter!="ū")
-                        {
-                        $itog[0] = "v";
-                        $count_change = 1;
-                        $pravilo = 6;
-                        }
-                        break;
-                    case "ū":
-               
-                        if($second_letter!="u"&&$second_letter!="ū")
-                        {
-                        $itog[0] = "v";
-                        $count_change = 1;
-                        $pravilo = 6;
-                        }
-                        break;
-                }
-            }
-            break;
-
-        case "7":
-            //7 Эмено
-
-            if ($first_letter == $second_letter) {
-                switch ($first_letter) {
-                    case "a":
-                        $itog[0] = "ā";
-                        $itog[1] = "Ø";
-                     
-                        $count_change = 2;
-                        $pravilo=7;
-                        break;
-                    case "i":$itog[0] = "ī";   $itog[1] = "Ø";
-                        $count_change = 2;
-                        $pravilo=7;
-                        break;
-                    case "u":$itog[0] = "ū";   $itog[1] = "Ø";
-                        $count_change = 2;
-                        $pravilo=7;
-                        break;
-                }
-
-              
-
-
-                //echo $itog[0];
-            }
-
-            switch($first_letter)
-            {
-                case "ā":
-                    if($second_letter=="a"||$second_letter=="ā")
-                    {
-                        $itog[0] = "ā";   $itog[1] = "Ø";
-                       
-                        $count_change = 2;
-                        $pravilo=7;
-                    }
-                    break;
-
-                case "ī":
-                    if($second_letter=="i"||$second_letter=="ī")
-                    {
-                        $itog[0] = "ī";   $itog[1] = "Ø";
-                        $count_change = 2;
-                        $pravilo=7;
-                    }
-                    break;
-
-                case "ū":
-                    if($second_letter=="u"||$second_letter=="ū")
-                    {
-                        $itog[0] = "ū";   $itog[1] = "Ø";
-                        $count_change = 2;
-                        $pravilo=7;
-                    }
-                    break;
-
-                case "a":
-                    if($second_letter=="ā")
-                    {
-                        $itog[0] = "ā";   $itog[1] = "Ø";
-                        $count_change = 2;
-                        $pravilo=7;
-                    }
-                    break;
-
-                case "i":
-                    if($second_letter=="ī")
-                    {
-                        $itog[0] = "ī";   $itog[1] = "Ø";
-                        $count_change = 2;
-                        $pravilo=7;
-                    }
-                    break;
-
-                case "u":
-                    if($second_letter=="ū")
-                    {
-                        $itog[0] = "ū";   $itog[1] = "Ø";
-                        $count_change = 2;
-                        $pravilo=7;
-                    }
-                    break;
-
-
-                
-            }
-
-            break;
-
-        case "8":
-           
-            break;
-        case "9":
-            
-           // echo $big_array_1;
-            $big_array_2=str_replace("|","",$big_array_1);
-            $twosybmols=mb_substr(trim($big_array_2),strlen(trim($big_array_2))-2,2);
-           // echo "FS: ".$twosybmols;
-
-           if($twosybmols=="CC")
-           {
-
-                if($second_letter)
-                {
-
-                    //9 Эмено  
-                    $i = 0;
-                    $counter = 0;
-                    $count_change = 0;
-                    $number_ishod = $word_length;
-
-                    while (mb_substr($big_array_1, $number_ishod, 1) != "V") {
-                        $number_ishod = $word_length - $i;
-                        $counter++;
-
-                        $i++;
-                        if($i>100){break;}
-                    }
-
-                    $change = $number_ishod; // Позиция 1 гласной с конца
-        
-                    $change++; // Тут либо С либо палка
-
-                        if (mb_substr($big_array_1, $change, 1) == "|") 
-                        {
-                            $change++;
-                        } // Если палка, берем еще
-                    
-                    $change++; // Удаляем всё кроме 1 согласной
-    
-                        
-                    $real_change = $word_length - $change;
-    
-                    $length_minus_counter = $word_length - $counter + 1;
-
-                    $length_minus_counter++; // Берем позицию после V
-
-                    if (mb_substr($big_array_1, $length_minus_counter, 1) == "|") {
-                        $length_minus_counter++;
-                    } // Если натыкаемся на палку, берем дальше, теперь здесь лежит позиция 1 согласной
-
-                    $length_minus_counter++; // Здесь позиция следующей согласной, с которой удаляем
-
-                    if (mb_substr($big_array_1, $length_minus_counter, 1) == "|") {
-                        $length_minus_counter++;
-                    } // Если натыкаемся на палку, берем дальше, теперь здесь лежит позиция 1 согласной
-                    //$length_minus_counter++;
-            
-
-                        if($active_word==$mool&&$zero_letter=="r"&&$first_vzryv=="T")
-                        {
-                        
-                            $length_minus_counter++;
-                            if (mb_substr($big_array_1, $length_minus_counter, 1) == "|") {
-                                $length_minus_counter++;
-                            } // Если на
-                            //$right_word=0;
-                            $pravilo = 8;
-
-                            $count_change = $real_change-1;
-
-                            $word_length = strlen($big_array_1);
-
-                            if ($count_change > 0 && $length_minus_counter != $word_length) {
-                                    $result[3] = $length_minus_counter;
-                                    $itog[0] = "Ø";
-                                    $itog[1] = "Ø";
-                            }
-                        }
-
-                    
-                        if($pravilo!=8)
-                        {
-                            $count_change = $real_change-1;
-
-                            $word_length = strlen($big_array_1);
-
-                            if ($count_change > 0 && $length_minus_counter != $word_length) {
-                                    $result[3] = $length_minus_counter;
-                                    $itog[0] = "Ø";
-                                    $itog[1] = "Ø";
-                                    $itog[2] = "Ø";
-                                    $what_change=0;
-                                    
-                                        $pravilo = 9;
-                                    // $result[5] = -5;
-                        
-                        }
-
-                    }
-                }
-
-            }
-            break;
-
-        case "10":
-
-            if ($zero_cons == "V" && $first_letter == "ch" && $second_cons=="V") {
-                $itog[0] = "cch";
-                $count_change = 1;
-                $result[5] = -1;
-                $pravilo = 10;
-            }
-            break;
-
-        case "11":
-
-            //11 Эмено
-
-            if ($first_letter == "m" && ($second_letter == "v" || $second_letter == "m")) {
-                $itog[0] = "n";
-                $count_change = 1;
-                $pravilo = 11;
-            }
-            break;
-
-        case "12":
-            //12 Эмено
-
-            if ($first_letter == "s" && ($zero_vzryv == "T" && $second_vzryv == "T")) {
-                $itog[0] = "Ø";
-                $count_change = 1;
-                $pravilo = 12;
-                $result[5] = 1;
-            }
-            break;
-        case "13":
-            if($first_letter=="s"&&$padezh==1&&$second_cons=="C")
-            {
-                $itog[0]="ḥ";
-                $count_change = 1;
-                $pravilo = 13;
-            }
-            break;
-        case "14":  //в "некоторых" формах s перед s ??
-                //14 Эмено
-    
-                if ($first_letter == "s" && $second_letter=="s") {
-                    $itog[0] = "t";
-                    $count_change = 1;
-                    $pravilo = 14;
-                }
-            break;
-        case "15":
-
-            if ($first_letter == "s" && $second_letter == "dh") {
-                $itog[0] = "Ø";
-                $count_change = 1;
-                $pravilo = 15;
-            }
-            break;
-        case "16":
-            if($first_letter=="h"&&$second_letter=="n"&&$mool=="han")
-            {
-                $itog[0] = "gh";
-                $count_change = 1;
-                $pravilo = "16 (check!) ";
-            }
-            break;
-        case "17":  // только для nah ? 
-
-          
-                if ($mool=="nah"&&$first_letter=="h"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||(!$second_letter&&$first_letter=="h"&&$zero_letter=="a"))) {
-                    
-                    //echo "Fl: $first_letter Sl: $second_letter SC: $second_cons SV: ".$second_vzryv." SW: $second_where<BR>";
-                    
-                    $itog[0] = "dh";
-                    $count_change = 1;
-                    $pravilo = 17;
-                }
-                break;
-        
-        case "18": // что значит "факультативно" ? 
-                    $mool_conditions = ["uṣṇih", "druh", "snih", "muh"];
-                    $is_mool_match = substr($mool, 0, 1) == "d" || in_array($mool, $mool_conditions);
-                    $is_valid_second = ($second_cons == "C" && !in_array($second_vzryv, ["v", "N"])) || !$second_letter;
-                
-                    if ($first_letter == "h" && $is_mool_match && $is_valid_second) {
-                        $itog[0] = "gh";
-                        $count_change = 1;
-                        $pravilo = 18;
-                
-                        if ($second_zvonkiy == "V") {
-                            $result[4] = 2;
-                        }
-                    }
-                    break;
-                
-        case "19":
-                    $nochange = 0;
-                
-                    $is_h_case = ($first_letter == "h");
-                    $is_c_case = ($second_cons == "C" && $second_vzryv != "v" && $second_vzryv != "N");
-                    $is_special_second_letter = in_array($second_letter, ["t", "th", "dh"]);
-                    $is_mool_special = in_array($mool, ["vah", "sah"]);
-                
-                    if ($is_h_case && ($is_c_case || !$second_letter)) {
-                        if ($is_special_second_letter) {
-                            $new_letter_map = ["a" => "ā", "i" => "ī", "u" => "ū"];
-                            $new_letter = $new_letter_map[$zero_letter] ?? $zero_letter;
-                
-                            if (!$is_mool_special) {
-                                $itog = [$new_letter, "ḍh", "Ø"];
-                            } else {
-                                $itog = ["o", "ḍh", "Ø"];
-                            }
-                            $nochange = 1;
-                            $count_change = 3;
-                            $result[3] = $first_number - 1;
-                            $what_change = 0;
-                            $pravilo = 19;
-                        } else {
-                            $itog[0] = $glagol_or_imennoy == 1 ? "k" : "ṭ";
-                            $count_change = 1;
-                            $pravilo = 19;
-                        }
-                
-                        if ($itog[0] && !$nochange && rule34($mool)) {
-                            $result[6] = rule34($mool);
-                        }
-                    }
-                    break;
-                
-        case "20": 
-            if($zero_letter=="k"&&$first_letter=="ṣ"&&$mool=="jakṣ"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-            {
-                $itog[0]="gh";
-                $itog[1]="Ø";
-                $result[3]=$first_number-1;
-                $count_change = 2;
-                $what_change=0;
-                $result[5] = 1;
-                $pravilo = 20;
-               
-            }
-            break;
-        case "21":
-            if($zero_letter=="k"&&$first_letter=="ṣ"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-            {
-               if($second_letter=="s")
-               {
-                    if($glagol_or_imennoy==1)
-                    {
-                        $itog[0]="k";$itog[1]="Ø";
-                    }
-                    else
-                    {
-                        $itog[0]="ṭ";$itog[1]="Ø";
-                    }
-
-                    $result[3]=$first_number-1;
-                    $count_change = 2;
-                    $result[5] = 1;
-                    $pravilo = 21;
-               }
-               elseif($second_letter=="t")
-               {
-                    $itog[0]="ṣ";$itog[1]="Ø";
-
-                    $result[3]=$first_number-1;
-                    $count_change = 2;
-                    $result[5] = 1;
-                    $pravilo = 21;
-               }
-               else
-               {
-                    $itog[0]="ṭ";$itog[1]="Ø";
-
-                    $result[3]=$first_number-1;
-                    $count_change = 2;
-                    $result[5] = 1;
-                    $pravilo = 21;
-               }
-                   
-            }
-            break;
-        case "22":  
-                if($first_letter=="ch"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-                {
-                   if($second_letter=="s")
-                   {
-                        if($glagol_or_imennoy==1)
-                        {
-                            $itog[0]="k";
-                        }
-                        else
-                        {
-                            $itog[0]="ṭ";
-                        }
-
-                        $count_change = 1;
-                        $pravilo = 22;
-                   }
-                   elseif($second_letter=="t")
-                   {
-                        $itog[0]="ṣ";
-                        $count_change = 1;
-                        $pravilo = 22;
-                   }
-                   else
-                   {
-                        $itog[0]="ṭ";
-                        $count_change = 1;
-                        $pravilo = 22;
-                   }
-                       
-                }
-                break;
-        case "23":  
-            if($zero_letter=="ś"&&$first_letter=="c"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-            {
-               if($second_letter=="s")
-               {
-                    if($glagol_or_imennoy==1)
-                    {
-                        $itog[0]="k";
-                    }
-                    else
-                    {
-                        $itog[0]="ṭ";
-                    }
-
-                    $result[3]=$first_number-1;
-                    $count_change = 2;
-                    $result[5] = 1;
-                    $pravilo = 23;
-               }
-               elseif($second_letter=="t")
-               {
-                    $itog[0]="ṣ";
-                    $result[3]=$first_number-1;
-                    $count_change = 2;
-                    $result[5] = 1;
-                    $pravilo = 23;
-               }
-               else
-               {
-                    $itog[0]="ṭ";
-                    $result[3]=$first_number-1;
-                    $count_change = 2;
-                    $result[5] = 1;
-                    $pravilo = 23;
-               }
-                   
-            }
-            break;
-        case "24":
-         //echo "zero:$zero_letter first:$first_letter second:$second_letter<BR>";
-         if($first_letter=="ṣ"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-         {
-            if($second_letter=="s")
-            {
-                 if($glagol_or_imennoy==1)
-                 {
-                     $itog[0]="k";
-                 }
-                 else
-                 {
-                     $itog[0]="ṭ";
-                 }
-
-                 $count_change = 1;
-                 $pravilo = 24;
-            }
-            elseif($second_letter=="t")
-            {
-                 $itog[0]="ṣ";
-                 $count_change = 1;
-                 $pravilo = 24;
-            }
-            else
-            {
-                 $itog[0]="ṭ";
-                 $count_change = 1;
-                 $pravilo = 24;
-            }
-                
-         }
-         break;
-
-        case "25":  //факультативно в naś ? ś в конечной позиции или в именных формах перед s и bh ?
-          
-            if($first_letter=="ś"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-            {
-               if($mool=="diś"||$mool=="dṛś"||$mool=="mṛś"||$mool=="spṛś"||$mool=="naś")
-               {
-                    if($second_letter=="s"||$second_letter=="bh")
-                    {
-                        $itog[0]="k";
-                        $count_change = 1;
-                        $pravilo = 25;
-                    }
-               }
-               else
-               {
-               
-                    if($second_letter=="s")
-                    {
-                            
-                        //echo "HERE<BR><BR>";
-                        if($glagol_or_imennoy==1)
-                            {
-                                $itog[0]="k";
-                                $count_change=1;
-                                $pravilo = 25;
-                               // echo "HERE1<BR><BR>";
-                            }
-                            else
-                            {
-                              //  echo "HERE2 $first_number<BR><BR>";
-                              //  print_r($big_array[6]);
-                                $itog[0]="ṭ";
-                                $count_change=1;
-                                $pravilo = 25;
-                            }
-        
-          
-                    }
-                    elseif($second_letter=="t")
-                    {
-                            $itog[0]="ṣ";
-                            $count_change = 1;
-                            $pravilo = 25;
-                         
-                    }
-                    else
-                    {
-                            $itog[0]="ṭ";
-                            $count_change = 1;
-                            $pravilo = 25;
-            
-                    }
-               }
-                  // echo "Count change $count_change";
-            }
-            break;
-        
-     
-        case "26":
-                    if(($mool=="bhṛjj"||$mool=="bhrāj"||$mool=="mṛj"||$mool=="yaj"||$mool=="rāj"||$mool=="sṛj"||$mool=="parivrāj")&&($mool!="ṛtvij"&&$mool!="sraj"))
-                    {
-                        if($first_letter=="j"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter))
-                        {
-                            if($second_letter=="s")
-                            {
-                                    if($glagol_or_imennoy==1)
-                                    {
-                                        $itog[0]="k";
-                                    }
-                                    else
-                                    {
-                                        $itog[0]="ṭ";
-                                    }
-
-                                    $count_change = 1;
-                                    $pravilo = 21;
-                            }
-                            elseif($second_letter=="t")
-                            {
-                                    $itog[0]="ṣ";
-
-                                    $count_change = 1;
-                                    $pravilo = 21;
-                            }
-                            else
-                            {
-                                    $itog[0]="ṭ";
-
-                                    $count_change = 1;
-                                    $pravilo = 21;
-                            }
-                            
-                         }
-                    }
-                    break;
-        case "27":
-                        if($zero_letter=="j"&&$first_letter=="h"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-                        {
-                            $itog[0]="k";
-                            $count_change = 1;
-                            $pravilo = 27;      
-                        }
-                        break;
-                
-        case "28":
-
-                        if($first_letter=="c"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter)) 
-                        {
-                           
-                            $itog[0]="k";
-                            $count_change = 1;
-                            $pravilo = 28;  
-                          
-                        }
-                        break;
-
-        case "29":
-                        if($first_letter=="j"&&(($second_cons=="C"&&$second_vzryv!="v"&&$second_vzryv!="N")||!$second_letter))
-                        {
-                            $itog[0]="g";
-                            $count_change = 1;
-                            $pravilo = 29;      
-                        }
-                        break;
-
-        case "30":  ///Тут есть необработанное исключение - обратить внимание! Правило не привеняется к о.н.в. dadh и к дезидеративу от dhaa - класть
- 
-            if (($second_letter == "t" || $second_letter == "th") && ($first_letter == "gh" || $first_letter == "jh" || $first_letter == "ḍh" || $first_letter == "dh" || $first_letter == "bh")) {
-                $itog[0] = $first_letter . "dh";
-                $count_change = 2;
-                $pravilo = 30;
-                $result[4] = 1;
-            }
-            break;
-        case "31":
-            //31 Эмено
-            // echo "1ZV: $first_letter : ".$first_zvonkiy." 2ZV: $second_letter : $second_zvonkiy";
-           
-           // if ($first_zvonkiy == "V" && $first_vzryv == "T" && (($second_zvonkiy == "D" && $second_cons == "C")||($right_word==0))) {
-            if ($first_zvonkiy == "V" && $first_vzryv == "T" && (($second_zvonkiy == "D" && $second_cons == "C")||!$second_letter)) {
-               // echo " FZ $first_zvonkiy $first_vzryv FL $first_letter SL $second_letter   RW: ".$right_word."<BR><BR>";
-                switch ($first_letter) {
-                    case "g":$itog[0] = "k";
-                        $count_change = 1;
-                        break;
-                    case "j":$itog[0] = "c";
-                        $count_change = 1;
-                        break;
-                    case "ḍ":$itog[0] = "ṭ";
-                        $count_change = 1;
-                        break;
-                    case "d":$itog[0] = "t";
-                        $count_change = 1;
-                        break;
-                    case "b":$itog[0] = "p";
-                        $count_change = 1;
-                        break;
-
-                    case "gh":$itog[0] = "kh";
-                        $count_change = 1;
-                        break;
-                    case "jh":$itog[0] = "ch";
-                        $count_change = 1;
-                        break;
-                    case "ḍh":$itog[0] = "ṭh";
-                        $count_change = 1;
-                        break;
-                    case "dh":$itog[0] = "th";
-                        $count_change = 1;
-                        break;
-                    case "bh":$itog[0] = "ph";
-                        $count_change = 1;
-                        break;
-                }
-
-                $pravilo = 31;
-            }
-            break;
-
-        case "32":
-
-            //32 Эмено
-
-            if ($first_zvonkiy == "D" && $first_vzryv == "T" && ($second_zvonkiy == "V" && $second_vzryv == "T")) {
-
-                switch ($first_letter) {
-                    case "k":$itog[0] = "g";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "c":$itog[0] = "j";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "ṭ":$itog[0] = "ḍ";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "t":$itog[0] = "d";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "p":$itog[0] = "b";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-
-                    case "kh":$itog[0] = "gh";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "ch":$itog[0] = "jh";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "ṭh":$itog[0] = "ḍh";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "th":$itog[0] = "dh";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                    case "ph":$itog[0] = "bh";
-                        $count_change = 1;
-                        $pravilo = 32;
-                        break;
-                }
-            }
-            break;
-
-        case "33":
-                // 33 Эмено
-            
-                $trigger_condition = in_array($second_vzryv, ["T", "S"]) || !$second_letter;
-                $replace_map = [
-                    "kh" => "k", "ch" => "c", "ṭh" => "ṭ", "th" => "t",
-                    "ph" => "p", "gh" => "g", "jh" => "j", "ḍh" => "ḍ",
-                    "dh" => "d", "bh" => "b"
-                ];
-            
-                if ($trigger_condition) {
-                    if (isset($replace_map[$first_letter])) {
-                        $itog[0] = $replace_map[$first_letter];
-                        $count_change = 1;
-                        $pravilo = 33;
-                    }
-                }
-            
-                if ($itog[0] && $last_perenos != 2) {
-                    if ($rule34_result = rule34($mool)) {
-                        $result[6] = $rule34_result;
-                    }
-                }
-            
-                break;
-            
-
-        
-        case "34": // Добавлено отдельной функцией в правила 19 и 33
-            break; 
-        case "35":
-
-            //35 Эмено
-
-            if (($first_vzryv == "N" && $second_vzryv == "S")) {
-
-                $itog[0] = "ṃ";
-                $count_change = 1;
-                $pravilo .= " 35";
-            }
-            break;
-
-        case "36": //Анусвара или висарга между гласной и s не мешает замене за исключением pums,hims и еще "некоторых" - это не реализовано
-            //36 Эмено 
-
-            //echo "$word_length SEC NUMBER  $second_number SEC:$second_letter "."THIRD:".$third_letter." THR NUMBER $third_number $big_array_1<BR>";
-            
-            if ($second_letter == "s" && $third_letter != "r" && $third_letter != "" && $second_number != $word_length && (($first_cons == "V" && $first_letter != "a" && $first_letter != "ā") || $first_letter == "k" || $first_letter == "r" || $first_letter == "l")) {
-
-
-                $itog[0] = $first_letter;
-                $itog[1] = "ṣ";
-                $count_change = 2;
-                $what_change = 0;
-                $pravilo = 36;
-            }
-
-            if(($first_letter=="ḥ"||$first_letter=="ṃ")&&$mool!="puṃs"&&$mool!="hiṃs")
-            {
-                if ($second_letter == "s" && $third_letter != "r" && $third_letter != "" && (($zero_cons == "V" && $zero_letter != "a" && $zero_letter != "ā") || $zero_letter == "k" || $zero_letter == "r" || $zero_letter == "l")) {
-
- 
-                    $itog[0] = $zero_letter;
-                    $itog[1] = $first_letter;
-                    $itog[2] = "ṣ";
-                    $count_change = 3;
-                    $what_change = -1;
-                    $pravilo = 36;
-                }
-            }
-
-            break;
-        case "37":
-            
-            if($first_letter=="n"&&($second_vzryv=="v"||$second_vzryv=="V"||$second_vzryv=="N"))
-            {
-                //print_r($big_array);
-               
-
-                $active_word=mb_substr($big_array[0],0,$first_number);
-
-                //echo $first_number." FL:".$first_letter." ZV:".$second_vzryv." AW: $active_word<BR>";
-                
-                $s_search=mb_strpos($active_word,"ṣ");
-                $r_search=mb_strpos($active_word,"r");
-                $rr_search=mb_strpos($active_word,"ṛ");
-                $rrr_search=mb_strpos($active_word,"ṝ");
-
-
-                $one_massive=[$s_search,$r_search,$rr_search,$rrr_search];
-                $max=max($one_massive);
-
-                //print_r($one_massive);
-
-                if($max)
-                {
-                    $short=mb_substr($active_word,$max+1,mb_strlen($active_word)-$max-2);
-                   
-
-                    $flag_ok=1;
-                    for($i=0;$i<mb_strlen($short);$i++)
-                    {
-                        $one=mb_substr($short,$i,1);
-                        $vzryv=seeking_1_bukva($one,0);
-                       
-                        if($one!="y")
-                        {
-                            if($vzryv[4]=="P"||$vzryv[4]=="R"||$vzryv[4]=="D")
-                            {
-                                $flag_ok=0;
-                            }
-                        }
-                
-                    }
-
-                    if($flag_ok==1)
-                    {
-                        $itog[0]="ṇ";
-                        $count_change=1;
-                        $pravilo=37;
-                    }
-                }
-
-
-            }
-            break;
-        case "38":
-            //38 Эмено
-
-            if (($first_where == "R" && $first_cons == "C" && $second_where == "D" && ($second_vzryv == "T" || $second_vzryv == "N")) && !($first_letter == "r" && $second_vzryv == "T")) {
-                switch ($second_letter) {
-                    case "t":$itog[0] = $first_letter; $itog[1] = "ṭ";
-                        $count_change = 2;
-                        break;
-                    case "th":$itog[0] = $first_letter; $itog[1] = "ṭh";
-                        $count_change = 2;
-                        break;
-                    case "d":$itog[0] = $first_letter; $itog[1] = "ḍ";
-                        $count_change = 2;
-                        break;
-                    case "dh":$itog[0] = $first_letter; $itog[1] = "ḍh";
-                        $count_change = 2;
-                        break;
-                }
-
-                $pravilo = 38;
-            }
-            break;
-
-        case "39":
-            //39 Эмено
-
-            if ($first_vzryv == "N" && $second_vzryv == "T") {
-
-                switch ($second_letter) {
-
-                    case "k":$itog[0] = "ṅ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "c":$itog[0] = "ñ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "ṭ":$itog[0] = "ṇ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "t":$itog[0] = "n";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "p":$itog[0] = "m";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-
-                    case "kh":$itog[0] = "ṅ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "ch":$itog[0] = "ñ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "ṭh":$itog[0] = "ṇ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "th":$itog[0] = "n";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "ph":$itog[0] = "m";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-
-                    case "g":$itog[0] = "ṅ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "j":$itog[0] = "ñ";
-                        $count_change = 1;
-                        //$itog="";
-                        $pravilo = 39;
-                        break;
-                    case "ḍ":$itog[0] = "ṇ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "d":$itog[0] = "n";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "b":$itog[0] = "m";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-
-                    case "gh":$itog[0] = "ṅ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "jh":$itog[0] = "ñ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "ḍh":$itog[0] = "ṇ";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "dh":$itog[0] = "n";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                    case "bh":$itog[0] = "m";
-                        $count_change = 1;
-                        $pravilo = 39;
-                        break;
-                }
-            }
-            break;
-
-        case "40":
-            //40 Эмено
-           
-            if ($second_letter == "n" && $first_vzryv == "T" && $first_where == "P") {
-
-
-
-                $itog[0] = $first_letter;
-                $itog[1] = "ñ";
-                $count_change = 2;
-                $pravilo = 40;
-            }
-          
-      
-    }
-
-    $result[0] = $itog;
-    $result[1] = $count_change;
-    $result[2] = $pravilo;
-    if (!$result[3]) {
-        $result[3] = $first_number;
-    }
-    if (!$result[4]) {
-        $result[4] = $last_perenos;
-    }
-    if (!$result[5]) {
-        $result[5] = 0;
-    }
-    if (!$result[6]) {
-        $result[6] = 0;
-    }
-
-   // $result[7] = $right_word;
-    $result[8] = $what_change;
-    if(!$result[8])
-    {
-        $result[8]=0;
-    }
-    
-  
-  
-    
-
-    return $result;
-
-    
-}
-
-function sandhi($big_array, $array, $new_word, $mool, $glagol_or_imennoy, $padezh, $osnova, $debug) {
-    
-    // Определение правил в зависимости от значения переменной $osnova
-    switch ($osnova) {
-        case "DeS":
-            $array_rules = range(1, 40);
-            unset($array_rules[8], $array_rules[9]);
-            break;
-        case "Noun":
-            $array_rules = range(1, 40);
-            unset($array_rules[5]);
-            break;
-        default:
-            $array_rules = range(1, 40);
-    }
-
-    // Установка значения $result[3] как количество элементов в $array_rules
-    $result[3] = count($array_rules);
-
-    // Установка значения $result[0], если оно не установлено
-    if (!$result[0]) {
-        $result[0] = $new_word;
-    }
-
-    // Получение многомерного массива и преобразование его в одномерный
-    $big_array = dimensions($result[0], "something", "smth", 0, 0, 0,"");
-    $array = dimensions_array($big_array);
-
-    // Отладочный вывод, если включен режим отладки
-    if ($debug) {
-        echo $big_array[1] . "<br>";
-    }
-
-    // Поиск всех позиций символа '|'
-    $offset = 0;
-    $allpos_cons = [];
-    while (($pos = mb_strpos($big_array[1], '|', $offset)) !== false) {
-        $offset = $pos + 1;
-        $allpos_cons[] = $pos - 1;
-    }
-    $allpos_cons[] = mb_strlen($big_array[1]) - 1;
-
-    // Разделение позиций на сочетания гласных "VowelVowel" и остальные
-    $vv_allpos_cons = [];
-    $other_allpos_cons = [];
-
-    foreach ($allpos_cons as $pos) {
-        $l1 = mb_substr($big_array[1], $pos, 1);
-        $l2 = mb_substr($big_array[1], $pos + 2, 1);
-        if ($l1 . $l2 === "VV") {
-            $vv_allpos_cons[] = $pos;
-        } else {
-            $other_allpos_cons[] = $pos;
-        }
-    }
-
-    // Объединение массивов $vv_allpos_cons и $other_allpos_cons
-    $allpos_cons = $vv_allpos_cons ? array_merge($vv_allpos_cons, $other_allpos_cons) : $other_allpos_cons;
-
-
-  //////////////////////////////////////
-
-    if ($debug) {
-        echo "Все вхождения стыков |: ";
-        print_r($allpos_cons);
-        echo "<BR><BR>";
-    }
-        $string=implode($big_array[6]);
-        $parts=explode("|",$string);
-
-
-    $k = 1;
-    $emeno[5]=0;
-    $emeno[6]=0;
-
-    for ($i = 0; $i <count($allpos_cons); $i++) 
-    //for ($i = count($allpos_cons) - 1; $i >= 0; $i--)
-    {
-        if ($debug) {
-            echo "<BR>Разбор сандхи №$k скопление гласных с конца, остальные с начала. Вхождение стыка:".$allpos_cons[$i].". Исходная строчка: <b>" . $result[0] . "</b><BR>";
-        }
-
-        $refresh = 0;
-
-        $word_length = count($array);
-
-        $itog = "";
-        $count_change = 0;
-        $what_change = 0;
-
-        $position_number = $allpos_cons[$i] - $emeno[5];
-        $first_letter = $array[$position_number][0];
-
-        if ($first_letter == "|") {
-            $position_number = $position_number - 1;
-            
-        }
-
-        for ($j = 0; $j < count($array_rules); $j++) {    //Пробуем применить последовательно все правила сандхи из $array_rules
-
-            $sdvig=0;
-            if($emeno[5]!=0&&$sdvig==0)
-            {
-                $sdvig=$emeno[5];
-                
-            }
-
-            $noperenos=$emeno[4];
-                
-            $second_number = $position_number + 1;
-            $second_letter = $array[$second_number][0];
-
-            if ($second_letter == "|") {
-                $second_number = $second_number + 1;
-                
-            }
-
-            $third_number = $second_number + 1;
-            $third_letter = $array[$third_number][0];
-
-            if ($third_letter == "|") {
-                $third_number = $third_number + 1;
-      
-            }
-
-            $zero_number = $position_number - 1;
-            $zero_letter = $array[$zero_number][0];
-
-            
-
-            if ($zero_letter == "|") {
-                $zero_number = $zero_number - 1;
-        
-            }
-
-          
-
-           // echo "Sdvig: ".$sdvig."<BR>";
-            $zero_number = $zero_number-$sdvig;
-            $position_number=$position_number-$sdvig;
-            $second_number=$second_number-$sdvig;
-            $third_number=$third_number-$sdvig;
-
-            //echo "ZERO LETTER $zero_number<BR>";
-
-            $active_word=$parts[$i];
-
-            $right_word=$parts[$i+1];
-
-
-            $emeno = emeno_rules($array_rules[$j], $array, $big_array, $word_length, $zero_number, $position_number, $second_number, $big_array[1], $mool, $glagol_or_imennoy,$noperenos,$active_word,$right_word,$padezh,$third_number);
-
-            
-
-            if ($emeno[2]) {
-
-                if ($debug) {
-                    echo "<BR>На входе: <b>" . $result[0] . "</b><BR>";
-                    echo "Что поменяется: ".$emeno[8]." На что поменяется: ".$emeno[0][0]."<BR>";
-                }
-
-                $length_whatchange=mb_strlen($emeno[8]);
-                $length_nawhatchange=mb_strlen($emeno[0][0]);
-                $popravka=$length_nawhatchange-$length_whatchange;
-                ///echo "POPR: ".$popravka;
-
-               // print_r($allpos_cons);
-                for($len=0;$len<count($allpos_cons);$len++)
-                {
-                     $allpos_cons[$len]=$allpos_cons[$len]+$popravka;
-                }
-               // print_r($allpos_cons);
-               
-
-                $result[0] = sandhi_reconstruct($emeno[3], $result[0], $emeno[0], $emeno[1], count($array), $debug, $big_array, $emeno[8]);
-                $result[0] = str_replace("Ø", "", $result[0]);
-                //$result[0] = str_replace("||", "|", $result[0]);
-      
-                //Здесь пытаемся решить переносить придыхания если есть удвоительный слог!
-                if($emeno[6]&&!$noperenos)
-                {
-                    //echo " RES0: ".$result[0]." PN: ".$position_number."<BR>";
-
-                    //echo "EMENO6:_".$emeno[6]."<BR>";
-
-                    $clear_mool=substr($result[0],0,$position_number+1);
-                    
-                    $f_l=substr($result[0],0,1);
-                    if($f_l!="|")
-                    {
-
-                        //echo "Emeno6: ".$emeno[6]."SUBSTR: ".str_replace("|","",$result[0])."<BR>";
-                        //echo "Clear Mool: $clear_mool Mool:$mool CountMool: ".strlen($clear_mool)."<BR><BR>";
-
-                        $moollen=strlen(substr(str_replace("|","",$result[0]),0,mb_strlen($mool)));
-                        $clearmoonlen=strlen($clear_mool);
-
-
-                        if((abs($moollen-$clearmoonlen)<=1))
-                        {
-                             $result[0] = $emeno[6].substr($result[0],1,strlen($result[0])-1);
-                        }
-                        else
-                        {
-                            //$result[0] = $emeno[6].substr($result[0],1,strlen($result[0])-1);
-                            
-                            $begin_replace=str_replace("|","",substr($result[0],0,$position_number+1));
-
-                            //echo "BEGIN REPLACE: $begin_replace";
-                            
-                            for($b_r=0;$b_r<mb_strlen($begin_replace);$b_r++)
-                            {
-                                $begin_replace2[]=mb_substr($begin_replace,-1-$b_r,1);
-                            }
-            
-                            $begin_replace="";
-                            for($b_r=count($begin_replace2);$b_r>count($begin_replace2)-mb_strlen($mool);$b_r--)
-                            {
-                                $begin_replace.=$begin_replace2[$b_r];
-                            }
-
-                            //echo "BEGIN REPLACE: $begin_replace<BR>";
-                            //echo substr($result[0],$position_number-2,strlen($result[0])-mb_strlen($mool));
-                            //echo "<BR><BR>";
-
-                            //$result[0] = substr($result[0],0,mb_strlen($mool))."|".$emeno[6]."|".substr($result[0],3,strlen($result[0])-mb_strlen($mool));
-                            $result[0] = $begin_replace."|".$emeno[6]."||".substr($result[0],$position_number-2,strlen($result[0])-mb_strlen($mool));
-                            
-                        }
-
-                        //echo "RES:".$result[0]."<BR>";
-                    }
-                    else
-                    {
-                        $result[0] = $emeno[6].substr($result[0],2,strlen($result[0])-2);
-                    }
-                   
-                }
-
-                $result[1] = $result[1] . " " . $emeno[2];
-
-                if($emeno[6]&&!$noperenos)
-                {
-                    $result[1] = $result[1] . " " . "34";
-                }
-
-                if ($debug) {
-                    echo "<BR>На выходе: <b>" . $result[0] . "</b><BR>";
-                }
-                if ($debug) {
-                    echo "<BR>Применили правила: <b>" . $result[1] . "</b><BR><BR>";
-                }
-
-
-                $big_array = dimensions($result[0], "something", "smth", 0, 0, 0,"");
-                $array = dimensions_array($big_array);
-            }
-
-          
-        }
-
-        $k++;
-    }
-
-    $result[0] = str_replace("|", "", $result[0]);
-    $result[0] = str_replace("|", "", $result[0]);
-    return $result;
-}
-
-function test_sandhi($test_word,$test_mool,$test_glagol_or_imennoy,$padezh,$debug)
-{
-    if($debug)
-    {
-        echo "<BR>";
-        echo "Тест сандхи (без чередований!):<BR>";
-        echo "$test_word<BR>";
-    }
-
-
- 
-
-    $dimensions_test=dimensions($test_word,"som","smth",0,0,0,"");
-
-    $dimensions_test_array=dimensions_array($dimensions_test);
-
-
-    $sandhi=sandhi($dimensions_test,$dimensions_test_array,$test_word,$test_mool,$test_glagol_or_imennoy,$padezh,"",$debug);
-
-    if($debug)
-    {
-
-    echo "<BR><b>Тест сандхи (знаем ".$sandhi[3]." правил для внутренних из 40): ".$sandhi[0]; echo "</b> ";
-    if($sandhi[1])
-    {
-    echo "<BR>Применили правила Эмено: ";
-    echo $sandhi[1];
-    }
-    echo "<BR><HR>";
-
-    }
-
-    return $sandhi;
-
-
-}
-
-function sandhi_reconstruct($find_cc, $enter_text, $itog, $count_change, $count, $debug, $big_array, $what_change) {
-    
-    if ($debug) {
-        echo "Номер вхождения: " . $find_cc . " На что меняется: ".$itog[0]."  Сколько символов поменяется: $count_change<BR>";
-    }
-
-    if ($itog) {
-
-        $find_cc=$find_cc+$what_change;
-
-        if($big_array[6][$find_cc]=="|")
-        {
-            $find_cc--;
-        }
-
-        
-        $big_array[6][$find_cc]=$itog[0];
-
-        if($count_change==2)
-        {
-            $next_cc=$find_cc+$count_change-1;
-            if($big_array[6][$next_cc]=="|")
-            {
-                $next_cc++;
-            }
-
-            $big_array[6][$next_cc]=$itog[1];
-        }
-
-       
-
-        if($count_change==3)
-        {
-            $next_cc=$find_cc+$count_change-2;
-            if($big_array[6][$next_cc]=="|")
-            {
-                $next_cc++;
-            }
-
-            $big_array[6][$next_cc]=$itog[1];
-
-            $next_cc++;
-
-            if($big_array[6][$next_cc]=="|")
-            {
-                $next_cc++;
-            }
-
-            $big_array[6][$next_cc]=$itog[2];
-
-        }
-
-        $flag=0;
-        for ($i = 0; $i < $count; $i++) {
-            
-           
-            
-            if($big_array[6][$i]!="Ø")
-            {
-                $text.= $big_array[6][$i];
-            }
-        }
-
-        //$temp=
-
-      /*
-
-        for ($i = 0; $i < $find_cc; $i++) {
-            $text1 .= $big_array[6][$i];
-        }
-
-        if ($itog == "Ø") {
-            $text2 = "";
-        } else {
-            $text2 = $itog;
-        }
-
-
-        for ($i = $find_cc + $count_change; $i < $count; $i++) {
-            $text3 .= $big_array[6][$i];
-        }
-
-        $text = $text1 . $text2 . $text3;
-
-       */
-
-
-        
-        $result = $text;
-    } else {
-        $result = $enter_text;
-    }
-
-    return $result;
-}
-
 ////CHEREDOVATEL3000////
 
-function cheredovatel($id,$massive_search,$augment,$postgment,$source,$debug)
+function cheredovatel($id, $massive_search, $augment, $postgment, $source, $debug)
 {
-    
-    $FLAG_STOP=0;$no_stop=1;
+            // Инициализация флагов и переменных
+            $FLAG_STOP = 0;
+            $no_stop = 1;
 
-    /*
-    echo "<HR>";
-    echo "CHEREDOVATEL<BR>";
-    echo "$id,$massive_search,$augment,$postgment,$source,$debug";
-    echo "<HR>";
-    */
-    $info_massive_before[0]=search_in_db($id,'verbs',1);
-    $verb_setnost=$info_massive_before[0][6];
-    $verb_ryad=$info_massive_before[0][4];
+            // Получение информации из базы данных
+            $info_massive_before[0] = VerbCache::search_in_db($id, 'verbs', 1);
+            $verb_setnost = $info_massive_before[0][6];
+            $verb_ryad = $info_massive_before[0][4];
 
-    for($i=0;$i<count($massive_search);$i++)
-    {
-        $info_massive_before[$i+1]=$massive_search[$i];
-    }
-       
-    $no_stop=1;
-
-   
-
-    //echo "<HR>";
-    for($i=0;$i<count($massive_search);$i++)
-    {
-       // echo "<HR>MSI0: ".$massive_search[0][0]."<HR>";
-
-       /*
-       echo "<BR>MASSIVE SEARCH FIRST IN CHEREDOVATEL<BR>";
-       //echo "-----------------";
-       print_r($massive_search[$i]);
-   
-       echo "<BR>";
-        */
-
-        if(($massive_search[$i][0]==""&&!$massive_search[$i]['endings'])||(!$massive_search[$i][0]&&$massive_search[$i]['endings']==""))
-        {
-          // echo "I:$i<BR>";
-            $no_stop=$no_stop*0;
-
-        }
-    }
-   // echo "<HR>";
-
-
-    //print_r($massive_search);
-    $j=0;
-    for($i=0;$i<count($massive_search);$i++)
-    {
-        if($massive_search[$i][0]=="|"&&$massive_search[$i][7]=="-")
-        {
-
-        }
-        else
-        {
-            $massive_search_new[]=$massive_search[$i];
-        }
-    
-    }
-    $massive_search=$massive_search_new;
-
-  //  echo "NO STOP: $no_stop<BR>";
-
-    if($no_stop=="0"){$FLAG_STOP=1;}
-
-    if(!$FLAG_STOP)
-    {
-
-        //////////////////////SETNOST/////////////////////
-
-        $setnost=make_setnost($massive_search,$source);
-        $info_massive_set=$setnost['set'];
-        $info_massive_anit=$setnost['anit'];
-
-        //Склейка i для чередования
-        
-        $j=0;$c=1;
-        for($i=0;$i<count($info_massive_set);$i++)
-        {
-            
-            if($info_massive_set[$i][0]=="|i|")
-            {
-                $info_massive_set_new[$i-$c][0]=$info_massive_set[$i-1][0]."|i|";
-                $j++;$c++;
-            }
-            elseif($info_massive_set[$i][0]=="|ī|")
-            {
-                $info_massive_set_new[$i-$c][0]=$info_massive_set[$i-1][0]."|ī|";
-                $j++;$c++;
-            }
-            else
-            {
-                $info_massive_set_new[]=$info_massive_set[$j];
-                $j++;
-            }
-        }
-        $info_massive_set=$info_massive_set_new;
-        
-
-        $j=0;$c=1;
-        for($i=0;$i<count($info_massive_anit);$i++)
-        {
-             
-            if($info_massive_anit[$i][0]=="|i|")
-            {
-                $info_massive_anit_new[$i-$c][0]=$info_massive_anit[$i-1][0]."|i|";
-                $j++;$c++;
-            }
-            elseif($info_massive_anit[$i][0]=="|ī|")
-            {
-                $info_massive_anit_new[$i-$c][0]=$info_massive_anit[$i-1][0]."|ī|";
-                $j++;$c++;
-            }
-            else
-            {
-                $info_massive_anit_new[]=$info_massive_anit[$j];
-                $j++;
-            }
-        }
-        $info_massive_anit=$info_massive_anit_new;
-        
-
-        //////////////////////////////////////////////////
-
-        $combine_set=combine_massives($info_massive_set);
-        $alternate_set=make_alternate($combine_set,$augment,$source,$debug);
-        
-        $combine_word_sandhi_set=$alternate_set['sandhi'];
-        $combine_word_nosandhi_set=$alternate_set['no_sandhi'];
-
-        //////
-
-        $combine_anit=combine_massives($info_massive_anit);
-        $alternate_anit=make_alternate($combine_anit,$augment,$source,$debug);
-
-        $combine_word_sandhi_anit=$alternate_anit['sandhi'];
-        $combine_word_nosandhi_anit=$alternate_anit['no_sandhi'];
-
-    }
-
-    
-        $ch=count($combine_word_sandhi_set);
-
-        /*
-        echo "<HR><BR>";
-        echo "combine_word_sandhi_set:<BR>CH: $ch<BR>";
-       
-        print_r($combine_word_sandhi_set);
-
-        echo "<BR><HR>";
-
-
-        echo "<HR><BR>";
-        echo "info_massive_set 7477:<BR>CH: $ch<BR>";
-       
-        print_r($info_massive_set);
-
-        echo "<BR><HR>";
-
-        echo "<HR><BR>";
-        echo "massive_search:<BR>";
-       
-        print_r($massive_search);
-
-        echo "<BR><HR>";
-        */
-
-    $info_massive_set2=$massive_search;
-
-    for($i=0;$i<count($info_massive_set2);$i++)
-    {
-        
-      
-        if($combine_word_sandhi_set[$ch-1])
-        {
-            if($info_massive_set2[$i]!="|a|")
-            {
-               // echo "noaugment here<BR>";
-                $info_massive_set2[$i][0]=$combine_word_sandhi_set[$ch-1];
-            }
-            else
-            {
-                $ch++;
-                $info_massive_set2[$i]=array("|a|");
-
+            // Добавление массивов поиска в массив перед обработкой
+            foreach ($massive_search as $i => $search_item) {
+                $info_massive_before[$i + 1] = $search_item;
             }
 
-        }
-        $ch--;
-    }
-    /*
-    echo "<HR><BR>";
-    echo "info_massive_set2:<BR>";
-   
-    print_r($info_massive_set2);
-
-    echo "<HR>";
-*/
-    $info_massive_set=$info_massive_set2;
-
-    $ch=count($combine_word_sandhi_anit);
-
-    /*
-    for($i=0;$i<count($massive_search);$i++)
-    {
-        
-        $info_massive_anit2[$i]=$massive_search[$i];
-        if($combine_word_sandhi_anit[$ch-1])
-        {
-            $info_massive_anit2[$i][0]=$combine_word_sandhi_anit[$ch-1];
-        }
-        $ch--;
-    }
-    */
-    $info_massive_anit2=$massive_search;
-
-    for($i=0;$i<count($info_massive_anit2);$i++)
-    {
-        
-      
-        if($combine_word_sandhi_set[$ch-1])
-        {
-            if($info_massive_anit2[$i]!="|a|")
-            {
-               // echo "noaugment here<BR>";
-                $info_massive_anit2[$i][0]=$combine_word_sandhi_set[$ch-1];
-            }
-            else
-            {
-                $ch++;
-                $info_massive_anit2[$i]=array("|a|");
-
+            // Проверка, если массивы поиска не пусты
+            foreach ($massive_search as $search_item) {
+                if ((empty($search_item[0]) && empty($search_item['endings']))) {
+                    $no_stop = 0;
+                    break;
+                }
             }
 
-        }
-        $ch--;
-    }
-    
-    $info_massive_anit=$info_massive_anit2;
-
-    //////////////////////SETNOST/////////////////////
-
-    //$setnost=make_setnost($info_massive,$source);
-    //$info_massive_set=$setnost['set'];
-    //$info_massive_anit=$setnost['anit'];
-
-    //////////////////////////////////////////////////
-
-    /////////////////////////DELETE///////////////////
-/*
-    echo "<HR><BR>";
-        echo "info_massive_set 0:<BR>";
-       
-        print_r($info_massive_set);
-
-        echo "<BR><HR>";
-    */
-    
-    $info_massive_set=Change_in_Suffixes($info_massive_before,$info_massive_set)[0];
-    $info_massive_set_rgveda=Change_in_Suffixes($info_massive_before,$info_massive_set)[1];
-    $comments_set=Change_in_Suffixes($info_massive_before,$info_massive_set)[2];
-/*
-    echo "<HR><BR>";
-        echo "info_massive_set Change_in_Suffixes:<BR>";
-       
-        print_r($info_massive_set);
-
-        echo "<BR><HR>";
- */
-    $info_massive_anit=Change_in_Suffixes($info_massive_before,$info_massive_anit)[0];
-    $info_massive_anit_rgveda=Change_in_Suffixes($info_massive_before,$info_massive_anit)[1];
-    $comments_anit=Change_in_Suffixes($info_massive_before,$info_massive_anit)[2];
-    
-
-
-  /////
- //echo "<HR>FLAG_STOP:$FLAG_STOP<hr>";
-
-    //////////////////////SANDHI/////////////////////
-    if(!$FLAG_STOP)
-    {
-
-        $sandhi_string_set=Sandhi_String_From_Massive($info_massive_set,$augment,$postgment);
-
-        if($info_massive_set[0]=="|a|")
-        {
-            $augment="|a|";
-        }
-/*
-        echo "<HR><BR>";
-        echo "Sandhi_string_set 0:<BR>";
-        echo "ARGS:"; print_r($info_massive_set); echo "Augment,Postgment: $augment,$postgment <BR><BR>";
-        print_r($sandhi_string_set);
-
-        echo "<BR><HR>";
-*/
-
-        $sandhi_string_anit=Sandhi_String_From_Massive($info_massive_anit,$augment,$postgment);
-        $sandhi_string_set_rgveda=Sandhi_String_From_Massive($info_massive_set_rgveda,$augment,$postgment);
-        $sandhi_string_anit_rgveda=Sandhi_String_From_Massive($info_massive_anit_rgveda,$augment,$postgment);
-
-        //echo "sdfsdf".$sandhi_string_set;
-
-        //SANDHI HERE2
-        
-        if($sandhi_string_set)
-        {
-            //echo "Itog1: ".$sandhi_string_set."<BR>";
-            $itog_sandhi1=simple_sandhi($sandhi_string_set,$info_massive_before[0][0],"",0);
-            $itog1=$itog_sandhi1[0];
-            $itog1_emeno=$itog_sandhi1[1];
-        }
-
-        if($sandhi_string_anit&&$sandhi_string_anit!=$sandhi_string_set)
-        {
-            //echo "Itog2: ".$sandhi_string_anit."<BR>";
-            $itog_sandhi2=simple_sandhi($sandhi_string_anit,$info_massive_before[0][0],"",0);
-            $itog2=$itog_sandhi2[0];
-            $itog2_emeno=$itog_sandhi2[1];
-        }
-
-        if($sandhi_string_set_rgveda)
-        {
-            //echo "Itog3: ".$sandhi_string_set_rgveda."<BR>";
-            $itog_sandhi3=simple_sandhi($sandhi_string_set_rgveda,$info_massive_before[0][0],"",0);
-            $itog3=$itog_sandhi3[0];
-            $itog3_emeno=$itog_sandhi3[1];
-        }
-
-        if($sandhi_string_anit_rgveda&&$sandhi_string_anit_rgveda!=$sandhi_string_set_rgveda)
-        {
-            //echo "Itog4: ".$sandhi_string_anit_rgveda."<BR>";
-            $itog_sandhi4=simple_sandhi($sandhi_string_anit_rgveda,$info_massive_before[0][0],"",0);
-            $itog4=$itog_sandhi4[0];
-            $itog4_emeno=$itog_sandhi4[1];
-        }
-        
-        if($itog1==$itog2)
-        {
-            $result[0][0]=$sandhi_string_set;
-            $result[0][1]=$itog1;
-            $result[0][2]=$itog1_emeno;
-
-          
-        }
-        else
-        {
-            $result[0][0]=$sandhi_string_set;
-            $result[0][1]=$itog1;
-            $result[0][2]=$itog1_emeno;
-
-            $result[1][0]=$sandhi_string_anit;
-            $result[1][1]=$itog2;
-            $result[1][2]=$itog2_emeno;
-
-            
-        }
-
-        
-        if($itog3||$itog4)
-        {
-
-            if($itog3==$itog4)
-            {
-                $result[2][0]=$sandhi_string_set_rgveda;
-                $result[2][1]=$itog3;
-                $result[2][2]=$itog3_emeno;
-
-            
+            // Очистка массива поиска от ненужных элементов
+            $massive_search_new = [];
+            foreach ($massive_search as $search_item) {
+                if ($search_item[0] !== "|" || $search_item[7] !== "-") {
+                    $massive_search_new[] = $search_item;
+                }
             }
-            else
-            {
-                $result[2][0]=$sandhi_string_set_rgveda;
-                $result[2][1]=$itog3;
-                $result[2][2]=$itog3_emeno;
+            $massive_search = $massive_search_new;
 
-                $result[3][0]=$sandhi_string_anit_rgveda;
-                $result[3][1]=$itog4;
-                $result[3][2]=$itog4_emeno;
-
-                
+            // Если массивы поиска пусты, устанавливаем флаг остановки
+            if ($no_stop == 0) {
+                $FLAG_STOP = 1;
             }
 
-        }
+            if (!$FLAG_STOP) {
+                // Генерация setnost
+                $setnost = make_setnost($massive_search, $source);
+                $info_massive_set = $setnost['set'];
+                $info_massive_anit = $setnost['anit'];
 
-    }
-    else
-    {
-            $result[0]="STOP";
-    }
+                // Склейка "i" для чередования в set
+                $info_massive_set_new = [];
+                $c = 1;
+                foreach ($info_massive_set as $i => $set_item) {
+                    if ($set_item[0] == "|i|" || $set_item[0] == "|ī|") {
+                        $info_massive_set_new[$i - $c][0] .= $set_item[0];
+                        $c++;
+                    } else {
+                        $info_massive_set_new[] = $set_item;
+                    }
+                }
+                $info_massive_set = $info_massive_set_new;
 
-    /*
-    echo "<HR><BR>";
-    echo "RESULT 0:<BR>";
-    print_r($result[0]);
+                // Склейка "i" для чередования в anit
+                $info_massive_anit_new = [];
+                $c = 1;
+                foreach ($info_massive_anit as $i => $anit_item) {
+                    if ($anit_item[0] == "|i|" || $anit_item[0] == "|ī|") {
+                        $info_massive_anit_new[$i - $c][0] .= $anit_item[0];
+                        $c++;
+                    } else {
+                        $info_massive_anit_new[] = $anit_item;
+                    }
+                }
+                $info_massive_anit = $info_massive_anit_new;
 
-    echo "<BR><HR>";
-*/
-       // $result[2]=$combine_word_nosandhi;
-        $result[4][0]=$info_massive_before;
-        $result[4][1]=$info_massive;
-        $result[4][2]=$info_massive_set;
-        $result[4][3]=$info_massive_anit;
-        $result[4][4]=$info_massive_set_rgveda;
-        $result[4][5]=$info_massive_anit_rgveda;
-        $result[4][6]=$comments_set;
-        $result[4][7]=$comments_anit;
-        $result['string']=$str;
+                    // Объединение и чередование set
+                    $combine_set = combine_massives($info_massive_set);
+                    $alternate_set = make_alternate($combine_set, $augment, $source, $debug);
+                    $combine_word_sandhi_set = $alternate_set['sandhi'];
+                    $combine_word_nosandhi_set = $alternate_set['no_sandhi'];
 
-/*
-        echo "<HR><BR>";
-    echo "RESULT CHEREDOVATEL:<BR>";
-    print_r($result);
+                    // Объединение и чередование anit
+                    $combine_anit = combine_massives($info_massive_anit);
+                    $alternate_anit = make_alternate($combine_anit, $augment, $source, $debug);
 
-    echo "<BR><HR>";
-*/
-        return $result;
+                    $combine_word_sandhi_anit = $alternate_anit['sandhi'];
+                    $combine_word_nosandhi_anit = $alternate_anit['no_sandhi'];
 
-        
-
-
-}
-
-function check_setnost($mool,$suffix,$is_suffix,$second_is_suffix,$special_rules,$source,$suffix_steam)
-{
-    
-    $dimensions_mool = dimensions($mool, "smth", "somenthing", 1, 0, 0,"");  //ai & au будут отображаться отдельными символами
-    $dimensions_mool_array = dimensions_array($dimensions_mool);
-
-    //print_r($dimensions_mool_array);
-    //echo "<BR>";
-
-    $dlina_kornya = strlen($dimensions_mool[1]);
-    //echo "DLINA: $dlina_kornya<BR>";
-
-    if($dimensions_mool_array[$dlina_kornya - 1][0]=="|")
-    {
-        if($dimensions_mool_array[$dlina_kornya - 2][0]=="|")
-        {
-            $sdvig=3;
-        }
-        else
-        {
-            $sdvig=2;
-        }
-    }
-    else
-    {
-        $sdvig=1;
-    }
-
-    $mool_last_letter = $dimensions_mool_array[$dlina_kornya - $sdvig][0];    
-    $mool_last_letter2 = $dimensions_mool_array[$dlina_kornya - $sdvig-1][0];
-    $mool_last_cons = $dimensions_mool_array[$dlina_kornya - $sdvig][1];     
-    $mool_last_vzryv = $dimensions_mool_array[$dlina_kornya - $sdvig][2];
-    $seek_last_letter = seeking_1_bukva($mool_last_letter, 0);
-
-    //Сетность
-
-    //echo "<BR>MOOL LAST LETTER".$mool_last_letter." cons:".$mool_last_cons."<BR>";
-
-    //Суффиксы сетные, если оканчиваются на согласную
-
-    //echo "<BR>IS SUFFIX $second_is_suffix source $source SUFFIX $suffix<BR>";
-
-    if ($seek_last_letter[1] == "C" || $mool_last_cons == "C" || ($is_suffix==3&&($mool_last_letter == "e" || $mool_last_letter == "o" || $mool_last_letter == "āu" 
-    || $mool_last_letter == "āi" || ($mool_last_letter2 == "a" && $mool_last_letter == "u") || ($mool_last_letter2 == "a" && $mool_last_letter == "i")))) 
-    {       
-         
-        
-        $first_letter_suffix = mb_substr($suffix, 0, 1);
-
-        //echo "Mool last:$mool_last_letter Mool last2:$mool_last_letter2 Suff:$first_letter_suffix<BR><BR>";
-
-        $FLAG_NEED_SET = 0;
-        if ($first_letter_suffix == "s" || $first_letter_suffix == "t") {
-            $FLAG_NEED_SET = 1;
-        }
-
-        //if($verb_setnost=="0"){$verb_setnost=" <b>в языке такой формы не встречается</b>";}
-        
-    }
-
-    //PeF
-    //-i- перед (1)-se : √jn̥̄, √tn̥, √uøh, √bhṛ, √bn̥dh, √uøc, √śap, √sah, √uøp 1, 2
-    if(($source=="jn̥̄"||$source=="tn̥"||$source=="uØh"||$source=="bhṛ"||$source=="bn̥dh"||$source=="uØc"||$source=="śap"||$source=="sah"||($source=="uØp"&&$omonim==1)||($source=="uØp"&&$omonim==2))
-    &&($suffix=="se")
-    &&$second_is_suffix==3
-    &&$suffix_steam=="PeF")
-    {
-        $FLAG_NEED_SET_ENDINGS = 1;
-    }
-
-
-
-    //-i- перед (2)-tha : √uøkṣ, √øs, √ruh, √ruj, √kṛt 1, 2, √kṣip, √tṛd, √vid 2, √viś, √sṛj, √rudh 1, 2, √duh, √druh, √ṛ
-    if(($source=="uØkṣ"||$source=="Øs"||$source=="ruh"||$source=="ruj"||($source=="kṛt"&&$omonim==1)||($source=="kṛt"&&$omonim==2)||$source=="kṣip"||$source=="tṛd"
-    ||($source=="vid"&&$omonim==2)||$source=="viś"||$source=="sṛj"||($source=="rudh"&&$omonim==1)||($source=="rudh"&&$omonim==2)||$source=="duh"||$source=="druh"
-    ||$source=="ṛ")
-    &&($suffix=="tha")
-    &&$second_is_suffix==3
-    &&$suffix_steam=="PeF")
-    {
-        $FLAG_NEED_SET_ENDINGS = 1;
-    }
-
-     //-i- перед (2)-tha : √bhū (вар.), √uøc (вар.)
-     if(($source=="bhū"||$source=="uØc")
-    &&($suffix=="tha")
-    &&$second_is_suffix==3
-    &&$suffix_steam=="PeF")
-    {
-        $FLAG_NEED_SET_ENDINGS_VAR = 1;
-    }
-
-    //-i- перед (1)-va, (1)-vahe, (1)-ma, (1)-mahe : √uøc, √sad, √bhū, √uød, √sac, √yup, √øs, √cṝ, √pat, √hn̥, √uøs, √ym̥, √dāś, √śak, √vand, √hiṃs, √ṛ, √sūd
-    if(($source=="uØc"||$source=="sad"||$source=="bhū"||$source=="uØd"||$source=="sac"||$source=="yup"||$source=="Øs"||$source=="cṝ"||$source=="pat"
-    ||$source=="hn̥"||$source=="uØs"||$source=="ym̥"||$source=="dāś"||$source=="śak"||$source=="vand"||$source=="hiṃs"||$source=="ṛ"||$source=="sūd")
-    &&($suffix=="va"||$suffix=="vahe"||$suffix=="ma"||$suffix=="mahe")
-    &&$second_is_suffix==3
-    &&$suffix_steam=="PeF")
-    {
-        $FLAG_NEED_SET_ENDINGS = 1;
-    }
-
-
-    //PrS 2
-    //√an, √rud, √vm̥̄, √śuc, √śuøṣ, √suøp •	-i- перед (2)-mi, (2)-si, (2)-ti : 
-    if(($source=="an"||$source=="rud"||$source=="vm̥̄"||$source=="suØp"||$source=="śuØṣ")
-    &&($suffix=="mi"||$suffix=="si"||$suffix=="ti")
-    &&$second_is_suffix==3
-    &&$special_rules==2)
-    {
-        $FLAG_NEED_SET_ENDINGS = 1;
-    }
-
-    //√īś (вар.), √jakṣ (вар.), √ym̥ (вар.) •	-i- перед (2)-mi, (2)-si, (2)-ti : 
-    if(($source=="īś"||$source=="jakṣ"||$source=="ym̥")
-    &&($suffix=="mi"||$suffix=="si"||$suffix=="ti")
-    &&$second_is_suffix==3
-    &&$special_rules==2)
-    {
-           $FLAG_NEED_SET_ENDINGS_VAR = 1;
-    }
-
-    //•	-i- перед (1)-sva : √īḍ, √īś, √jn̥̄, √vas, √śam
-    if(($source=="īḍ"||$source=="īś"||$source=="jn̥̄"||$source=="vas"||$source=="śam")
-    &&($suffix=="sva")
-    &&$second_is_suffix==3
-    &&$special_rules==2)
-    {
-        $FLAG_NEED_SET_ENDINGS = 1;
-    }
-
-    //•	-i- перед (1)-hi, (2)-tu : √rud, √śnath, √stan
-    if(($source=="rud"||$source=="śnath"||$source=="stan")
-    &&($suffix=="hi"||$suffix=="tu")
-    &&$second_is_suffix==3
-    &&$special_rules==2)
-    {
-        $FLAG_NEED_SET_ENDINGS = 1;
-    }
-
-     //•	-i- перед (1)-hi, (2)-tu : √suøp (вар.)
-     if(($source=="suØp")
-     &&($suffix=="hi"||$suffix=="tu")
-     &&$second_is_suffix==3
-     &&$special_rules==2)
-     {
-         $FLAG_NEED_SET_ENDINGS_VAR = 1;
-     }
-
-
-     //•	-ī- перед (2)-mi, (2)-si, (2)-ti : √m̥̄, √tu, √brū, √ru 1, √stu
-     if(($source=="m̥̄"||$source=="tu"||($source=="ru"&&$omonim==1)||$source=="brū"||$source=="stu")
-     &&($suffix=="mi"||$suffix=="si"||$suffix=="ti")
-     &&$second_is_suffix==3
-     &&$special_rules==2)
-     {
-         $FLAG_NEED_SET_ENDINGS_LONG = 1;
-     }
- 
-
-    //√an, √m̥̄, √kṝ 2, √brū, √ras, √rud, √vm̥̄, √śuøṣ
-    if(($source=="an"||$source=="m̥̄"||($source=="kṝ"&&$omonim==2)||$source=="brū"||$source=="ras"||$source=="rud"||$source=="vm̥̄"||$source=="śuØṣ")
-    &&($suffix=="t"||$suffix=="s")
-    &&$second_is_suffix==3
-    &&$special_rules==2)
-    {
-        $FLAG_NEED_SET_ENDINGS_LONG = 1;
-    }
-
-    //√øs (вар.)
-    if(($source=="Øs")&&($suffix=="t"||$suffix=="s")&&$second_is_suffix==3&&$special_rules==2)
-    {
-        $FLAG_NEED_SET_ENDINGS_LONG_VAR = 1;
-    }
-
-    //•	-ī- перед (1)-sva : √m̥̄, √śam
-    if(($source=="m̥̄"||$source=="śam")
-    &&($suffix=="sva")
-    &&$second_is_suffix==3
-    &&$special_rules==2)
-    {
-        $FLAG_NEED_SET_ENDINGS_LONG = 1;
-    }
-
-    //•	-ī- перед (2)-hi, (2)-tu : √brū
-    if(($source=="brū")
-    &&($suffix=="hi"||$suffix=="tu")
-    &&$second_is_suffix==3
-    &&$special_rules==2)
-    {
-        $FLAG_NEED_SET_ENDINGS_LONG = 1;
-    }
-
-    $result['need_verb_setnost']=$FLAG_NEED_SET;
-    $result['need_ending_setnost_long_var']=$FLAG_NEED_SET_ENDINGS_LONG_VAR;
-    $result['need_ending_setnost_long']=$FLAG_NEED_SET_ENDINGS_LONG;
-    $result['need_ending_setnost']=$FLAG_NEED_SET_ENDINGS;
-    $result['need_ending_setnost_var']=$FLAG_NEED_SET_ENDINGS_VAR;
-    return $result;
-}
-
-function setnost_letter($mool,$suffix,$is_suffix,$second_is_suffix,$verb_setnost,$suffix_steam,$query,$special_rules,$source)
-{
-  
-   $check_setnost=check_setnost($mool,$suffix,$is_suffix,$second_is_suffix,$special_rules,$source,$suffix_steam);
-      
-    if($check_setnost['need_verb_setnost'])
-    {
-        if($verb_setnost=="0")
-        {
-            $setnost="STOP";
-        }
-        else
-        {
-
-            if($verb_setnost!="s"&&$verb_setnost!="a"&&$verb_setnost!="v")
-            {
-                
-                switch($suffix_steam)
-                {
-                    case "FuS":
-                        switch($verb_setnost)
-                        {
-                            case "v1":
-                                $setnost="v";
-                                break;
-
-                            case "v2":
-                                $setnost="s";
-                                break;
-
-                            case "v3":
-                                $setnost="s";
-                                break;
-
-                            case "v4":
-                                $setnost="v";
-                                break;
-
-                            case "v5":
-                                if($query==1)
-                                {
-                                    $setnost="a";
-                                }
-                                elseif($query==2)
-                                {
-                                    $setnost="s";
-                                }
-                                break;
-            
+                    // Обработка info_massive_set2
+                $ch = count($combine_word_sandhi_set);
+                $info_massive_set2 = $massive_search;
+                foreach ($info_massive_set2 as $i => $set_item) {
+                    if (isset($combine_word_sandhi_set[$ch - 1])) {
+                        if ($set_item != "|a|") {
+                            $set_item[0] = $combine_word_sandhi_set[$ch - 1];
+                        } else {
+                            $ch++;
+                            $set_item = ["|a|"];
                         }
-                        break;
-                    case "DS":
-                        switch($verb_setnost)
-                        {
-                            case "v1":
-                                    $setnost="v";
-                                    break;
-        
-                            case "v2":
-                                    $setnost="s";
-                                    break;
-        
-                            case "v3":
-                                    $setnost="s";
-                                    break;
-        
-                            case "v4":
-                                    $setnost="a";
-                                    break;
-        
-                            case "v5":
-                                if($query==1)
-                                {
-                                    $setnost="a";
-                                }
-                                elseif($query==2)
-                                {
-                                    $setnost="s";
-                                }
-                                    break;
-                
-                        }
-                        break;
+                    }
+                    $ch--;
+                }
+                $info_massive_set = $info_massive_set2;
 
-                    case "PaPePS":
-                        switch($verb_setnost)
-                        {
-                                case "v1":
-                                        $setnost="a";
-                                        break;
-            
-                                case "v2":
-                                        $setnost="v";
-                                        break;
-            
-                                case "v3":
-                                        $setnost="a";
-                                        break;
-            
-                                case "v4":
-                                        $setnost="a";
-                                        break;
-            
-                                case "v5":
-                                    if($query==1)
-                                    {
-                                        $setnost="a";
-                                    }
-                                    elseif($query==2)
-                                    {
-                                        $setnost="s";
-                                    }
-                                        break;
-                    
+                // Обработка info_massive_anit2
+                $ch = count($combine_word_sandhi_anit);
+                $info_massive_anit2 = $massive_search;
+                foreach ($info_massive_anit2 as $i => $anit_item) {
+                    if (isset($combine_word_sandhi_anit[$ch - 1])) {
+                        if ($anit_item != "|a|") {
+                            $anit_item[0] = $combine_word_sandhi_anit[$ch - 1];
+                        } else {
+                            $ch++;
+                            $anit_item = ["|a|"];
                         }
-                        break;
-                    case "G":
-                        switch($verb_setnost)
-                        {
-                                case "v1":
-                                            $setnost="v";
-                                            break;
-                
-                                case "v2":
-                                            $setnost="v";
-                                            break;
-                
-                                case "v3":
-                                            $setnost="v";
-                                            break;
-                
-                                case "v4":
-                                            $setnost="a";
-                                            break;
-                
-                                case "v5":
-                                    if($query==1)
-                                    {
-                                        $setnost="a";
-                                    }
-                                    elseif($query==2)
-                                    {
-                                        $setnost="s";
-                                    }
-                                            break;
+                    }
+                    $ch--;
+                }
+                $info_massive_anit = $info_massive_anit2;
+            }
+            
+
+                // Обработка info_massive_set2
+                $ch = count($combine_word_sandhi_set);
+                $info_massive_set2 = $massive_search;
+
+                for ($i = 0; $i < count($info_massive_set2); $i++) {
+                    if (isset($combine_word_sandhi_set[$ch - 1])) {
+                        if ($info_massive_set2[$i] != "|a|") {
+                            $info_massive_set2[$i][0] = $combine_word_sandhi_set[$ch - 1];
+                        } else {
+                            $ch++;
+                            $info_massive_set2[$i] = array("|a|");
+                        }
+                    }
+                    $ch--;
+                }
+                $info_massive_set = $info_massive_set2;
+
+                // Обработка info_massive_anit2
+                $ch = count($combine_word_sandhi_anit);
+                $info_massive_anit2 = $massive_search;
+
+                for ($i = 0; $i < count($info_massive_anit2); $i++) {
+                                        
+                    if (isset($combine_word_sandhi_anit[$ch - 1])) {
                         
-                                    }
-                                    break;
-                                    
+                        if ($info_massive_anit2[$i] != "|a|") {
+                                
+                            $info_massive_anit2[$i][0] = $combine_word_sandhi_anit[$ch - 1];
+                                                        } 
+                        else {
                             
-                    default:
-                                    switch($verb_setnost)
-                                    {
-                                        case "v1":
-                                            $setnost="v";
-                                            break;
-                
-                                        case "v2":
-                                            $setnost="v";
-                                            break;
-                
-                                        case "v3":
-                                            $setnost="v";
-                                            break;
-                
-                                        case "v4":
-                                            $setnost="a";
-                                            break;
-                
-                                        case "v5":
-                                            if($query==1)
-                                            {
-                                                $setnost="a";
-                                            }
-                                            elseif($query==2)
-                                            {
-                                                $setnost="s";
-                                            }
-                                            break;
-                        
-                                    }
-                                    break;
-                                    
+                            $ch++;
+                            $info_massive_anit2[$i] = array("|a|");
+                                                        
+                            }
+                    }
+                                        $ch--;
                 }
-            }
-            else
-            {
-                $setnost=$verb_setnost;
-            }
+                
+                $info_massive_anit = $info_massive_anit2;
 
-        }
+            //////////////////////SETNOST/////////////////////
 
-    }
-
-    //Применение специальных правил сетности окончаний
-
-    if($check_setnost['need_ending_setnost_long'])
-    {
-        $setnost="ss";
-    }
-
-    if($check_setnost['need_ending_setnost_long_var'])
-    {
-        $setnost="vv";
-    }
-
-    if($check_setnost['need_ending_setnost_var'])
-    {
-        $setnost="v";
-    }
-
-    if($check_setnost['need_ending_setnost'])
-    {
-        $setnost="s";
-    }
+                    // Изменение суффиксов
+                        list($info_massive_set, $info_massive_set_rgveda, $comments_set) = Change_in_Suffixes($info_massive_before, $info_massive_set);
+                        list($info_massive_anit, $info_massive_anit_rgveda, $comments_anit) = Change_in_Suffixes($info_massive_before, $info_massive_anit);
 
 
-    return $setnost;
+                        //////////////////////SANDHI/////////////////////
+                        if (!$FLAG_STOP) {
+                        // Генерация строк Sandhi
+                        $sandhi_string_set = Sandhi_String_From_Massive($info_massive_set, $augment, $postgment);
+                        if ($info_massive_set[0] == "|a|") {
+                            $augment = "|a|";
+                        }
+                        $sandhi_string_anit = Sandhi_String_From_Massive($info_massive_anit, $augment, $postgment);
+                        $sandhi_string_set_rgveda = Sandhi_String_From_Massive($info_massive_set_rgveda, $augment, $postgment);
+                        $sandhi_string_anit_rgveda = Sandhi_String_From_Massive($info_massive_anit_rgveda, $augment, $postgment);
+                
+                        // Применение функции simple_sandhi и сохранение результатов
+                        //echo "Debug sandhi<BR>";
+                        //print_r($info_massive_before);
+
+                        if($info_massive_before[1]!="|a|")
+                        {
+                            $p_before_mool=$info_massive_before[1]['p_before_mool'];
+                        }
+                        else
+                        {
+                            $p_before_mool=$info_massive_before[2]['p_before_mool'];
+                        }
+
+                        if ($sandhi_string_set) {
+                            list($sandhi_combined_set, $sandhi_combined_set_emeno) = simple_sandhi($sandhi_string_set, $info_massive_before[0][0], "", 0, $p_before_mool);
+                        }
+                        if ($sandhi_string_anit && $sandhi_string_anit != $sandhi_string_set) {
+                            list($sandhi_combined_anit, $sandhi_combined_anit_emeno) = simple_sandhi($sandhi_string_anit, $info_massive_before[0][0], "", 0, $p_before_mool);
+                        }
+                        if ($sandhi_string_set_rgveda) {
+                            list($sandhi_combined_set_rgveda, $sandhi_combined_set_rgveda_emeno) = simple_sandhi($sandhi_string_set_rgveda, $info_massive_before[0][0], "", 0, $p_before_mool);
+                        }
+                        if ($sandhi_string_anit_rgveda && $sandhi_string_anit_rgveda != $sandhi_string_set_rgveda) {
+                            list($sandhi_combined_anit_rgveda, $sandhi_combined_anit_rgveda_emeno) = simple_sandhi($sandhi_string_anit_rgveda, $info_massive_before[0][0], "", 0, $p_before_mool);
+                        }
+                
+                        // Формирование результата
+                        $result = [];
+                
+                        if (isset($sandhi_combined_set) && $sandhi_combined_set == $sandhi_combined_anit) {
+                            $result[0] = [$sandhi_string_set, $sandhi_combined_set, $sandhi_combined_set_emeno];
+                        } else {
+                            $result[0] = [$sandhi_string_set, $sandhi_combined_set, $sandhi_combined_set_emeno];
+                            if (isset($sandhi_combined_anit)) {
+                                $result[1] = [$sandhi_string_anit, $sandhi_combined_anit, $sandhi_combined_anit_emeno];
+                            }
+                        }
+                
+                        if (isset($sandhi_combined_set_rgveda) || isset($sandhi_combined_anit_rgveda)) {
+                            if (isset($sandhi_combined_set_rgveda) && $sandhi_combined_set_rgveda == $sandhi_combined_anit_rgveda) {
+                                $result[2] = [$sandhi_string_set_rgveda, $sandhi_combined_set_rgveda, $sandhi_combined_set_rgveda_emeno];
+                            } else {
+                                $result[2] = [$sandhi_string_set_rgveda, $sandhi_combined_set_rgveda, $sandhi_combined_set_rgveda_emeno];
+                                if (isset($sandhi_combined_anit_rgveda)) {
+                                    $result[3] = [$sandhi_string_anit_rgveda, $sandhi_combined_anit_rgveda, $sandhi_combined_anit_rgveda_emeno];
+                                }
+                            }
+                        }
+                    
+                        // Дополнение результата дополнительной информацией
+                        $result[4] = [
+                            $info_massive_before,
+                            $info_massive,
+                            $info_massive_set,
+                            $info_massive_anit,
+                            $info_massive_set_rgveda,
+                            $info_massive_anit_rgveda,
+                            $comments_set,
+                            $comments_anit
+                        ];
+                    
+                        $result['string'] = $str;
+
+                    } else {
+                        $result[0] = "STOP";
+                    }
+            
+            return $result;
+
 }
 
-function make_setnost($info_massive,$source)
-{
-    
-    //DELETE INVISIBLE SUFFIXIES
-    $info_massive_origin=$info_massive;
-    $j=0;
-    for($i=0;$i<count($info_massive);$i++)
-    {
-        if($info_massive[$i][0]!="|")
-        {
-            $info_massive_new[]=$info_massive[$i];
-
-        }
-    
-    }
-
-  
-    $info_massive=$info_massive_new;
-
-    $something=combine_massives($info_massive_new);
-
-    for($i=0;$i<count($something);$i++)
-    {
-        $first=$something[$i][0][0];
-        $first_setnost=$something[$i][0][6];
-        $second=$something[$i][1][0];
-        $suffix_steam=$something[$i][1][9];
-        $suffix_ask=$something[$i][1][7];
-        $first_is_suffix=$something[$i][0][5];
-        $second_is_suffix=$something[$i][1][5];
-        $special_rules=$something[0][0][15];
-        
-
-        //echo "<BR>";
-        //print_r($something);
-        //echo $source;
-        //echo "<BR>".$something[0][0][5];
-        //echo "<BR>".$something[0][1][5];
-
-        $set=Setnost($first,$second,$first_is_suffix,$second_is_suffix,$first_setnost,$suffix_steam,$suffix_ask,$special_rules,$source)['setnost'];
-
-        //echo "SET: ".$set;
-
-        if($set=="s"||$set=="ss")
-        {
-            for($j=0;$j<count($info_massive);$j++)
-            {
-                if($info_massive[$j][0]==$first&&$info_massive[$j+1][0]==$second)
-                {
-                    $anit_massive[]=$j;
-                }
-   
-            }
-       
-           
-        }
-
-       
-
-        if($set=="v"||$set=="s"||$set=="ss"||$set=="vv")
-        {
-            for($j=0;$j<count($info_massive);$j++)
-            {
-                if($info_massive[$j][0]==$first&&$info_massive[$j+1][0]==$second)
-                {
-                    $set_massive[]=$j;
-                }
-   
-            }
-       
-           
-        }
-
-       // echo "<HR>$set<HR>";
-
-        if($set=="STOP")
-        {
-            $FLAG_STOP=1;
-        }
-
-    }
- 
-    for($k=0;$k<count($info_massive);$k++)
-    {
-        $flag=0;
-        for($j=count($set_massive)-1;$j>=0;$j--)
-        {
-                if($k==$set_massive[$j]) 
-                {
-                    $flag=1;
-                }
-        }
-        
-        $info_massive_set[]=$info_massive[$k];
-        if($flag==1)
-        {
-            if($set=="ss")
-            {
-                $info_massive_set[][0]="|ī|";
-            }
-            elseif($set=="vv")
-            {
-                $info_massive_set[][0]="|ī|";
-            }
-            else
-            {
-                $info_massive_set[][0]="|i|";
-            }
-        }
-
-    }
-
-    for($k=0;$k<count($info_massive);$k++)
-    {
-        $flag=0;
-        for($j=count($anit_massive)-1;$j>=0;$j--)
-        {
-                if($k==$set_massive[$j]) 
-                {
-                    $flag=1;
-                }
-        }
-        
-        $info_massive_anit[]=$info_massive[$k];
-        if($flag==1)
-        {
-            if($set=="ss")
-            {
-                $info_massive_anit[][0]="|ī|";
-            }
-            elseif($set=="vv")
-            {
-                $info_massive_anit[][0]="|ī|";
-            }
-            else
-            {
-                $info_massive_anit[][0]="|i|";
-            }
-        }
-
-    }
-    $s++;
-    
-    $result['set']=$info_massive_set;
-    $result['anit']=$info_massive_anit;
-
-    return $result;
-}
 
 function make_alternate($combine,$augment,$source,$debug)
 {
@@ -8411,156 +6276,109 @@ function combine_massives($massive)
 
 }
 
-function search_in_db($id,$where,$type)
-{
-  /*
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "sanskrit";
-    // Create connection
-    $connection = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-    if ($connection->connect_error) {
-        die("Connection failed: " . $connection->connect_error);
-    }
-    */
-    include "db.php";
-    
-          
-			$query_db = "SELECT * FROM $where where id=$id";
- 			$conn = mysqli_query($connection, $query_db);
- 			
-			if (mysqli_num_rows($conn) > 0) {
-				while ($res = mysqli_fetch_array($conn)) {
-					$verb_name=$res['name'];
-					$verb_omonim=$res['omonim'];
-					$verb_type_lat=$res['type'];
-					$verb_setnost=$res['setnost'];
-					$verb_pada=$res['pada'];
-                    $verb_prs=$res['prs'];
-                    $verb_aos=$res['aos'];
+class VerbCache {
+    private static $cache = [];
 
-					
-                    switch($verb_type_lat)
-					{
-						case "I":$verb_type=1;break;
-						case "II":$verb_type=2;break;
-						case "III":$verb_type=3;break;
-						case "IV":$verb_type=4;break;
-						default:$verb_type=0;break;
-					}
-					
-					$verb_change=$res['element'];
-					$verb_ryad=$res['ryad'];
-					
-                    $element=$res['element'];
-					$omonim=$res['omonim'];
-                    $query=$res['query'];
-                    $transform=$res['transform'];
-                    $steam=$res['lemma'];
-                    $lemma=$res['lemma'];
-                    $rule=$res['rule'];
-				
-                    
-				$omonim_text="";
-				if($omonim)
-				{
-					$omonim_text=" $omonim ";
-				}
-				
-				$adhoc=$res['adhoc'];
-				$adhoc_text="";
-				if($adhoc)
-				{
-					$adhoc_text="<BR>несам.: $adhoc ";
-				}
-										
-				}
-			}
-            else
-            {
-                echo "no result";
+    public static function search_in_db($id, $where, $type) {
+        // Создаем ключ для кэша
+        $cacheKey = "$where-$id-$type";
+        
+        // Проверяем, есть ли результат в кэше
+        if (isset(self::$cache[$cacheKey])) {
+            return self::$cache[$cacheKey];
+        }
+
+        include "db.php";
+
+        // Выполняем запрос к базе данных
+        $query_db = "SELECT * FROM $where WHERE id=$id";
+        $conn = mysqli_query($connection, $query_db);
+
+        if (mysqli_num_rows($conn) > 0) {
+            $res = mysqli_fetch_array($conn);
+
+            $verb_name = $res['name'];
+            $verb_omonim = $res['omonim'];
+            $verb_type_lat = $res['type'];
+            $verb_setnost = $res['setnost'];
+            $verb_pada = $res['pada'];
+            $verb_prs = $res['prs'];
+            $verb_aos = $res['aos'];
+            $verb_change = $res['element'];
+            $verb_ryad = $res['ryad'];
+            $element = $res['element'];
+            $omonim = $res['omonim'];
+            $query = $res['query'];
+            $transform = $res['transform'];
+            $steam = $res['lemma'];
+            $lemma = $res['lemma'];
+            $rule = $res['rule'];
+            $adhoc = $res['adhoc'];
+
+            // Преобразуем латинский тип в числовой тип
+            switch ($verb_type_lat) {
+                case "I":
+                    $verb_type = 1;
+                    break;
+                case "II":
+                    $verb_type = 2;
+                    break;
+                case "III":
+                    $verb_type = 3;
+                    break;
+                case "IV":
+                    $verb_type = 4;
+                    break;
+                default:
+                    $verb_type = 0;
             }
 
+            $omonim_text = $omonim ? " $omonim " : "";
+            $adhoc_text = $adhoc ? "<BR>несам.: $adhoc " : "";
 
-           if($type==1)
-           {
-            $query=0;
-            $transform='';
-            $lemma="VR";
-           }
+        } else {
+            echo "no result";
+            return [];
+        }
 
-           if($type==2)
-           {
-               // $substr=mb_substr($verb_name,-1,1);
-               // $cons=seeking_1_bukva($substr,0)[1];
+        // Обработка типа
+        if ($type == 1) {
+            $query = 0;
+            $transform = '';
+            $lemma = "VR";
+        }
+
+        if ($type == 2) {
+            $verb_setnost = 's';
+        }
                 
-               // if($cons=="C")
-               // {
-                    $verb_setnost='s';
-               // }
-              //  else
-               // {
-                  //  $verb_setnost='a'; 
-               // }
+        // Формирование результата
+        $result = [
+            $verb_name,   // 0
+            $verb_omonim, // 1
+            $verb_type,   // 2
+            $verb_change, // 3
+            $verb_ryad,   // 4
+            $type,        // 5
+            $verb_setnost,// 6
+            $query,       // 7
+            $transform,   // 8
+            $steam,       // 9
+            $verb_pada,   // 10
+            $element,     // 11
+            $verb_prs,    // 12
+            $verb_aos,    // 13
+            $lemma,       // 14
+            $rule         // 15
+        ];
 
-           }
-            
-            $result[0]=$verb_name;
-            $result[1]=$omonim;
-            $result[2]=$verb_type;
-            $result[3]=$verb_change;
-            $result[4]=$verb_ryad;
-            $result[5]=$type;
-            $result[6]=$verb_setnost;
-            $result[7]=$query;
-            $result[8]=$transform;
-            $result[9]=$steam;
-            $result[10]=$verb_pada;
-            $result[11]=$element;
-            $result[12]=$verb_prs;
-            $result[13]=$verb_aos;
-            $result[14]=$lemma;
-            $result[15]=$rule;
+        // Сохраняем результат в кэш
+        self::$cache[$cacheKey] = $result;
 
-    //}
-		
-    return $result;
+        return $result;
+    }
 }
 
-
-function Setnost($mool,$suffix,$is_suffix,$second_is_suffix,$verb_setnost,$suffix_steam,$query,$special_rules,$source)
-{
-    $mool=str_replace("|","",$mool);
-    $suffix=str_replace("|","",$suffix);
-
-    //echo "SOURC STEMA: $source";
-    
-    $check=check_setnost($mool,$suffix,$is_suffix,$second_is_suffix,$special_rules,$source,$suffix_steam)['need_verb_setnost'];
-    $check_end_setnost=check_setnost($mool,$suffix,$is_suffix,$second_is_suffix,$special_rules,$source,$suffix_steam)['need_ending_setnost'];
-    $check_end_setnost_var=check_setnost($mool,$suffix,$is_suffix,$second_is_suffix,$special_rules,$source,$suffix_steam)['need_ending_setnost_var'];
-    $check_end_setnost_long=check_setnost($mool,$suffix,$is_suffix,$second_is_suffix,$special_rules,$source,$suffix_steam)['need_ending_setnost_long'];
-    $check_end_setnost_long_var=check_setnost($mool,$suffix,$is_suffix,$second_is_suffix,$special_rules,$source,$suffix_steam)['need_ending_setnost_long_var'];
-
-   // echo "<BR>CHECK: $mool,$suffix itog: $check<BR>";
-
-    if($check)
-    {
-        $setnost=setnost_letter($mool,$suffix,$is_suffix,$second_is_suffix,$verb_setnost,$suffix_steam,$query,$special_rules,$source,$suffix_steam);
-        $result['setnost']=$setnost;
-    }
-
-    if($check_end_setnost_long||$check_end_setnost_long_var||$check_end_setnost||$check_end_setnost_var)
-    {
-        
-        $setnost=setnost_letter($mool,$suffix,$is_suffix,$second_is_suffix,$verb_setnost,$suffix_steam,$query,$special_rules,$source,$suffix_steam);
-        //echo "Применяются особые правила сетности для окончаний<BR><BR>";
-        $result['setnost']=$setnost;
-    }
-
-    return $result;
-}
 
 function Change_in_Suffixes($info_massive_before,$info_massive_set)
 {
@@ -9017,45 +6835,6 @@ function Change_in_Suffixes($info_massive_before,$info_massive_set)
     $result[3]=$comments;
     return $result;
 }
-
-function Sandhi_String_From_Massive($info_massive_set,$augment,$postgment)
-{
-        $sandhi_string_set="";
-        for($i=0;$i<count($info_massive_set);$i++)
-        {
-            $sandhi_string_set.=$info_massive_set[$i][0]."|"; 
-        }
-       
-        $sandhi_string_set=str_replace("||","|",$sandhi_string_set);
-        $sandhi_string_set=str_replace("||","|",$sandhi_string_set);
-        $sandhi_string_set=str_replace("Ø̄","",$sandhi_string_set);
-        $sandhi_string_set=str_replace("Ø","",$sandhi_string_set);
-        //$sandhi_string_set_rgveda=str_replace("||","|",$sandhi_string_set_rgveda);
-        //$sandhi_string_set_rgveda=str_replace("||","|",$sandhi_string_set_rgveda);
-        //$sandhi_string_set_rgveda=str_replace("||","|",$sandhi_string_set_rgveda);
-
-       
-        
-        if($augment&&$sandhi_string_set)
-        {
-            echo "<BR>AUGMENTS:::$augment $sandhi_string_set<BR><BR>";
-
-            if(mb_substr($sandhi_string_set,0,1)!="|")
-            {
-                $sandhi_string_set=$augment."".$sandhi_string_set.$postgment;
-            }
-            else
-            {
-                $sandhi_string_set=$augment."".$sandhi_string_set.$postgment;
-            }
-        }
-
-        $sandhi_string_set=str_replace("||","|",$sandhi_string_set);
-        $sandhi_string_set=str_replace("||","|",$sandhi_string_set);
-
-        return  $sandhi_string_set;
-}
-
 
 function mts($array_big,$array_small,$id,$command,$lico,$chislo,$pada,$full)
 {
@@ -9743,5 +7522,2277 @@ function manual_e($string,$mool_change)
     $change_later=array("E'",$mool_change,'', $e_2);
 
     return $change_later;
+}
+
+function AllChered($id,$command,$lico,$chislo,$pada,$debug_command,$debug_chered,$debug_table)
+{
+
+
+    $commandline=CommandLine($id,$command,$lico,$chislo,$pada,$debug_command);
+
+    if($debug_chered)
+    {
+
+        if($commandline[1])
+        {
+            echo "<BR>Залог Ubhayapada, есть несколько вариантов<BR>";
+        }
+    }
+
+    $augment=$commandline['augment'];
+    $augment_var=$commandline['augment_var'];
+    $postgment=$commandline['postgment'];
+    $source=$commandline['source'];
+
+    for($j=0;$j<count($commandline[0]);$j++)
+    {
+        $chered=cheredovatel($id,$commandline[0][$j][0],$augment,$postgment,$source,$debug_chered);
+
+        //echo "<HR>";
+        //print_r($chered[4][2]);
+        //echo "<HR>";
+        
+        
+        if($chered[0]!="STOP")
+        {
+
+            if($debug_table)
+            {
+                echo $chered['string'];
+                debug_table($chered[4][2]);
+
+                if($chered[4][3]!=$chered[4][2])
+                {
+                    debug_table($chered[4][3]);
+                }
+
+            }
+
+            for($i=0;$i<4;$i++)
+            {
+                if($chered[$i][0])
+                {
+                
+                   // echo "<BR>".$chered[$i][1]."i-1:".$chered[$i-1][1]."<BR>";
+
+                    if((mb_strpos($command,"IS")||mb_strpos($command,"DS"))&&!mb_strpos($command,"pPeS"))
+                    {
+                        $chered['string']="2√".$chered['string'];
+                    }
+                
+                    $itog['string'][]=$chered['string'];
+                    $itog['nosandhi'][]=$chered[$i][0];
+                    $itog['sandhi'][]=$chered[$i][1];
+                    $itog['rules'][]=$chered[$i][2];
+            
+
+                    if($debug_table)
+                    {
+                        
+                        echo "<BR>Result (without sandhi): ".$chered[$i][0]."<BR>";
+                        echo "Result (with sandhi): <b>".$chered[$i][1]."</b><BR>";
+                        if($chered[$i][2])
+                        {
+                            echo "Using Emeneau`s sandhi rules: ".$chered[$i][2];
+                        }
+                        echo"<HR>";
+                        //echo "Применили правила Эмено: ".$chered[4][7]."<HR>";
+                    }
+
+                }
+            }
+
+            if($augment_var)
+            {
+                $chered=cheredovatel($id,$commandline[0][$j][0],$augment_var,$postgment,$source,$debug_chered);
+                $command_massive=explode("-",$command);
+
+                if($debug_table)
+                {
+                    echo $chered['string'];
+                    debug_table($chered[4][2]);
+        
+                    if($chered[4][3]!=$chered[4][2])
+                    {
+                        debug_table($chered[4][3]);
+                    }
+
+                }
+
+             
+
+                for($i=0;$i<4;$i++)
+                {
+                    if($chered[$i][0])
+                    {
+                        
+                        if((mb_strpos($command,"IS")||mb_strpos($command,"DS"))&&!mb_strpos($command,"pPeS"))
+                        {
+                            $chered['string']="2√".$chered['string'];
+                        }
+                        
+                        if(!in_array($chered[$i][1],$itog['sandhi']))
+                        {
+                            $itog['string'][]=$chered['string'];
+                            $itog['nosandhi'][]=$chered[$i][0];
+                            $itog['sandhi'][]=$chered[$i][1];
+                            $itog['rules'][]=$chered[$i][2];
+                        }
+                        else
+                        {
+                            if($debug_table)
+                            {
+                                echo "Два одинаковых варианта объединим в один.<BR>";
+                            }  
+                        }
+
+
+                        if($debug_table)
+                        {
+                            
+                            echo "<BR>Итог без сандхи: ".$chered[$i][0]."<BR>";
+                            echo "Итог c сандхи: <b>".$chered[$i][1]."</b><BR>";
+                            if($chered[$i][2])
+                            {
+                                echo "Применили правила Эмено: ".$chered[$i][2];
+                            }
+                            echo"<HR>";
+                            //echo "Применили правила Эмено: ".$chered[4][7]."<HR>";
+                        }
+
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            $itog['string'][0]="Нет формы";
+            $itog['nosandhi'][0]="Нет формы";
+            $itog['sandhi'][0]="Нет формы";
+            $itog['rules'][0]="Нет формы";
+        }
+        
+    }
+
+    if($commandline[1])
+    {
+
+        $augment=$commandline['augment'];
+        $augment_var=$commandline['augment_var'];
+        $postgment=$commandline['postgment'];
+        for($j=0;$j<count($commandline[1]);$j++)
+        {
+            $chered=cheredovatel($id,$commandline[1][$j][1],$augment,$postgment,$source,$debug_chered);
+
+            if($chered[0]!="STOP")
+            {
+
+                $command_massive=explode("-",$command);
+
+                if($debug_table)
+                {
+                    echo $chered['string'];
+                    debug_table($chered[4][2]);
+
+                    if($chered[4][3]!=$chered[4][2])
+                    {
+                        debug_table($chered[4][3]);
+                    }
+
+                }
+
+                for($i=0;$i<4;$i++)
+                {
+                    if($chered[$i][0])
+                    {
+                        
+                        if((mb_strpos($command,"IS")||mb_strpos($command,"DS"))&&!mb_strpos($command,"pPeS"))
+                        {
+                            $chered['string']="2√".$chered['string'];
+                        }
+                        
+                        if(!in_array($chered[$i][1],$itog['sandhi']))
+                        {
+                            $itog['string'][]=$chered['string'];
+                            $itog['nosandhi'][]=$chered[$i][0];
+                            $itog['sandhi'][]=$chered[$i][1];
+                            $itog['rules'][]=$chered[$i][2];
+                        }
+                        else
+                        {
+                            if($debug_table)
+                            {
+                                echo "Два одинаковых варианта объединим в один.<BR>";
+                            }  
+                        }
+        
+                        if($debug_table)
+                        {
+
+                            echo "<BR>Result (without sandhi): ".$chered[$i][0]."<BR>";
+                            echo "Result (with sandhi): <b>".$chered[$i][1]."</b><BR>";
+                            if($chered[$i][2])
+                            {
+                                echo "Using Emeneau`s sandhi rules: ".$chered[$i][2];
+                            }
+                            echo "<HR>";
+                        }
+
+                    }
+                }
+
+                if($augment_var)
+                {
+                    $chered=cheredovatel($id,$commandline[1][$j][1],$augment_var,$postgment,$source,$debug_chered);
+                    $command_massive=explode("-",$command);
+
+                    if($debug_table)
+                    {
+                        echo $chered['string'];
+                        debug_table($chered[4][2]);
+
+                        if($chered[4][3]!=$chered[4][2])
+                        {
+                            debug_table($chered[4][3]);
+                        }
+
+                    }
+
+                    for($i=0;$i<4;$i++)
+                    {
+                        if($chered[$i][0])
+                        {
+                        
+                            if((mb_strpos($command,"IS")||mb_strpos($command,"DS"))&&!mb_strpos($command,"pPeS"))
+                            {
+                                $chered['string']="2√".$chered['string'];
+                            }
+                            
+                            $itog['string'][]=$chered['string'];
+                            $itog['nosandhi'][]=$chered[$i][0];
+                            $itog['sandhi'][]=$chered[$i][1];
+                            $itog['rules'][]=$chered[$i][2];
+            
+                            echo "<BR>Итог без сандхи: ".$chered[$i][0]."<BR>";
+                            echo "Итог c сандхи: <b>".$chered[$i][1]."</b><BR>";
+                            if($chered[$i][2])
+                            {
+                                echo "Применили правила Эмено: ".$chered[$i][2];
+                            }
+                            echo"<HR>";
+
+
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                $itog['string'][0]="Нет формы";
+                $itog['nosandhi'][0]="Нет формы";
+                $itog['sandhi'][0]="Нет формы";
+                $itog['rules'][0]="Нет формы";
+
+            }
+        }
+    }
+
+
+    $result['string']=$itog['string'];
+    $result['nosandhi']=$itog['nosandhi'];
+    $result['sandhi']=$itog['sandhi'];
+    $result['rules']=$itog['rules'];
+
+    return $result;
+
+}
+
+
+function CommandLine($id,$string,$lico,$chislo,$needpada,$debug)
+{
+    $massive=explode("-",$string);
+    $verb_info=VerbCache::search_in_db($id,'verbs',1);
+
+    //print_r($verb_info);
+
+    if($verb_info[10]=="Ā")
+    {
+        $verb_info[10]="A";
+    }
+  
+
+    if($needpada!='')
+    {
+
+        
+        if(mb_strpos($string,"-PS-")!=0)
+        {
+            $pada[0]="A";
+           
+        }
+        else
+        {
+            $pada[0]=$needpada;
+          
+        }
+
+        if($pada[0]!=$verb_info[10]&&$verb_info[10]!="U")
+        {
+            $pada[0]="No form (Залог запроса ".$pada[0]." и залог корня ".$verb_info[10]." не совпадают)";
+        }
+
+    }
+    else
+    {
+
+        if(mb_strpos($string,"-PS-")!=0)
+        {
+            $pada[0]="A";
+        }
+        else
+        {
+
+            if(VR($id)[10]=="U")
+            {
+                $pada[0]="P";
+                $pada[1]="A";
+            }
+            else
+            {
+                $pada[0]=VR($id)[10];
+            }
+
+        }
+
+    }
+
+    //print_r($pada);
+
+  
+   
+
+    for($j=0;$j<count($pada);$j++)
+    {
+        if($debug)
+        {
+            echo "Словоформа: <b>".$string."</b> Pada: <u>".$pada[$j]."</u><BR>";
+        }
+            
+    
+        for($i=0;$i<count($massive);$i++)
+        {
+                $ms=0;
+           
+               // echo "<hr>J:$j I:$i<hr>";
+                
+                switch($massive[$i])
+                { 
+                   
+                    case "VR":
+                        
+                        $massive_search[$ms][$j][]=$verb_info;
+                        
+                        break;
+                     
+                    case "AoS":
+
+                        //Пассив аориста образуется от AoS1 от любого корня
+                        //Прекатив Р. образуется от AoS1 от любого корня
+                        //Прекатив Ā. образуется от AoS4, AoS5, AoS6 (редко) класса от любого корня.
+                        
+                        if(mb_strpos($string,"AoP")||(mb_strpos($string,"Pk")&&$pada[$j]=="P"))
+                        {
+                            $verb_info[13]=1;
+                        }
+
+                        if((mb_strpos($string,"Pk")&&$pada[$j]=="A"))
+                        {
+                            $verb_info[13]="4,5,6";
+                        }
+
+                        $aos=AoS($massive[$i-1],$massive_search[0][$j][1][0],$verb_info[13],$massive_search[0][$j][0][0],$verb_info[1],$verb_info[2],$verb_info[3],$verb_info[4],$pada[$j],$debug);
+                        
+                        if(!$p_before_mool)
+                        {
+                            $p_before_mool=$aos['p_before_mool'];
+                        }
+
+                        //echo "P_BEFORE_MOOL AOS<BR>";
+                        //print_r($p_before_mool);
+                        //echo "<BR><BR>AAAAA:";
+                        //print_r($aos);
+
+                        if($aos[0])
+                        {
+
+                            $count_new_roots=0;
+                            $count_new_roots=count($aos[0]);
+                            //echo "COUNT NEW ROOTS: $count_new_roots<BR>";
+                            $count_massive=count($massive_search);
+                            //echo "COUNT MASSIVE SEARCH: $count_massive<BR>";
+                            
+                            $count_forms=0;
+                            //$count_forms=count($aos[1]);
+
+                            //print_r($massive_search);
+                            
+                            for($m=0;$m<$count_new_roots;$m++)
+                            {
+                                 $count_forms=$count_forms+count($aos[1][$m]);
+                            }
+                            
+                            //echo "COUNT SUFFIXIES: $count_forms<BR>";
+                        
+                            $variants=$count_new_roots*$count_massive;
+
+
+                            //echo "<BR>VARIANTS: $variants<BR><BR>";
+
+                            //DUPLICATE MASSIVES
+                            $counter=0;
+
+                            for($k=0;$k<$variants;$k++)
+                            {
+                                    $massive_search_new[]=$massive_search[$counter];
+
+                                    $counter++;
+                                    if($counter>=$count_massive)
+                                    {
+                                        $counter=0;
+                                    }
+                            }
+                            $massive_search=$massive_search_new;
+                            unset($massive_search_new);
+
+                            //CHANGE ROOTS & RULES
+                            $counter=0;$counter_massive=0;$v=0;
+
+                           
+
+                            for($k=0;$k<$variants;$k++)
+                            {
+                                 
+                                $massive_search[$counter_massive][$j][0][0]=$aos[0][$counter];
+
+                               
+
+                                if($aos[2][$counter]=="5A"&&$aos['ec']==1)
+                                {
+                                    $massive_search[$counter_massive][$j][0][2]="1";
+                                }
+
+                                //echo "COUNTER $counter<BR>";
+                                //echo "Aos2:".$aos[2][$counter]."<BR>";
+                                //echo "COUNTER MASSIVE $counter_massive<HR>";
+
+                                $massive_search[$counter_massive][$j][0][15]=$aos[2][$counter];
+                                $aos[1][$counter][0]['verb']=$aos[0][$counter];
+                                if($aos[1][$counter][1])
+                                {
+                                    $aos[1][$counter][1]['verb']=$aos[0][$counter];
+                                }
+
+                               
+                                //echo $aos['change_later'][$counter]."<BR>";
+
+                                $massive_search[$counter_massive][$j][0]['no_udvoenie']=$aos['no_udvoenie'][$counter];
+                                $massive_search[$counter_massive][$j][0]['stop']=$aos['stop'][$counter];
+                                $massive_search[$counter_massive][$j][0]['flag_e']=$aos['flag_e'][$counter];
+                                $massive_search[$counter_massive][$j][0]['need_two']=$aos['need_two'][$counter];
+                                $massive_search[$counter_massive][$j][0]['change_later']=$aos['change_later'][$counter];
+
+                                //P_Before_mool
+                                //echo "COUNTER: $counter -->". $p_before_mool[$counter];
+                                $massive_search[$counter_massive][$j][0]['p_before_mool']=$p_before_mool[$counter];
+
+                                $v++;
+
+                                $counter_massive++;
+
+                                if($v>$count_massive-1)
+                                {
+                                    $counter++;
+                                    $v=0;
+                                }
+
+                                if($counter>=$count_new_roots)
+                                {
+                                    $counter=0;
+                                }
+                            }
+
+                           
+
+                            //ADDING NEW MASSIVE IF SUFFIXIES FORM > 1
+                            unset($aos_suffixies);
+                            unset($aos_suffixies_new);
+                            unset($massive_search_new);
+                            $k2=0;
+                            for($k=0;$k<count($aos[1]);$k++)
+                            {
+                                    $aos_suffixies[]=$aos[1][$k][0];
+                                    
+                                    if($aos[1][$k][1])
+                                    {
+                                        $aos_suffixies[]=$aos[1][$k][1];
+                                    }
+                              
+                            }
+
+                       
+
+                            for($k=0;$k<$variants;$k++)
+                            {
+                               for($t=0;$t<count($aos_suffixies);$t++)
+                               {
+                                    $verb_m=$massive_search[$k][$j][0][0];
+                                    $verb_a=$aos_suffixies[$t]['verb'];
+                                    $query_a=$aos_suffixies[$t][7];
+                                    $name_a=$aos_suffixies[$t][0];
+
+                                    //print_r($aos_suffixies);
+
+                                    
+                                    if($aos_suffixies[$t][15]=="2A"||$aos_suffixies[$t][15]=="3A"||$aos_suffixies[$t][15]=="7A")
+                                    {
+                                        $tematic[$t]=1;
+                                        $aos_suffixies[$t]['tematic']=1;
+                                    }
+                                    else
+                                    {
+                                        $tematic[$t]=0;
+                                        $aos_suffixies[$t]['tematic']=0;
+                                    }
+                                    
+                                    if($verb_m==$verb_a)
+                                    {
+                                        $flag_noexist_suff=1;
+
+                                        //SEARCH FOR DUPLICATES
+                                        for($n=0;$n<count($aos_suffixies_new);$n++)
+                                        {
+                                            if($aos_suffixies_new[$n][7]==$query_a&&$aos_suffixies_new[$n][0]==$name_a&&$aos_suffixies_new[$n]['verb']==$verb_a)
+                                            {
+                                               
+                                                $flag_noexist_suff=0;
+                                            }
+
+                                           // echo "<hr>$name_a $query_a $verb_a FLAG SUFF:$flag_noexist_suff FLAG VERB: $flag_noexist<hr>";
+                                        }
+
+                                        //echo "FLAG:'$flag_noexist_suff' K$k";
+
+                                        if($flag_noexist_suff)
+                                        {
+                                            //echo "<HR>".$massive_search[$k][$j][0][15]."<HR>";
+                                            $aos_suffixies_new[]=$aos_suffixies[$t]; 
+                                            $massive_search_new[]=$massive_search[$k];
+                                        }
+
+                                       
+                                        
+                                    }
+
+                               }
+
+                            }
+
+
+                            if($massive_search_new)
+                            {
+                                $massive_search=$massive_search_new;
+                            }
+
+                            if($aos_suffixies_new)
+                            {
+                                $aos_suffixies=$aos_suffixies_new;
+                            }
+                         
+
+                            //echo "<HR>";
+                            //print_r($massive_search);
+                            //echo "<BR><BR>";
+                            //echo "<HR>";
+
+                            //echo "<BR><BR>MS:";
+                            //print_r($massive_search);
+                            //echo "<HR>";
+
+                            //ADDING SUFFIXES
+                            $counter=0;
+                            for($k=0;$k<count($massive_search);$k++)
+                            {
+                                $massive_search[$k][$j][]=$aos_suffixies[$k];
+
+                            }
+
+                        
+                        }   
+                        break;
+                    case "Ao":
+                        $flag_some_endings=0;
+ 
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            //echo "<HR>TEMATIC:".$tematic[$s]."<HR>";
+                            $count = count($massive_search[$s][$j]);
+                            $verb_name=$massive_search[0][$j][0][0];
+                            $verb_element=$massive_search[0][$j][0][3];
+                            $verb_ryad=$massive_search[0][$j][0][4];
+                            $number_ao=$massive_search[$s][$j][$count-1][15];
+
+                            $dimensions=dimensions($verb_name, $verb_element, $verb_name, 1, 0, 0, 0);
+                            $dimensions_array=dimensions_array($dimensions);
+                        
+                            $c_string=$dimensions[1];
+                        
+                            $c_string=str_replace("EE","E",$c_string);
+                            $e_position=mb_strpos($c_string,"E");
+                            $ec=mb_substr($c_string,$e_position,2);
+                            $p=mb_substr($c_string,0,$e_position);
+
+                            if($ec=="E")
+                            {
+                                $is_open_mool=1;
+                            }
+                            else
+                            {
+                                $is_open_mool=0;
+                            }
+
+
+                            if($number_ao=="1A")
+                            {
+                                $last_name = $verb_name;
+                            }
+                            else
+                            {
+                                $last_name = $massive_search[$s][$j][$count-1][0];
+                            }
+
+                            //– открытые корни рядов I, U, R и корни ряда А1 вида PA1C 
+                            if(($is_open_mool&&($verb_ryad=="I0"||$verb_ryad=="I1"||$verb_ryad=="I2"||$verb_ryad=="U0"||$verb_ryad=="U1"||$verb_ryad=="U2"||$verb_ryad=="R0"||$verb_ryad=="R1"||$verb_ryad=="R2"))||($verb_ryad=="A1"&&$p!=""&&$ec=="EC"))
+                            {
+                                $special=1;
+                            }
+                            elseif($verb_ryad=="M0"||$verb_ryad=="M1"||$verb_ryad=="M2")
+                            {
+                                $special=2;
+                            }
+                            elseif($verb_ryad=="N0"||$verb_ryad=="N1"||$verb_ryad=="N2")
+                            {
+                                $special=3;
+                            }
+                            else
+                            {
+                                $special=4;
+                            }
+
+                            //echo "SPECIAL $is_open_mool $special";
+
+                            //echo "<BR>S$s QUERY:".$lico." ".$chislo." ".$pada[$j]." ".$tematic[$s]." "."Ao$number_ao"." ".$last_name." ".$special." "."0<BR>";
+                            
+                            $ao=Ao($lico,$chislo,$pada[$j],$tematic[$s],"Ao$number_ao",$last_name,$special,0);
+
+                            //print_r($ao);
+                            
+                            $count_endings=0;
+                            $count_endings=count($ao['endings']);
+  
+                       
+                            unset($massive_search_new);
+                            if($count_endings<16)
+                            {
+                                for($ce=0;$ce<$count_endings;$ce++)
+                                {
+                                    $massive_search_new[$ce][$j]=$massive_search[0][$j];
+                                    $massive_search_new[$ce][$j][]=$ao['endings'][$ce];
+                                }
+
+                                for($ce=1;$ce<count($massive_search);$ce++)
+                                {
+                                    $massive_search_new[]=$massive_search[$ce];
+                                }
+                               
+                                $massive_search=$massive_search_new;
+                                
+                                $flag_some_endings=$count_endings;
+
+                            }
+                            else
+                            {
+                                //echo "FSE: $flag_some_endings S:$s<BR>";
+
+                                if($s>=$flag_some_endings)
+                                {
+                                    $massive_search[$s][$j][]=$ao['endings'];
+                                }
+                            }
+
+
+                            if($ao['augment'])
+                            {
+                                $verb=$massive_search[$s][$j][0];
+                                $temp=$massive_search[$s][$j];
+
+                                for($t=0;$t<count($massive_search[$s][$j]);$t++)
+                                {
+                                    $temp[0]=$ao['augment'];
+                                    $temp[$t+1]=$massive_search[$s][$j][$t];
+                                }
+
+                                $massive_search[$s][$j]=$temp;
+                            }
+                        }
+                        break;
+                    case "In":
+                        $flag_some_endings=0;
+ 
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            //echo "<HR>TEMATIC:".$tematic[$s]."<HR>";
+                            $count = count($massive_search[$s][$j]);
+                            $verb_name=$massive_search[0][$j][0][0];
+                            $verb_element=$massive_search[0][$j][0][3];
+                            $verb_ryad=$massive_search[0][$j][0][4];
+                            $number_ao=$massive_search[$s][$j][$count-1][15];
+
+                            $dimensions=dimensions($verb_name, $verb_element, $verb_name, 1, 0, 0, 0);
+                            $dimensions_array=dimensions_array($dimensions);
+                        
+                            $c_string=$dimensions[1];
+                        
+                            $c_string=str_replace("EE","E",$c_string);
+                            $e_position=mb_strpos($c_string,"E");
+                            $ec=mb_substr($c_string,$e_position,2);
+                            $p=mb_substr($c_string,0,$e_position);
+
+                            if($ec=="E")
+                            {
+                                $is_open_mool=1;
+                            }
+                            else
+                            {
+                                $is_open_mool=0;
+                            }
+
+
+                            if($number_ao=="1A")
+                            {
+                                $last_name = $verb_name;
+                            }
+                            else
+                            {
+                                $last_name = $massive_search[$s][$j][$count-1][0];
+                            }
+
+                            //– открытые корни рядов I, U, R и корни ряда А1 вида PA1C 
+                            if(($is_open_mool&&($verb_ryad=="I0"||$verb_ryad=="I1"||$verb_ryad=="I2"||$verb_ryad=="U0"||$verb_ryad=="U1"||$verb_ryad=="U2"||$verb_ryad=="R0"||$verb_ryad=="R1"||$verb_ryad=="R2"))||($verb_ryad=="A1"&&$p!=""&&$ec=="EC"))
+                            {
+                                $special=1;
+                            }
+                            elseif($verb_ryad=="M0"||$verb_ryad=="M1"||$verb_ryad=="M2")
+                            {
+                                $special=2;
+                            }
+                            elseif($verb_ryad=="N0"||$verb_ryad=="N1"||$verb_ryad=="N2")
+                            {
+                                $special=3;
+                            }
+                            else
+                            {
+                                $special=4;
+                            }
+
+                            //echo "SPECIAL $is_open_mool $special";
+
+                            //echo "<BR>S$s QUERY:".$lico." ".$chislo." ".$pada[$j]." ".$tematic[$s]." "."Ao$number_ao"." ".$last_name." ".$special." "."0<BR>";
+                            
+                            $ao=Ao($lico,$chislo,$pada[$j],$tematic[$s],"Ao$number_ao",$last_name,$special,0);
+
+                            //print_r($ao);
+                            
+                            $count_endings=0;
+                            $count_endings=count($ao['endings']);
+  
+                       
+                            unset($massive_search_new);
+                            if($count_endings<16)
+                            {
+                                for($ce=0;$ce<$count_endings;$ce++)
+                                {
+                                    $massive_search_new[$ce][$j]=$massive_search[0][$j];
+                                    $massive_search_new[$ce][$j][]=$ao['endings'][$ce];
+                                }
+
+                                for($ce=1;$ce<count($massive_search);$ce++)
+                                {
+                                    $massive_search_new[]=$massive_search[$ce];
+                                }
+                               
+                                $massive_search=$massive_search_new;
+                                
+                                $flag_some_endings=$count_endings;
+
+                            }
+                            else
+                            {
+                                //echo "FSE: $flag_some_endings S:$s<BR>";
+
+                                if($s>=$flag_some_endings)
+                                {
+                                    $massive_search[$s][$j][]=$ao['endings'];
+                                }
+                            }
+
+                        }
+                        break;
+                    case "FuS":
+                        
+                     
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $massive_search[$s][$j][]=FuS();
+                        }
+                 
+                        break;
+                    
+                    case "Fu":
+                        
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $massive_search[$s][$j][]=Fu($lico,$chislo,$pada[$j]);
+                        }
+                        break;
+                    
+                    case "Co":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $augment="|a|";
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $massive_search[$s][$j][]=Co($lico,$chislo,$pada[$j],$last_name,0);
+                        }
+                        break;
+                    case "G": //Не реализовано для форм с приставками!
+                           // for($s=0;$s<count($massive_search);$s++) 
+                           // {
+                           //     $verb_ryad=$massive_search[0][$j][0][4];
+                           //     $massive_search[$s][$j][]=G($verb_ryad);
+                           // }
+                            $verb_ryad=$massive_search[0][$j][0][4];
+                            $g=G($verb_ryad);
+
+                            //print_r($g);
+
+                            $count_forms=count($g);
+                            $count_now=count($massive_search);
+
+                            $counter2=0; $counter3=0;
+
+                          
+
+                            for($cn=0;$cn<$count_forms;$cn++)
+                            {
+                                $massive_search_new[$cn][$j]=$massive_search[0][$j];
+                               // echo $cn;
+                            }
+                            $massive_search=$massive_search_new;
+
+                            //print_r($massive_search);
+                            //echo "<BR>";
+                            //echo "<BR><BR>";
+                            //$counter2=0;
+                            
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+                                        $massive_search[$cf][$j][]=$g[$cf];
+
+                            }
+
+                            //print_r($massive_search);
+                            //echo "<BR>";
+                            //echo "<BR><BR>";
+                            //print_r($massive_search);
+
+                            break;
+                    case "PaFuAS":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $massive_search[$s][$j][]=PaFuAS($pada[$j],0);
+                            $massive_search[$s][$j][count($massive_search[$s][$j])-1][15]="PaFuAS";
+                        }
+                        break;
+
+                    case "CaS":
+
+                        $verb=$massive_search[0][$j][0];
+                        
+                        if($massive[2]=="DS")
+                        {
+                            $not_chered=1;
+                        }
+                        else
+                        {
+                            $not_chered=0;
+                        }
+
+                        $cas=CaS($verb,$not_chered);
+
+
+                        $suffixes=$cas[0];
+                        $new_root_name=$cas[1];
+                        $new_root_element=$cas[2];
+
+                        $changings[]="";
+
+                        $count_forms=count($suffixes);
+                        $count_massive=count($massive_search);
+
+                        //echo "<BR>Count FormS:".$count_forms."<BR>";
+            
+                        if($count_forms>1)
+                        {
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {
+                                $massive_search[$ms+$cf]=$massive_search[$ms];
+                            }
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {
+                                $massive_search[$ms+$cf][$j][]=$suffixes[$cf];
+                            }
+                        }
+                        else
+                        {
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][]=$suffixes[0];
+                            }
+                        }
+
+
+                        break;
+
+                    case "DS":
+
+                        $verb=$massive_search[0][$j][0];
+
+                        if($i>1){
+                            $not_after_root=1;
+                        }
+                        else{
+                            $not_after_root=0;
+                        }
+
+                        $dses=DS($verb,$not_after_root,$new_root_name,$new_root_element,$pada[$j],$debug);
+                        $p_before_mool=$dses['p_before_mool'];
+
+                       
+
+                        $count_forms=count($dses[0]);
+                        $count_now=count($massive_search);
+
+                        if($debug)
+                        {
+                            echo "В итоге получилось $count_forms варианта основы дезидератива<BR><BR>";
+                            //print_r($dses);
+                            //echo "<BR><BR>";
+                           
+                        }
+                        
+                        if($count_forms>1)
+                        {
+
+                            $count_now=count($massive_search);
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    $massive_search[$counter2]=$massive_search[$cn];
+                                    
+                                    //CHANGE ROOT
+                                    $massive_search[$counter2][$j][0][0]=$dses[0][$counter3];
+                                    $massive_search[$counter2][$j][0]['p_before_mool']=$p_before_mool[$counter3];
+
+                                    $counter2++;
+                                    $counter3++;
+                                    if($counter3>count($dses[0])-1)
+                                    {
+                                        $counter3=0;
+                                    }
+                                }
+
+                            }
+
+                          
+
+                            $count_now=count($massive_search);
+
+                            for($cf=0;$cf<$count_now;$cf++)
+                            {
+                                $massive_search[$cf][$j][]=$dses[1];
+                            }
+
+                            
+
+                        }
+                        else
+                        {
+                            //print_r($p_before_mool);
+
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                //CHANGE ROOT
+                                $massive_search[$s][$j][0][0]=$dses[0][0];
+                                $massive_search[$s][$j][0]['p_before_mool']=$p_before_mool[0];
+                            }
+
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][]=$dses[1];
+                            }
+
+                        }
+                        //print_r($massive_search);
+                        break;
+                    case "IS":
+                        
+
+                        $verb=$massive_search[0][$j][0];
+                        $is=IS($verb,$debug)[0];
+                        $is_p_before_mool=IS($verb,$debug)['p_before_mool'];
+
+                       
+
+                        $count_forms=count($is);
+                        $count_now=count($massive_search);
+                        
+                        if($count_forms>1)
+                        {
+
+                            $count_now=count($massive_search);
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    $massive_search[$counter2]=$massive_search[$cn];
+
+                                    //CHANGE ROOT
+                                    $massive_search[$counter2][$j][0][0]=$is[$counter3];
+                                    $massive_search[$counter2][$j][0][15]="IS";
+                                    $massive_search[$counter2][$j][0]['p_before_mool']=$is_p_before_mool[$counter3];
+                                    
+                                   // echo "<HR>";
+                                  //  print_r($is_p_before_mool);
+                                   // echo "<HR>";
+
+                                    $counter2++;
+                                    $counter3++;
+                                    if($counter3>count($is)-1)
+                                    {
+                                        $counter3=0;
+                                    }
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            //echo "<HR>";
+                            //        echo $is_p_before_mool[0];
+                            //        echo "<HR>";
+
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][0][0]=$is[0];
+                                $massive_search[$s][$j][0][15]="IS";
+                                $massive_search[$s][$j][0]['p_before_mool']=$is_p_before_mool[0];
+                            }
+ 
+
+                        }
+                        //print_r($massive_search);
+                        break;
+                    case "PeS":
+                        
+                        $verb=$massive_search[0][$j][0];
+
+                        $pes=PeS($verb,$pada[$j],$debug);
+
+                        //echo "<BR>PES:";
+                        //print_r($pes);
+                       
+
+                        $count_forms=count($pes[0]);
+                        $count_now=count($massive_search);
+
+                        //echo "<BR>count_forms: $count_forms<BR>";
+                        
+                        if($count_forms>1)
+                        {
+
+                            $count_now=count($massive_search);
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    $massive_search[$counter2]=$massive_search[$cn];
+
+                                    //CHANGE ROOT
+                                    if($pes[0][$counter3])
+                                    {
+                                        $massive_search[$counter2][$j][0][0]=$pes[0][$counter3];
+                                        $massive_search[$counter2][$j][0][15]=$pes['source'];
+                                        $massive_search[$counter2][$j][0][8]=$pes['double_prefix'].$pes['double'][0];
+                  
+                                        $massive_search[$counter2][$j][0]['no_udvoenie']=$pes['no_udvoenie'][$counter3];
+                                        $massive_search[$counter2][$j][0]['stop']=$pes['stop'];
+                                        $massive_search[$counter2][$j][0]['flag_e']=$pes['flag_e'];
+                                        $massive_search[$counter2][$j][0]['need_two']=$pes['need_two'];
+                                        $massive_search[$counter2][$j][0]['change_later']=$pes['change_later'];
+                                       
+                                    }
+
+                                    $massive_search[$counter2][$j][0]['p_before_mool']=$pes['p_before_mool'];
+
+                                    $counter2++;
+                                    $counter3++;
+                                    if($counter3>count($pes[0])-1)
+                                    {
+                                        $counter3=0;
+                                    }
+                                }
+
+                            }
+
+                            $count_now=count($massive_search);
+                        }
+                        else
+                        {
+                          
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                //CHANGE ROOT
+                                if($pes[0][0])
+                                {
+      
+                                        $massive_search[$s][$j][0][0]=$pes[0][0];
+                                        $massive_search[$s][$j][0][8]=$pes['double_prefix'].$pes['double'][0];
+                                        $massive_search[$s][$j][0][15]=$pes['source'];
+                  
+                                        $massive_search[$s][$j][0]['no_udvoenie']=$pes['no_udvoenie'][0];
+                                        $massive_search[$s][$j][0]['stop']=$pes['stop'];
+                                        $massive_search[$s][$j][0]['flag_e']=$pes['flag_e'];
+                                        $massive_search[$s][$j][0]['need_two']=$pes['need_two'];
+                                        $massive_search[$s][$j][0]['change_later']=$pes['change_later'];
+                                        
+
+                                        
+                                }
+
+                                $massive_search[$s][$j][0]['p_before_mool']=$pes['p_before_mool'];
+                            }
+                            
+                            //echo "MASS SEARCH:<BR>";
+                            //print_r($massive_search);
+
+                        }
+                       // echo "<BR>";
+                        break;
+
+                    case "PeOS":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $massive_search[$s][$j][]=PeOS($pada[$j]);
+                        }
+                        break;   
+                    case "PeO":
+                        
+
+                        $massive_search[0][$j][0][0]=$massive_search[0][$j][0][8];
+                        //print_r($massive_search);
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $massive_search[$s][$j][]=PeO($lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+                        break;
+                    case "PeIp":
+                        $massive_search[0][$j][0][0]=$massive_search[0][$j][0][8];
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $massive_search[$s][$j][]=PeIp($verb,$lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+                        break;
+                
+                    case "PeSbS":
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][]=PeSbS();
+                            }
+                            break;
+                    case "AoSbS":
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][]=AoSbS();
+                            }
+                            break;
+                    case "PeSb":
+                                $massive_search[0][$j][0][0]=$massive_search[0][$j][0][8];
+                                for($s=0;$s<count($massive_search);$s++) 
+                                {
+                                    $count = count($massive_search[$s][$j]);
+                                    $last_name = $massive_search[$s][$j][$count-1][0];
+                                    $prsb=PeSb($lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                                }
+        
+        
+                                    $count_forms=count($prsb);
+                                    $count_now=count($massive_search);
+                                    
+                                    if($count_forms>1)
+                                    {
+            
+                                        $count_now=count($massive_search);
+                                        $counter2=0; $counter3=0;
+                                
+                                        for($cf=0;$cf<$count_forms;$cf++)
+                                        {  
+                                            for($cn=0;$cn<$count_now;$cn++)
+                                            {
+                                                $massive_search_2[$counter2]=$massive_search[$cn];
+                                                $massive_search_2[$counter2][$j][]=$prsb[$cf];
+                                                $counter2++;
+                                            }
+                                        }
+        
+                                        $massive_search=$massive_search_2;
+                                    }
+                                
+                        break;
+                    case "AoSb":
+                        
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $count = count($massive_search[$s][$j]);
+                                $last_name = $massive_search[$s][$j][$count-1][0];
+                                $prsb=PeSb($lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                            }
+    
+    
+                                $count_forms=count($prsb);
+                                $count_now=count($massive_search);
+                                
+                                if($count_forms>1)
+                                {
+        
+                                    $count_now=count($massive_search);
+                                    $counter2=0; $counter3=0;
+                            
+                                    for($cf=0;$cf<$count_forms;$cf++)
+                                    {  
+                                        for($cn=0;$cn<$count_now;$cn++)
+                                        {
+                                            $massive_search_2[$counter2]=$massive_search[$cn];
+                                            $massive_search_2[$counter2][$j][]=$prsb[$cf];
+                                            $counter2++;
+                                        }
+                                    }
+    
+                                    $massive_search=$massive_search_2;
+                                }
+                            
+                        break;
+                    case "AoP":
+                        if($chislo==1&&$lico==3)
+                        {    
+                        $augment="";
+                        $augment_var="|a|";
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                                $count = count($massive_search[$s][$j]);
+                                $last_name = $massive_search[$s][$j][$count-1][0];
+                                $verb=$massive_search[0][$j][0];
+
+                                
+                                    $aop=AoP($verb,$lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+ 
+
+
+                                
+                        $new_root=$aop[0];
+                        if(count($new_root)<=1)
+                        {
+                            $new_root=$new_root[0];
+                        }
+
+                        $root_rule[]=$aop[2];
+                        if(count($root_rule)<=1)
+                        {
+                            $root_rule=$root_rule[0];
+                        }
+
+                        $count_forms=count($aop[1]);
+                        $count_now=count($massive_search);
+
+                    
+                        
+
+                        if($count_forms>1)
+                        {
+
+                            $count_now=count($massive_search);
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    $massive_search[$counter2]=$massive_search[$cn];
+
+                                
+
+                                    //CHANGE ROOT
+                                    if($new_root!="")
+                                    {
+                                    
+
+                                        $massive_search[$counter2][$j][0][0]=$new_root[$counter2];
+                                        
+                                    }
+                                    $counter2++;
+                                }
+                            }
+
+                            $count_now=count($massive_search);
+
+                            for($cn=0;$cn<$count_now;$cn++)
+                            {
+                                if($papeps[1][$cn]!="")
+                                {
+                                    $massive_search[$cn][$j][]=$aop[1][$cn];
+                                    $massive_search[$cn][$j][count($massive_search[$cn][$j])-1][15]=$root_rule[0];
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                //CHANGE ROOT
+                                if($new_root!="")
+                                {
+                                    $massive_search[$s][$j][0][0]=$new_root;
+                                    //$massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule[0];
+                                }
+                            }
+
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                    $massive_search[$s][$j][]=$aop[1][0];
+                                    $massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule[0];
+                            }
+
+                        }
+
+                            }
+
+
+                        }
+                        else
+                        {
+                            $massive_search="";
+                        }
+                            
+                        break;
+                    case "Pk":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $number_ao=$massive_search[$s][$j][$count-2][15];
+                            $tematic=$massive_search[$s][$j][$count-2]['tematic'];
+                            //($lico,$chislo,$pada,$tematic,$lemma,$lastname,$special,$debug)
+
+                            $count = count($massive_search[$s][$j]);
+                            $verb_name=$massive_search[0][$j][0][0];
+                            $verb_element=$massive_search[0][$j][0][3];
+                            $verb_ryad=$massive_search[0][$j][0][4];
+                            $number_ao=$massive_search[$s][$j][$count-1][15];
+
+                            $dimensions=dimensions($verb_name, $verb_element, $verb_name, 1, 0, 0, 0);
+                            $dimensions_array=dimensions_array($dimensions);
+                        
+                            $c_string=$dimensions[1];
+                        
+                            $c_string=str_replace("EE","E",$c_string);
+                            $e_position=mb_strpos($c_string,"E");
+                            $ec=mb_substr($c_string,$e_position,2);
+                            $p=mb_substr($c_string,0,$e_position);
+
+                            if($ec=="E")
+                            {
+                                $is_open_mool=1;
+                            }
+                            else
+                            {
+                                $is_open_mool=0;
+                            }
+
+
+                            if($number_ao=="1A")
+                            {
+                                $last_name = $verb_name;
+                            }
+                            else
+                            {
+                                $last_name = $massive_search[$s][$j][$count-1][0];
+                            }
+
+                            //– открытые корни рядов I, U, R и корни ряда А1 вида PA1C 
+                            if(($is_open_mool&&($verb_ryad=="I0"||$verb_ryad=="I1"||$verb_ryad=="I2"||$verb_ryad=="U0"||$verb_ryad=="U1"||$verb_ryad=="U2"||$verb_ryad=="R0"||$verb_ryad=="R1"||$verb_ryad=="R2"))||($verb_ryad=="A1"&&$p!=""&&$ec=="EC"))
+                            {
+                                $special=1;
+                            }
+                            elseif($verb_ryad=="M0"||$verb_ryad=="M1"||$verb_ryad=="M2")
+                            {
+                                $special=2;
+                            }
+                            elseif($verb_ryad=="N0"||$verb_ryad=="N1"||$verb_ryad=="N2")
+                            {
+                                $special=3;
+                            }
+                            else
+                            {
+                                $special=4;
+                            }
+
+                            if($pada[$j]=="P")
+                            {
+                                $pk=Pk($lico,$chislo,$pada[$j],$tematic,"Ao$number_ao",$last_name,$special,0);
+                            }
+
+                            if($pada[$j]=="A")
+                            {
+                                $pk=Pk($lico,$chislo,$pada[$j],$tematic,"Pk",$last_name,0,0);
+                            }
+
+
+                            $massive_search[$s][$j][]=$pk['endings'];
+                        }
+                        break;
+                        break;
+                    case "PkS":
+                        $verb=$massive_search[0][$j][0];
+                        $pks=PkS($verb,$pada[$j],$debug);
+
+                        $count_forms=count($pks);
+                        $count_now=count($massive_search);
+                        
+                        $suffixes=$pks;
+
+                        $count_forms=count($suffixes);
+                        $count_massive=count($massive_search);
+
+                        //echo "<BR>Count FormS:".$count_forms."<BR>";
+            
+                        if($count_forms>1)
+                        {
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {
+                                $massive_search[$ms+$cf]=$massive_search[$ms];
+                            }
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {
+                                $massive_search[$ms+$cf][$j][]=$suffixes[$cf];
+                            }
+                        }
+                        else
+                        {
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][]=$suffixes[0];
+                            }
+                        }
+
+                        break;
+                    case "PluPe":
+                        $massive_search[0][$j][0][0]=$massive_search[0][$j][0][8];
+                        if($lico==3&&$chislo==3&&$pada[$j]=="A")
+                        {
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $augment="";
+                                $augment_var="|a|";
+                                $count = count($massive_search[$s][$j]);
+                                $last_name = $massive_search[$s][$j][$count-1][0];
+                                
+                                $massive_search_2=$massive_search;                                    
+                                $massive_search_2[$s][$j][]=VerbCache::search_in_db(79,'endings',3);
+                                    
+                            }
+                        }
+
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $augment="";
+                            $augment_var="|a|";
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $massive_search[$s][$j][]=PluPe($lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+
+                        if($massive_search_2)
+                        {
+                            $massive_search=array_merge($massive_search,$massive_search_2);
+                        }
+
+                  
+
+                        break;
+                    case "PeF":
+
+                        //http://sanskrit/generator2.php?id=3&command=VR-pPeS-PeF&lico=1&chislo=1&pada=P BEFORE>AFTER
+                        //http://sanskrit/generator2.php?id=393&command=VR-PeS-PeF&lico=1&chislo=1&pada=P AFTER>BEFORE
+                        $verb=$massive_search[0][0][0];
+
+                        $pef=PeF($id,$lico,$chislo,$pada[$j]);
+
+                              
+                        $count_forms=count($pef);
+
+                        if($pef[0][7]==1)
+                        {
+                            $verb_0=str_replace("|","",$massive_search[0][$j][0][0]);
+                            $verb_8=str_replace("|","",$massive_search[0][$j][0][8]);
+
+                            if($verb_0!=$verb_8)
+                            {
+                                $massive_search[]=$massive_search[0];
+                                $massive_search[0][$j][0][0]=$massive_search[0][$j][0][8];
+                            }
+                        }
+
+                        //print_r($massive_search);
+                       
+                        //echo "<BR>count_forms $count_forms<BR>";
+
+                        if($count_forms>1)
+                        {
+                            
+                            $count_now=count($massive_search);
+                             if($count_now>$count_forms)
+                            {
+                                $bigger=$count_now;
+                                $smaller=$count_forms;
+                            }
+                            else
+                            {
+                                $bigger=$count_forms;
+                                $smaller=$count_now;
+                            }
+ 
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$smaller;$cf++)
+                            {  
+
+                                for($cn=0;$cn<$bigger;$cn++)
+                                {
+                                    //echo "COUNTER2: $counter2 COUNTER3: $counter3<BR>";
+                                    $massive_search_new[$counter2]=$massive_search[$counter3];
+                                    $counter2++;
+
+                                    if($count_forms<$count_now)
+                                    {
+                                        $counter3++;
+                                    }
+                                  
+                                }
+
+                                if($count_forms>$count_now)
+                                {
+                                    $counter3++;
+                                }
+                               
+                                if($counter3>1)
+                                {
+                                    $counter3=0;
+                                }
+                                
+
+                            }
+
+   
+                            $massive_search=$massive_search_new;
+                            $count_now=count($massive_search);
+                            $counter3=0;
+                                    
+                            for($cf=0;$cf<$count_now;$cf++)
+                            {
+                                $massive_search[$cf][$j][]=$pef[$counter3];
+
+                                if(($massive_search[$cf][$j][0]['no_udvoenie']==0)||($pef[0][7]!=1))
+                                {
+                                    $massive_search[$cf][$j][0][0]=$massive_search[$cf][$j][0][8];
+                                    
+                                }
+                                else
+                                {
+                                    $massive_search[$cf][$j][0]['flag_e']='';
+                                }
+
+                                $counter3++;
+                                if($counter3>$count_forms-1)
+                                {
+                                    $counter3=0;
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][]=$pef[0];
+
+                                if(($massive_search[$s][$j][0]['no_udvoenie']==0)||($pef[0][7]!=1))
+                                {
+                                    $massive_search[$s][$j][0][0]=$massive_search[$s][$j][0][8];
+                                    
+                                }
+                                else
+                                {
+                                    $massive_search[$s][$j][0]['flag_e']='';
+                                }
+                            }
+
+                        }
+                      
+
+                        break;
+
+                    case "pPeS":
+                        
+                        $ppes=pPeS();
+                        
+                        $count_forms=count($ppes);
+
+                        if($count_forms>1)
+                        {
+                            $count_now=count($massive_search);
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    $massive_search[$counter2]=$massive_search[$cn];
+                                    $counter2++;
+                                    $counter3++;
+                                    if($counter3>count($pef[0])-1)
+                                    {
+                                        $counter3=0;
+                                    }
+                                }
+
+                            }
+
+                            $count_now=count($massive_search);
+
+                            for($cf=0;$cf<$count_now;$cf++)
+                            {
+                                $massive_search[$cf][$j][]=$ppes[$cf];
+                            }
+
+                        }
+                        else
+                        {
+
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                $massive_search[$s][$j][]=$ppes[0];
+                            }
+
+                        }
+                        break;
+
+                    case "PS":
+                        
+                        //echo "MaSearch: ".count($massive_search);
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                                $massive_search[$s][$j][]=PS();
+                        }
+                        break;   
+                
+                    case "PaPrP":
+                        
+                            //echo "MaSearch: ".count($massive_search);
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                    $massive_search[$s][$j][]=PaPrP();
+                            }
+                            break;   
+
+                    case "PrS":
+                       
+                        $count_root_variants=count($massive_search);
+
+                        for($crv=0;$crv<$count_root_variants;$crv++)
+                        {
+
+                           $prs=PrS($massive[$i-1],$verb_info[12],$massive_search[$crv][$j][0][0],$verb_info[1],$verb_info[2],$verb_info[3],$verb_info[4],$pada[$j]);
+                           
+                           if(!$p_before_mool)
+                           {
+                            $p_before_mool=$prs['p_before_mool'];
+                            //print_r($p_before_mool);echo "<BR><BR>";
+                           }
+
+                           if($debug)
+                           {
+                            echo "Подготовленный корень: ".$massive_search[$crv][$j][0][0]." ";
+                            echo $prs['debug'];
+                            echo "<BR>";
+                           }
+ 
+                            $new_root=$prs[0];
+                            if(count($new_root)<=1)
+                            {
+                                $new_root=$new_root[0];
+                            }
+
+                            $root_rule[]=$prs[2];
+                            if(count($root_rule)<=1)
+                            {
+                                $root_rule=$root_rule[0];
+                            }
+
+                            $count_forms=count($prs[1]);
+                            $count_now=count($massive_search);
+
+                            //echo "COUNT FORMS PrS:$count_forms<BR><BR>";
+                            
+                            if($count_forms>1)
+                            {
+    
+                                $count_now=count($massive_search);
+                                $counter2=0; $counter3=0;
+    
+                                for($cf=0;$cf<$count_forms;$cf++)
+                                {  
+                                    for($cn=0;$cn<$count_now;$cn++)
+                                    {
+
+                                        $massive_search[$counter2]=$massive_search[$cn];
+
+                                        //CHANGE ROOT
+                                        if($new_root!="")
+                                        {
+                                            $massive_search[$counter2][$j][0][0]=$new_root[$counter2];
+                                            $massive_search[$counter2][$j][0][15]=$root_rule[$counter2];
+                                            
+                                        }
+
+                                        $massive_search[$counter2][$j][0]['p_before_mool']=$p_before_mool[$counter2];
+
+                                        
+                                        if($root_rule[$counter2]==1||$root_rule[$counter2]==4||$root_rule[$counter2]==6)
+                                        {
+                                            $tematic[$counter2]=1;
+                                        }
+                                        else
+                                        {
+                                            $tematic[$counter2]=0;
+                                        }
+
+                                        $lemma[$counter2]="PrS".$root_rule[$counter2];
+
+
+                                        $counter2++;
+
+                                    }
+                                }
+    
+                                $count_now=count($massive_search);
+    
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    if($prs[1][$cn]!="")
+                                    {
+                                        $massive_search[$cn][$j][]=$prs[1][$cn];
+                                    }
+
+                                   // echo $prs['debug_str'][$cn]."<BR>";
+
+                                }
+    
+                                
+                            }
+                            else
+                            {
+                                //echo "Count Form = 1<BR>";
+                                for($s=0;$s<count($massive_search);$s++) 
+                                {
+                                    //CHANGE ROOT
+                                    if($new_root!="")
+                                    {
+                                        $massive_search[$crv][$j][0][0]=$new_root;
+                                        $massive_search[$crv][$j][0][15]=$root_rule[0];
+                                        $massive_search[$crv][$j][0]['p_before_mool']=$p_before_mool[0];
+                                    }
+
+                                    
+
+                                }
+    
+                                for($s=0;$s<count($massive_search);$s++) 
+                                {
+                                    if($prs[1][$s]!="")
+                                    {
+                                        $massive_search[$crv][$j][]=$prs[1][$s];
+                                    }
+                                }
+
+                            
+                                if($root_rule[0]==1||$root_rule[0]==4||$root_rule[0]==6)
+                                {
+                                    $tematic[0]=1;
+                                }
+                                else
+                                {
+                                    $tematic[0]=0;
+                                }
+
+                                $lemma[0]="PrS".$root_rule[0];
+    
+                            }
+                        
+                          
+                        }
+                            break; 
+
+                    case "Pr":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                          
+                            $pr=Pr($lico,$chislo,$pada[$j],$tematic[$s],$lemma[$s]);
+                            //echo "Присоединение окончаний (".$pr[7].")".$pr[0]."<BR>";
+
+                            $massive_search[$s][$j][]=$pr;
+                        }
+                        break;
+                    case "OS":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $massive_search[$s][$j][]=OS($tematic[$s],$pada[$j]);
+                        }
+                        break;
+                    case "O":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $massive_search[$s][$j][]=O($lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+                        break;
+                    case "Im":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $augment="|a|";
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $massive_search[$s][$j][]=Im($lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+                        break;
+                    case "Ip":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $massive_search[$s][$j][]=Ip($verb,$lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+                        break;
+                    case "AoIp":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                                $count = count($massive_search[$s][$j]);
+                                $last_name = $massive_search[$s][$j][$count-1][0];
+                                $massive_search[$s][$j][]=AoIp($verb,$lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+                        break;
+                    case "PrSbS":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $massive_search[$s][$j][]=PrSbS();
+                        }
+                        break;
+
+                    case "PrSb":
+                        
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $count = count($massive_search[$s][$j]);
+                            $last_name = $massive_search[$s][$j][$count-1][0];
+                            $prsb=PrSb($lico,$chislo,$pada[$j],$last_name,$tematic[$s],0);
+                        }
+
+
+                            $count_forms=count($prsb);
+                            $count_now=count($massive_search);
+                            
+                            if($count_forms>1)
+                            {
+    
+                                $count_now=count($massive_search);
+                                $counter2=0; $counter3=0;
+                        
+                                for($cf=0;$cf<$count_forms;$cf++)
+                                {  
+                                    for($cn=0;$cn<$count_now;$cn++)
+                                    {
+                                        $massive_search_2[$counter2]=$massive_search[$cn];
+                                        $massive_search_2[$counter2][$j][]=$prsb[$cf];
+                                        $counter2++;
+                                    }
+                                }
+
+                                $massive_search=$massive_search_2;
+                            }
+                        
+                        break;
+                    case "PaPrAS":
+                    
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $papras=PaPrAS($pada[$j],$massive_search[$s][$j]);
+
+                            $massive_search[$s][$j][]=$papras[0];
+                            $massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$papras[1];
+                        }
+                        break;
+                    
+                    case "PaPePS":
+
+                        $verb=$massive_search[0][$j][0];
+                        $papeps=PaPePS($verb);
+
+                        $new_root=$papeps[0];
+                        if(count($new_root)<=1)
+                        {
+                            $new_root=$new_root[0];
+                        }
+
+                        $root_rule[]=$papeps[2];
+                        if(count($root_rule)<=1)
+                        {
+                            $root_rule=$root_rule[0];
+                        }
+
+                        $count_forms=count($papeps[1]);
+                        $count_now=count($massive_search);
+
+                    
+                        
+
+                        if($count_forms>1)
+                        {
+
+                            $count_now=count($massive_search);
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    $massive_search[$counter2]=$massive_search[$cn];
+
+                                
+
+                                    //CHANGE ROOT
+                                    if($new_root!="")
+                                    {
+                                    
+
+                                        $massive_search[$counter2][$j][0][0]=$new_root[$counter2];
+                                        
+                                    }
+                                    $counter2++;
+                                }
+                            }
+
+                            $count_now=count($massive_search);
+
+                            for($cn=0;$cn<$count_now;$cn++)
+                            {
+                                if($papeps[1][$cn]!="")
+                                {
+                                    $massive_search[$cn][$j][]=$papeps[1][$cn];
+                                    $massive_search[$cn][$j][count($massive_search[$cn][$j])-1][15]=$root_rule[0];
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                //CHANGE ROOT
+                                if($new_root!="")
+                                {
+                                    $massive_search[$s][$j][0][0]=$new_root;
+                                    //$massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule[0];
+                                }
+                            }
+
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                    $massive_search[$s][$j][]=$papeps[1][0];
+                                    $massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule[0];
+                            }
+
+                        }
+                        break;
+
+                    case "pPaPeAS":
+                        for($s=0;$s<count($massive_search);$s++) 
+                        {
+                            $massive_search[$s][$j][]=pPaPeAS($pada[$j]);
+                        }
+                        break;
+                    
+                    case "PaPeAS":
+                        $massive_search[0][$j][0][0]=$massive_search[0][$j][0][8];
+                        $papeas=PaPeAS($pada[$j]);
+
+                        $new_root=$papeas[0];
+                        if(count($new_root)<=1)
+                        {
+                            $new_root=$new_root[0];
+                        }
+
+                        $root_rule=$papeas[1];
+
+                        $count_forms=count($papeas[0]);
+                        $count_now=count($massive_search);
+
+                        $verb=$massive_search[0];
+
+                        $ryad=$massive_search[0][$j][0][4];
+
+                        //echo "VI:".$massive_search[0][$j][0][4];
+                    
+                            if(($ryad=="N0"||$ryad=="N1"|$ryad=="N2"||$ryad=="M0"||$ryad=="M1"||$ryad=="M2")&&$papeas[0][0]=="uØs")
+                            { 
+
+                                $massive_search_2=$massive_search;                                    
+                                
+                                for($s=0;$s<count($massive_search_2);$s++) 
+                                {
+                                    $massive_search_2[$s][$j][]=array("i");
+                                    $massive_search_2[$s][$j][]=$papeas[0][0];
+                                    $massive_search_2[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule;
+                                }
+
+
+                                for($s=0;$s<count($massive_search);$s++) 
+                                {
+                                        $massive_search[$s][$j][]=$papeas[0][0];
+                                        $massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule;
+                                }
+
+                                $massive_search=array_merge($massive_search,$massive_search_2);
+
+                            }
+                            else
+                            {
+
+                                for($s=0;$s<count($massive_search);$s++) 
+                                {
+                                        $massive_search[$s][$j][]=$papeas[0][0];
+                                        $massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule;
+                                }
+
+                            }
+
+                        break;
+                    case "PaFuP":
+                        //$verb=$massive_search[0][$j][0];
+                        $pafup=PaFuP($massive[$i-1]);
+                        $root_rule=$pafup[1];
+
+                        $count_forms=count($pafup[0]);
+                        $count_now=count($massive_search);
+
+                        if($count_forms>1)
+                        {
+
+                            $count_now=count($massive_search);
+                            $counter2=0; $counter3=0;
+
+                            for($cf=0;$cf<$count_forms;$cf++)
+                            {  
+                                for($cn=0;$cn<$count_now;$cn++)
+                                {
+                                    $massive_search[$counter2]=$massive_search[$cn];
+                                    $counter2++;
+                                }
+                            }
+
+                            $count_now=count($massive_search);
+
+
+                            for($cn=0;$cn<$count_now;$cn++)
+                            {
+                                    //echo count($massive_search[$cn][$j])."<BR><BR>";
+                                    $massive_search[$cn][$j][]=$pafup[0][$cn];
+                                    $massive_search[$cn][$j][count($massive_search[$cn][$j])-1][15]=$root_rule;
+                            }
+
+                        }
+                        else
+                        {
+                            for($s=0;$s<count($massive_search);$s++) 
+                            {
+                                    $massive_search[$s][$j][]=$papeps[0];
+                                    $massive_search[$s][$j][count($massive_search[$s][$j])-1][15]=$root_rule;
+                            }
+
+                        }
+                        break;
+                
+                
+                    }
+
+        }
+        
+        if($debug)
+       {
+           /*
+            echo "<BR>";echo "<BR>";
+            echo "TOTAL: ";
+
+            for($t=0;$t<count($massive_search);$t++)
+            {
+            echo "<BR>";
+            print_r($massive_search[$t]);
+            echo "<BR>";
+
+            }
+            */
+            //echo "<BR>------------<BR>";
+            
+        }
+        
+
+        $itog_massive[$j]=$massive_search;
+
+        unset($massive_search);
+
+    }
+
+
+
+    $result[0]=$itog_massive[0];
+    $result[1]=$itog_massive[1];
+
+    $result['augment']=$augment; 
+    $result['source']=$verb_info[0]; 
+    $result['augment_var']=$augment_var; 
+    $result['postgment']=$postgment; 
+    //$result['p_before_mool']=$p_before_mool;
+
+    //echo "RESULT of<BR>";
+    //print_r($result);
+    //echo "<BR><BR>";
+    return $result;
+
+}
+
+
+function debug_table($morfems)
+{
+
+            echo '<BR><table width="10%" class="table table-bordered table-fit">';
+            echo "<tr>";
+            echo "<td></td>";
+            for($t=0;$t<count($morfems);$t++)
+            {
+            
+                echo "<td>".$morfems[$t][14]."</td>";
+            }
+            echo "</tr>";
+
+            echo "<tr>";
+            echo "<td>Morpheme</td>";
+            for($t=0;$t<count($morfems);$t++)
+            {
+            
+                echo "<td>".$morfems[$t][0]."</td>";
+            }
+            echo "</tr>";
+
+            echo "<tr>";
+            echo "<td>Query</td>";
+            for($t=0;$t<count($morfems);$t++)
+            {
+            
+                echo "<td>".$morfems[$t][7]."</td>";
+            }
+            echo "</tr>";
+
+            echo "<tr>";
+            echo "<td>Type of morpheme</td>";
+            for($t=0;$t<count($morfems);$t++)
+            {
+            
+                echo "<td>".$morfems[$t][5]."</td>";
+            }
+            echo "</tr>";
+
+            
+            echo "<tr>";
+            echo "<td>Transformation</td>";
+            for($t=0;$t<count($morfems);$t++)
+            {
+            
+                echo "<td>".$morfems[$t][8]."</td>";
+            }
+            echo "</tr>";
+
+            echo "<tr>";
+            echo "<td>Special rules</td>";
+            for($t=0;$t<count($morfems);$t++)
+            {
+            
+                echo "<td>".$morfems[$t][15]."</td>";
+            }
+            echo "</tr>";
+
+        
+
+            echo "</table>";
 }
 ?>

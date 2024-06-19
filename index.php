@@ -1,11 +1,12 @@
+<? include "header.php"; ?>
+
 <?
 /* 
 Based on method of Ivan Tolchelnikov
 Programming by Andrei Shirobokov 2023 
 */
 
-require_once "db.php";
-header('Content-Type: text/html; charset=utf-8');
+
 
 $query = "SELECT * FROM verbs";
 $result = mysqli_query($connection, $query);
@@ -28,7 +29,8 @@ if($adhoc)
 $adhoc_text="<BR>несам.: $adhoc ";
 }
 
-$answer.="<tr><td><a href='/verb.php?id=$id' class='link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover'>".$res['name']. "$omonim_text $adhoc_text</a></td><td>".$res['ryad']. "</td><td>".$res['whitney']. "</td><td>".$res['setnost']. "</td><td>".$res['type']. "</td><td>".$res['pada']. "</td><td>".$res['prs']. "</td><td>".$res['aos']. "</td><td>".$res['translate']. " ".$res['comments']. "</td></tr>";
+$answer.="<tr><td><a href='/verb.php?id=$id' 
+class='link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover'>".$res['name']. "$omonim_text $adhoc_text</a></td><td>".$res['ryad']. "</td><td>".$res['whitney']. "</td><td>".$res['setnost']. "</td><td>".$res['type']. "</td><td>".$res['pada']. "</td><td>".$res['prs']. "</td><td>".$res['aos']. "</td><td>".$res['translate']. " ".$res['comments']. "</td></tr>";
 }
 
 $itog='<table class="table table-bordered table-striped"><thead><tr><th scope="col">Корень</th><th scope="col">Ряд</th><th scope="col">Корень по Whitney</th><th scope="col">seṭ-aniṭ</th><th scope="col">Тип</th>
@@ -48,18 +50,10 @@ Not found
 ?>
 
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Глагольные корни</title>
-        <meta charset="utf-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    </head>
-    <body class="d-flex flex-column min-vh-100">
+
 
  
-<? include "header.php"; ?>
+
 
         <div class="container mt-5" style="max-width: 1255px">
             <div class="alert alert-danger" role="alert">
@@ -90,7 +84,7 @@ Not found
                     var query = $(this).val();
                     // if (query != "") {
                     $.ajax({
-                        url: 'ajax-live-search.php',
+                        url: '/search/ajax-live-search.php',
                         method: 'POST',
                         data: {
                             query: query

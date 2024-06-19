@@ -4,7 +4,7 @@ Based on method of Ivan Tolchelnikov
 Programming by Andrei Shirobokov 2023 
 */
 
-  require_once "db.php";
+  require_once "../db.php";
 
   if (isset($_POST['query'])) {
       $query = "SELECT * FROM verbs WHERE name LIKE '{$_POST['query']}%' OR whitney LIKE '%{$_POST['query']}%' OR translate LIKE '%{$_POST['query']}%'";

@@ -7,7 +7,7 @@ Programming by Andrei Shirobokov 2023
 require_once "db.php";
 header('Content-Type: text/html; charset=utf-8');
 
-$query = "SELECT * FROM preverbs ";
+$query = "SELECT * FROM nouns ";
 $result = mysqli_query($connection, $query);
 
 if (mysqli_num_rows($result) > 0) {
@@ -16,16 +16,19 @@ while ($res = mysqli_fetch_array($result)) {
 $id=$res['id'];
 
 $answer.="<tr>
-<td>".$res['name']. "</td>
-<td>".$res['translate']. "</td>
+<td><a href='/noun.php?id=$id' class='link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover'>".$res['name']. "</a></td>
+<td>".$res['pol']. "</td>
+<td>".$res['sklonenie'].$res['sklonenie_type']. "</td>
+<td>".$res['ryad']. "</td>
 <td>".$res['type']. "</td>
+<td>".$res['translate']. "</td>
 </tr>";
 }
 
 $itog='<table class="table table-bordered">
 <thead>
 <tr>
-<th scope="col">Приставка</th><th scope="col">Перевод</th><th scope="col">Тип</th>
+<th scope="col">Существительное</th><th scope="col">Пол</th><th scope="col">Склонение</th><th scope="col">Ряд</th><th scope="col">Тип</th><th scope="col">Перевод</th>
 </tr>
 </thead>
 <tbody>'.$answer.'</tbody></table>';
@@ -44,19 +47,19 @@ Not found
 ?>
 
 
+
     <? include "header.php"; ?>
 
 
         <div class="container mt-5" style="max-width: 1255px">
   
             <div class="card-header alert alert-warning text-center mb-3">
-                <h2>Приставки</h2>
-                <h6>Источник: конспекст А.А.Зализняка</h6>
-                <h6>Алгоритмизация и программирование: <a class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href='http://anshir.ru'>Широбоков А.П.</a></h6>
-            </div>
+                <h2>Существительные</h2>
+                <h6>Источник: Кочергин В. таблица "Имена Санскрит", Толчельников И.Е. "Санскритская морфология: руководство v 1.5.2"  </h6>
+               </div>
 
             <input type="text" class="form-control" name="live_search" id="live_search" autocomplete="off"
-                   placeholder="Поиск по приставке ...">
+                   placeholder="Поиск по существительному ...">
 
             <br>
             <div id="search_result">
@@ -74,7 +77,7 @@ Not found
                     var query = $(this).val();
                     // if (query != "") {
                     $.ajax({
-                        url: '/search/ajax-live-search-preverbs.php',
+                        url: '/search/ajax-live-search-nouns.php',
                         method: 'POST',
                         data: {
                             query: query

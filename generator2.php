@@ -4,14 +4,8 @@ Based on method of Ivan Tolchelnikov
 Programming by Andrei Shirobokov 2023 
 */
 ?>
-<html class="h-100">
-<head>
-    <title>Глагольные корни</title>
-    	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  	<style>
+
+<style>
 	table.table-fit {
 	width: auto !important;
 	table-layout: auto !important;
@@ -23,8 +17,6 @@ Programming by Andrei Shirobokov 2023
 	width: auto !important;
 	}
 	</style>
-</head>
-
 <body class="d-flex flex-column min-vh-100">
 <? include "header.php"; ?>
 <div class="container mt-5" style="max-width: 1255px">
@@ -91,7 +83,7 @@ $debug=$_REQUEST['debug'];
         echo $itog;
 
 
-        $source_verb=search_in_db($id,"verbs",1);
+        $source_verb=VerbCache::search_in_db($id,"verbs",1);
 
         echo "<h5>Код формы: $command (".tranlate_command_to_russian($command).")</h5><h6> Лицо: $lico Число: $chislo Pada: $pada</h6><BR>";
 
@@ -105,7 +97,7 @@ $debug=$_REQUEST['debug'];
         $chered=AllChered($id,$command,$lico,$chislo,$pada,$debug,$debug,1);
 
         //print_r($chered);
-
+/*
         for($i=0;$i<count($chered['string']);$i++)
         {
             //echo "Последовательность: ".$chered['string'][$i]."";
@@ -121,7 +113,7 @@ $debug=$_REQUEST['debug'];
             echo "<BR>После сандхи: <b>".$chered['sandhi'][$i]."</b>";
         }
         echo "<BR>";
-
+*/
 
 ?>
 <BR>
